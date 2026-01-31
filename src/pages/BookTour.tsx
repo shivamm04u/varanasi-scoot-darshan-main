@@ -28,11 +28,6 @@ const durations = [
   { value: "12", label: "Full Day (8 AM - 8 PM with 2 hour rest)", price: 1999 },
 ];
 
-const scooterTypes = [
-  { value: "standard", label: "Standard E-Scooter", priceModifier: 0 },
-  { value: "premium", label: "Premium E-Scooter (Extra Power)", priceModifier: 100 },
-];
-
 const BookTour = () => {
   const { toast } = useToast();
   const [formData, setFormData] = useState({
@@ -41,14 +36,12 @@ const BookTour = () => {
     email: "",
     pickupLocation: "",
     duration: "12",
-    scooterType: "standard",
     date: "",
     specialRequests: ""
   });
 
   const selectedDuration = durations.find(d => d.value === formData.duration);
-  const selectedScooter = scooterTypes.find(s => s.value === formData.scooterType);
-  const totalPrice = (selectedDuration?.price || 0) + (selectedScooter?.priceModifier || 0);
+  const totalPrice = selectedDuration?.price || 0;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -70,7 +63,6 @@ const BookTour = () => {
 📧 *Email:* ${formData.email}
 📍 *Pickup:* ${locations.find(l => l.value === formData.pickupLocation)?.label || 'Not selected'}
 ⏱️ *Duration:* ${selectedDuration?.label}
-🛵 *Scooter:* ${selectedScooter?.label}
 📅 *Date:* ${formData.date}
 💰 *Total:* ₹${totalPrice}
 
@@ -218,25 +210,7 @@ ${formData.specialRequests ? `📝 *Special Requests:* ${formData.specialRequest
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label>Scooter Type *</Label>
-                    <Select
-                      value={formData.scooterType}
-                      onValueChange={(value) => handleSelectChange("scooterType", value)}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select scooter" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {scooterTypes.map((scooter) => (
-                          <SelectItem key={scooter.value} value={scooter.value}>
-                            {scooter.label} {scooter.priceModifier > 0 && `(+₹${scooter.priceModifier})`}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
                   </div>
-                </div>
 
                 {/* Special Requests */}
                 <div className="space-y-2 pt-4 border-t border-border">
