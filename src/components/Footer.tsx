@@ -52,7 +52,7 @@ const Footer = () => {
                 Solo pilgrimage tours designed for the modern devotee.
               </p>
               <div className="flex gap-4">
-                <a href="#" className="w-10 h-10 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-primary transition-colors">
+                <a href="https://www.instagram.com/baba_banarasi10?igsh=MWhsZzRnYjhmZXlxZg==" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-primary transition-colors">
                   <Instagram className="w-5 h-5" />
                 </a>
                 <a href="#" className="w-10 h-10 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-primary transition-colors">
@@ -131,9 +131,9 @@ const Footer = () => {
                   </a>
                 </li>
                 <li>
-                  <a href="mailto:info@bababanarasi.com" className="flex items-center gap-3 text-primary-foreground/70 hover:text-primary transition-colors">
+                  <a href="mailto:anshumanjha3333@gmail.com" className="flex items-center gap-3 text-primary-foreground/70 hover:text-primary transition-colors">
                     <Mail className="w-5 h-5 text-primary" />
-                    info@bababanarasi.com
+                    anshumanjha3333@gmail.com
                   </a>
                 </li>
                 <li className="flex items-start gap-3 text-primary-foreground/70">

@@ -1,0 +1,162 @@
+Here is a comprehensive **Technical Design Document and Project Brief**. This is not a prompt; it is a detailed architectural blueprint containing every visual, functional, and backend requirement. You can feed this document to any AI developer, and they will understand exactly how to reconstruct the website, including the new Firebase integration.
+
+---
+
+# 📑 Project Brief: Baba Banarasi – Solo Scooter Darshan
+
+## 1. Project Overview
+A production-ready tourism website for **Baba Banarasi**, offering solo scooter tours in Varanasi, India. The platform serves two distinct user groups: **Tourists** (who browse, book, and review) and **Admins** (who manage the business via a secure dashboard). The application is built as a Single Page Application (SPA) with a serverless backend.
+
+**Core Value Proposition:** Safe, budget-friendly (₹1,999), and comprehensive 13-point guided scooter tours, specifically targeting solo travelers, women, and content creators.
+
+---
+
+## 2. Visual Identity & Frontend Specifications (Pixel-Perfect Rules)
+*This section dictates the exact look and feel for frontend recreation.*
+
+### **Design System**
+*   **Color Palette:**
+    *   **Primary:** Vibrant Orange (`#f97316`) - Used for CTAs, highlights, and icons.
+    *   **Secondary:** Saffron/Deep Orange (`#ea580c`) - Used for hover states.
+    *   **Backgrounds:** Cream/Off-White (`#fff7ed`) for sections; Pure White (`#ffffff`) for cards.
+    *   **Text:** Dark Gray (`#111827`) for headings; Medium Gray (`#4b5563`) for body text.
+*   **Typography:**
+    *   **Headings:** *Poppins* (Bold/SemiBold) - Modern, clean sans-serif.
+    *   **Body:** *Inter* (Regular/Medium) - Highly readable.
+*   **Spacing & Layout:**
+    *   Mobile-first approach using Tailwind CSS breakpoints.
+    *   Standard container padding: `px-4` (mobile), `px-6` (tablet), `max-w-7xl mx-auto` (desktop).
+    *   Section spacing: `py-16` or `py-20`.
+    *   Card styling: `rounded-2xl`, `shadow-lg`, `hover:shadow-xl`, `transition-all duration-300`.
+
+### **Key UI Components**
+1.  **Navbar:** Sticky top, blurred white background (`backdrop-blur-md`). Logo left, Links center, "Book Now" CTA (Orange) right. Mobile: Hamburger menu sliding from right.
+2.  **Hero Section:** Full-screen (`h-screen`). Parallax background image (Varanasi Ghats). Centered white text with heavy drop shadow. Primary CTA: "Book Your Darshan".
+3.  **Cards (Tours/Places):** Image top (60% height), Content bottom (40%). Title bold, price prominent. Hover effect: Image zooms slightly (`scale-105`).
+4.  **Parallax Effects:** Used on Hero, Testimonials background, and Footer. Smooth scroll-triggered fade-ins for all sections (`framer-motion`).
+5.  **Floating Elements:**
+    *   **WhatsApp Button:** Bottom-right, fixed, green (`#25D366`), pulsing animation.
+    *   **Write Review Button:** Bottom-right (above WhatsApp), orange, opens modal.
+
+---
+
+## 3. Backend Architecture (Firebase & Logic)
+*The backend has been upgraded from static to dynamic using Firebase.*
+
+### **Technology Stack**
+*   **Runtime:** Node.js (via Replit/Vercel).
+*   **Framework:** React 18 (Vite).
+*   **Database:** Firebase Firestore (NoSQL).
+*   **Authentication:** Firebase Auth (Email/Password).
+*   **Storage:** Firebase Storage (for review images).
+*   **Emails:** Nodemailer (SMTP via Gmail).
+
+### **Database Schema (Firestore Collections)**
+
+#### 1. `testimonials` (Reviews)
+Stores user-submitted reviews.
+*   `customer_name` (string)
+*   `rating` (number, 1-5)
+*   `review_text` (string, min 50 chars)
+*   `is_approved` (boolean, default: `false`) - **Critical for moderation.**
+*   `is_featured` (boolean, default: `false`) - Determines homepage visibility.
+*   `customer_avatar` (URL) - Uploaded photo.
+*   `created_at` (timestamp)
+
+#### 2. `bookings` (Reservations)
+Stores booking requests.
+*   `customer_name`, `phone`, `email`
+*   `tour_date` (timestamp), `tour_type` (string)
+*   `status` (enum: pending/confirmed/completed)
+*   `total_amount` (number)
+
+#### 3. `places` (Content)
+Stores the 25 sacred locations.
+*   `name`, `slug`, `category` (temple/ghat/heritage)
+*   `description`, `image_url`
+*   `latitude`, `longitude` (for maps)
+*   `included_in_tour` (boolean)
+
+#### 4. `users` (Admins)
+Stores admin profile data and roles.
+*   `email`, `role` (super_admin/admin).
+*   **Security:** Access is controlled via Custom Claims (`admin: true`) in Firebase Auth.
+
+---
+
+## 4. Detailed Feature Specifications
+
+### **A. Review System (New Implementation)**
+1.  **Submission:**
+    *   Public users click "Write a Review".
+    *   A modal opens requesting: Name, Rating (Star interactable), Review Text, Tour Taken, and Photo Upload.
+    *   **Logic:** Upon submit, data is sent to Firestore with `is_approved: false`.
+    *   **Feedback:** User sees a confetti animation and a "Pending Approval" toast message.
+2.  **Display:**
+    *   **Homepage:** Fetches only reviews where `is_approved: true` AND `is_featured: true` (Top 3).
+    *   **"Load More":** Clicking "See All" loads the next batch of 6 approved reviews inline without refreshing the page.
+    *   **Reviews Page:** Lists all approved reviews with filters (Star rating, Most Recent).
+
+### **B. Booking System**
+1.  **Frontend:** Form validates Phone (10 digits) and Date (future only).
+2.  **Process:**
+    *   Data saved to `bookings` collection.
+    *   **Email Trigger:** API triggers Nodemailer.
+        *   *Email to Admin:* "New Booking Alert: [Name] for [Date]".
+        *   *Email to Customer:* "Booking Received. We will confirm shortly."
+
+### **C. Admin Panel (Secure Area)**
+*   **URL:** `/admin/login`
+*   **Security:** Protected Route wrapper. Checks for Firebase `auth.currentUser` AND valid Admin Custom Claim. Redirects intruders to login.
+*   **Modules:**
+    *   **Dashboard:** Stats (Total Revenue, Pending Bookings count).
+    *   **Reviews Manager:** Table view. Actions: Approve (publish to site), Reject (delete), Feature (highlight on home).
+    *   **Bookings Manager:** List view. Actions: Mark Confirmed, Cancel.
+    *   **Content Editor:** Edit "Hero Text" or "Prices" stored in a `settings` collection.
+
+---
+
+## 5. Content Strategy: The 25 Sacred Places
+The database is seeded with 25 specific locations to improve SEO and local authority.
+
+**Category A: The Tour Itinerary (13 Places)**
+1.  Assi Ghat (Sunrise point)
+2.  Tulsi Ghat
+3.  Durga Mata Mandir (Monkey Temple)
+4.  Tulsi Manas Mandir
+5.  Tridev Mandir
+6.  Mani Mandir (BHU)
+7.  Sankat Mochan (Hanuman)
+8.  BHU Vishwanath Temple
+9.  Kabir Math
+10. Bada Ganesh
+11. Kal Bhairav (Guardian of Kashi)
+12. Kashi Vishwanath (Golden Temple)
+13. Ganga Aarti (Dashashwamedh Ghat)
+
+**Category B: Exploration Extras (12 Places)**
+*   *Historical/Heritage:* Ramnagar Fort, Chunar Fort, Sarnath, Dhamek Stupa.
+*   *Other Ghats:* Manikarnika (Cremation), Harishchandra, Kedar, Man Mandir, Panchganga.
+*   *Temples:* Nepali Temple, Bharat Mata Temple, Alamgir Mosque.
+
+---
+
+## 6. SEO & Performance Optimization
+*   **Meta Tags:** Dynamic titles based on routes (e.g., "Tours in Varanasi | Baba Banarasi").
+*   **Schema Markup (JSON-LD):**
+    *   `LocalBusiness`: Contains Phone, Address, Price Range.
+    *   `TouristAttraction`: Lists the 13 tour stops.
+    *   `AggregateRating`: Dynamically pulls 4.9/5 from reviews.
+*   **Images:** All images converted to WebP. `loading="lazy"` on all images except the Hero background.
+*   **Animation Performance:** `will-change` CSS properties used on Parallax elements to prevent jank.
+
+---
+
+## 7. Execution Flow for the AI Developer
+1.  **Initialize:** Setup React+Vite structure. Install Tailwind, Framer Motion, Firebase SDK.
+2.  **Backend Config:** Create `firebase.js` config and `firebaseAdmin.js` service account setup.
+3.  **Frontend Build:** Recreate the reference UI component by component (Navbar -> Hero -> Cards -> Footer).
+4.  **Integration:** Connect forms (Booking/Review) to Firestore functions.
+5.  **Admin Build:** Build the protected dashboard layout and CRUD tables.
+6.  **Seeding:** Run a script to populate the 25 places and initial 12 testimonials.
+7.  **Final Polish:** Apply SEO tags and Parallax smooth scrolling.

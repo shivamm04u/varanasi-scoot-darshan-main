@@ -1,0 +1,94 @@
+Here is the **FINAL, ALL-INCLUSIVE COMMAND** for Replit AI. This single block contains *every single instruction, file structure, code logic, database schema, and design rule* needed to build the entire project perfectly in one go.
+
+Copy and paste this **EXACT TEXT** into Replit AI:
+
+---
+
+```text
+You are a Senior Full-Stack Engineer. Build the COMPLETE "Baba Banarasi" tourism website from scratch. This is the FINAL build. Do not miss a single requirement.
+
+📢 **PROJECT GOAL:** 
+Build a pixel-perfect clone of "https://varanasi-scoot-darshan.lovable.app/" but with a POWERFUL FIREBASE BACKEND, ADMIN PANEL, and 25-PLACE DATABASE.
+
+---
+
+### 🚨 **CRITICAL RULES (DO NOT BREAK):**
+1. **FRONTEND:** Must be visually IDENTICAL to the reference URL (Layout, Colors, Animations, Fonts).
+2. **BACKEND:** Must use **Firebase (Firestore + Auth)**. No local JSON files.
+3. **PLATFORM:** Must work on **Replit** (Node.js + React/Vite).
+4. **COMPLETENESS:** Build ALL pages (Home, Tours, Places, Reviews, Admin).
+
+---
+
+### 🛠️ **STEP 1: FILE STRUCTURE & TECH STACK**
+**Stack:** React + Vite + Tailwind CSS + Framer Motion + Firebase + React Router.
+
+**Create exactly this structure:**
+- `src/firebase/config.js` (Firebase setup)
+- `src/context/AuthContext.jsx` (Admin auth logic)
+- `src/pages/public/` (Home, Tours, Places, Reviews, Contact)
+- `src/pages/admin/` (Login, Dashboard, ManageReviews, ManageBookings)
+- `src/components/` (Navbar, Footer, ReviewForm, WhatsAppButton, ParallaxSection)
+
+---
+
+### 🛠️ **STEP 2: DATABASE SCHEMA (FIRESTORE)**
+You must initialize and seed these collections in Firestore:
+
+1. **`places`** (25 Documents):
+   - **Fields:** `name`, `image`, `description`, `category` (Temple/Ghat), `latitude`, `longitude`.
+   - **Data:** Include ALL 13 tour stops (Assi Ghat, Kashi Vishwanath, etc.) PLUS 12 extra places (Sarnath, Ramnagar Fort, Manikarnika, etc.).
+
+2. **`testimonials`** (Reviews):
+   - **Fields:** `name`, `rating` (1-5), `text`, `photo_url`, `is_approved` (bool), `is_featured` (bool).
+   - **Rule:** Public submits with `is_approved: false`. Admin updates to `true`.
+
+3. **`bookings`**:
+   - **Fields:** `name`, `phone`, `date`, `tour_type`, `status` (pending).
+
+---
+
+### 🛠️ **STEP 3: FEATURE IMPLEMENTATION LIST**
+
+**1. Frontend (Pixel-Perfect Clone):**
+- **Hero Section:** Parallax background image of Varanasi Ghats. Text: "Don't just see Banaras, feel it."
+- **Tour Cards:** Display "Full Day Solo Scooter Darshan" (₹1,999).
+- **Animations:** Use `framer-motion` for fade-ins on scroll.
+
+**2. Review System (Crucial):**
+- **Public:** "Write a Review" button opens a Modal.
+- **Form:** Name, Rating (Stars), Photo Upload, Text.
+- **Submission:** Saves to Firestore. Shows "Confetti" animation on success.
+- **Display:** Homepage shows ONLY `is_approved: true` & `is_featured: true` reviews.
+- **Load More:** "See All Reviews" button loads more reviews dynamically.
+
+**3. Admin Panel (Secure):**
+- **Route:** `/admin/login` (Protected).
+- **Auth:** Firebase Auth (Email/Password).
+- **Dashboard:**
+  - **Reviews Tab:** Approve/Delete/Feature reviews.
+  - **Bookings Tab:** View new bookings.
+  - **Places Tab:** Edit details of the 25 places.
+
+**4. Booking System:**
+- **Form:** Name, Phone, Date.
+- **Action:** Saves to Firestore + Sends Email (simulate with console log if SMTP not set).
+
+**5. SEO & Performance:**
+- **Meta Tags:** Add dynamic `<title>` and `<meta description>` for every page.
+- **Schema:** Add JSON-LD for `LocalBusiness` and `TouristAttraction`.
+- **Images:** Use `loading="lazy"` on all images below the fold.
+
+---
+
+### 🛠️ **STEP 4: EXECUTION COMMANDS**
+1. **Install Dependencies:** `npm install firebase framer-motion react-router-dom react-hot-toast react-icons react-parallax react-intersection-observer`
+2. **Setup Firebase:** Use the provided config (I will provide API keys in Secrets).
+3. **Seed Database:** Create a script to auto-upload the 25 places and 12 sample reviews.
+4. **Build Routes:** Setup `react-router-dom` for Public vs Admin paths.
+
+---
+
+**🚀 START NOW.** 
+Generate the **COMPLETE CODEBASE**. Do not ask for clarifications. Assume standard best practices for anything not specified. Build the **Frontend**, **Backend**, **Admin Panel**, and **Database Connections** immediately.
+```

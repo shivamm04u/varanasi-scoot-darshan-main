@@ -24,10 +24,8 @@ const locations = [
 ];
 
 const durations = [
-  { value: "2", label: "2 Hours", price: 300 },
-  { value: "4", label: "4 Hours", price: 500 },
-  { value: "6", label: "6 Hours", price: 700 },
-  { value: "8", label: "Full Day (8 Hours)", price: 1000 },
+  { value: "6", label: "Half Day", price: 999 },
+  { value: "12", label: "Full Day (8 AM - 8 PM with 2 hour rest)", price: 1999 },
 ];
 
 const scooterTypes = [
@@ -42,7 +40,7 @@ const BookTour = () => {
     phone: "",
     email: "",
     pickupLocation: "",
-    duration: "4",
+    duration: "12",
     scooterType: "standard",
     date: "",
     specialRequests: ""
@@ -80,7 +78,7 @@ ${formData.specialRequests ? `📝 *Special Requests:* ${formData.specialRequest
 
 🙏 Har Har Mahadev!`;
 
-    const whatsappUrl = `https://wa.me/919555123456?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/917991301043?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
 
     toast({
@@ -265,7 +263,7 @@ ${formData.specialRequests ? `📝 *Special Requests:* ${formData.specialRequest
                       <MessageCircle className="w-5 h-5" />
                       Book via WhatsApp
                     </Button>
-                    <a href="tel:+919555123456" className="flex-1">
+                    <a href="tel:+917991301043" className="flex-1">
                       <Button type="button" variant="call" size="xl" className="w-full">
                         <Phone className="w-5 h-5" />
                         Call to Book
@@ -329,7 +327,7 @@ ${formData.specialRequests ? `📝 *Special Requests:* ${formData.specialRequest
                 <h3 className="font-serif text-xl font-bold mb-6">Need Help?</h3>
                 <div className="space-y-4">
                   <a
-                    href="https://wa.me/919555123456"
+                    href="https://wa.me/917991301043"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-4 p-4 rounded-xl bg-[hsl(142,70%,45%)]/10 hover:bg-[hsl(142,70%,45%)]/20 transition-colors"
@@ -341,23 +339,23 @@ ${formData.specialRequests ? `📝 *Special Requests:* ${formData.specialRequest
                     </div>
                   </a>
                   <a
-                    href="tel:+919555123456"
+                    href="tel:+917991301043"
                     className="flex items-center gap-4 p-4 rounded-xl bg-accent/10 hover:bg-accent/20 transition-colors"
                   >
                     <Phone className="w-6 h-6 text-accent" />
                     <div>
                       <div className="font-semibold">Call Us</div>
-                      <div className="text-sm text-muted-foreground">+91 95551 23456</div>
+                      <div className="text-sm text-muted-foreground">+91 79913 01043</div>
                     </div>
                   </a>
                   <a
-                    href="mailto:info@bababanarasi.com"
+                    href="mailto:anshumanjha3333@gmail.com"
                     className="flex items-center gap-4 p-4 rounded-xl bg-primary/10 hover:bg-primary/20 transition-colors"
                   >
                     <Mail className="w-6 h-6 text-primary" />
                     <div>
                       <div className="font-semibold">Email</div>
-                      <div className="text-sm text-muted-foreground">info@bababanarasi.com</div>
+                      <div className="text-sm text-muted-foreground">anshumanjha3333@gmail.com</div>
                     </div>
                   </a>
                 </div>
