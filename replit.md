@@ -74,3 +74,8 @@ Static files are output to the `dist` directory.
 - Added 13-point itinerary to Services section
 - Fixed /locations route (created LocationsPage)
 - Replaced "Foreigner" with "Bagpackerrs" throughout
+- Rebuilt Locations page with Morning/Afternoon session groupings
+- Added stock images for all 13 sacred locations (in src/assets/locations/)
+- Removed Scooter Type selection from booking form
+- Enhanced Testimonials with 12 reviews and "Show More" button
+- Default booking duration is now Full Day
