@@ -76,6 +76,7 @@ const morningLocations = [
   {
     id: 8,
     name: "BHU Vishwanath Temple",
+    subtitle: "(if time permits)",
     image: bhuVishwanath,
     description: "A magnificent Shiva temple in BHU campus. Known for its tall shikhara and open-to-all policy regardless of caste or religion.",
     duration: "30 mins",
@@ -126,7 +127,17 @@ const afternoonLocations = [
   },
 ];
 
-const LocationCard = ({ location, index }: { location: typeof morningLocations[0]; index: number }) => (
+interface Location {
+  id: number;
+  name: string;
+  subtitle?: string;
+  image: string;
+  description: string;
+  duration: string;
+  rating: number;
+}
+
+const LocationCard = ({ location }: { location: Location }) => (
   <div className="card-location group">
     <div className="relative h-48 overflow-hidden">
       <img
@@ -149,6 +160,9 @@ const LocationCard = ({ location, index }: { location: typeof morningLocations[0
         <h3 className="font-serif text-lg font-bold text-primary-foreground">
           {location.name}
         </h3>
+        {location.subtitle && (
+          <span className="text-xs text-primary-foreground/80 italic">{location.subtitle}</span>
+        )}
       </div>
     </div>
 
@@ -191,13 +205,13 @@ const Locations = () => {
             </div>
             <div>
               <h3 className="font-serif text-2xl font-bold text-foreground">Morning Session</h3>
-              <p className="text-muted-foreground">8:00 AM - 1:00 PM | Assi Ghat to BHU</p>
+              <p className="text-muted-foreground">8:00 AM – 12:00 PM | Assi Ghat to BHU</p>
             </div>
           </div>
           
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {morningLocations.map((location, index) => (
-              <LocationCard key={location.id} location={location} index={index} />
+            {morningLocations.map((location) => (
+              <LocationCard key={location.id} location={location} />
             ))}
           </div>
         </div>
@@ -206,7 +220,7 @@ const Locations = () => {
         <div className="flex items-center justify-center gap-4 mb-16 py-8 bg-secondary/30 rounded-2xl">
           <Coffee className="w-6 h-6 text-primary" />
           <span className="text-lg text-muted-foreground font-medium">
-            2-3 hours rest at hotel between sessions
+            ~2.5 hours rest at the hotel between sessions
           </span>
         </div>
 
@@ -223,8 +237,8 @@ const Locations = () => {
           </div>
           
           <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-6">
-            {afternoonLocations.map((location, index) => (
-              <LocationCard key={location.id} location={location} index={index} />
+            {afternoonLocations.map((location) => (
+              <LocationCard key={location.id} location={location as Location} />
             ))}
           </div>
         </div>

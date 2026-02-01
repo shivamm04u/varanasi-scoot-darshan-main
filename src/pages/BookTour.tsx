@@ -20,6 +20,15 @@ const locations = [
   { value: "dashashwamedh", label: "Dashashwamedh Ghat" },
   { value: "manikarnika", label: "Manikarnika Ghat" },
   { value: "assi-ghat", label: "Assi Ghat" },
+  { value: "tulsiGhat", label: "Tulsi Ghat" },
+  { value: "durgaMandir", label: "Durga Mandir" },
+  { value: "tulsiManasMandir", label: "TulsiManas Mandir" },
+  { value: "tridevMandir", label: "tridev Mandir " },
+  { value: "maniMandir ", label: "Mani Mandir " },
+  { value: "sankatMochan", label: "Sankat Mochan" },
+  { value: "bhuVishwanath", label: "Bhu Vishwanath" },
+  { value: "kabirMath", label: "Kabir Math" },
+  { value: "badaGanesh", label: "Bada Ganesh" },
   { value: "sarnath", label: "Sarnath" },
 ];
 
