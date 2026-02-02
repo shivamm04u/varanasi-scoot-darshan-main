@@ -41,3 +41,14 @@ externalPort = 3001
 deploymentTarget = "static"
 build = ["npm", "run", "build"]
 publicDir = "dist"
+
+[userenv]
+
+[userenv.shared]
+"API Key" = "AIzaSyCtyR68dG9TEI_C89PvsdrGmpkE6vCtV0s"
+"Auth Domain" = "varanasi-scoot-darshan.firebaseapp.com"
+"Project ID" = "varanasi-scoot-darshan"
+"Storage Bucket" = "varanasi-scoot-darshan.firebasestorage.app"
+"Messaging Sender ID" = "437910870938"
+"App ID" = "1:437910870938:web:cb7b3043bcc39216143823"
+measurementId = "G-8WEEXP0FNF"

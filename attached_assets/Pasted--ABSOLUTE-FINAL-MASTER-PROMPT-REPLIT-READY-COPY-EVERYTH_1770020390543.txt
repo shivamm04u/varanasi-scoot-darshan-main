@@ -1,0 +1,281 @@
+# 🚀 ABSOLUTE FINAL MASTER PROMPT (REPLIT-READY)
+
+👉 **COPY EVERYTHING BELOW AND PASTE DIRECTLY INTO REPLIT AI**
+👉 This is the **single final prompt** that includes **EVERYTHING** we discussed.
+👉 It is optimized for **Firebase FREE (Spark) plan only** and **will NOT break your existing website**.
+
+---
+
+## 🔥 MASTER PROMPT — START
+
+You are a **senior full‑stack engineer**.
+
+### ⚠️ CRITICAL SAFETY RULES (READ FIRST)
+
+1. **DO NOT modify or refactor any existing files** of the current website.
+2. Treat the existing site as **production & read‑only**.
+3. **CREATE NEW FILES ONLY** inside a new folder:
+
+   ```
+   /dashboard/
+     ├── index.html
+     ├── admin.html
+     └── manager.html
+   ```
+4. Use the **SAME Firebase project/config** as the main website.
+5. No backend server. No Node.js. No frameworks.
+
+---
+
+## 🎯 PROJECT OVERVIEW
+
+Build a **standalone Authentication + Dashboard system** for a tourism booking platform:
+
+**Website:** Varanasi Scoot Darshan (single‑state tourism)
+
+This dashboard system is deployed separately but connected via **Firebase** to the main website.
+
+---
+
+## ⚙️ TECH STACK (FREE ONLY – STRICT)
+
+### ✅ ALLOWED
+
+* HTML, CSS, Vanilla JavaScript
+* Firebase Authentication (Email & Password – FREE)
+* Firebase Firestore (FREE tier optimized)
+* Firebase Hosting (FREE)
+
+### ❌ NOT ALLOWED
+
+* Cloud Functions
+* Firebase Analytics
+* Firebase Extensions
+* Paid Firebase features
+* Backend servers
+* React / Vue / frameworks
+
+---
+
+## 👥 ROLES & ACCESS CONTROL (RBAC – FREE SAFE)
+
+Roles are stored in Firestore:
+
+```
+users/{uid}
+  - role: user | manager | admin | super_admin
+```
+
+### Role Rules
+
+* user → only own bookings
+* manager → only assigned bookings
+* admin → all bookings
+* super_admin → system owner
+
+Role checks must be enforced in **Firestore rules + frontend logic**.
+
+---
+
+## 🔐 AUTHENTICATION SYSTEM (CRITICAL)
+
+### Signup & Signin
+
+* Firebase Email/Password authentication
+* Signup if user does not exist
+* Signin if user already has account
+
+### Auth State Handling (MANDATORY)
+
+* Use `onAuthStateChanged()` ONLY
+* No redirect screens
+* No "Redirecting…" UI
+* Show a **small loader only until auth state resolves**
+
+### Behavior
+
+#### If user is NOT logged in:
+
+* Show SaaS‑style landing page UI
+* Show Login / Register buttons (modal or section)
+* Booking actions require login
+
+#### If user IS logged in:
+
+* KEEP the same landing page UI
+* Replace top buttons with:
+
+  * My Bookings
+  * Logout
+* Show **user‑specific dashboard section below**
+
+---
+
+## 🎨 DESIGN REQUIREMENTS (VERY IMPORTANT)
+
+### User Dashboard = Landing Page Style (NOT admin UI)
+
+Inspired by **AdLinkEly / SaaS landing pages**.
+
+Must include:
+
+* Cloud‑style top header
+* Hero section
+* Steps with icons:
+
+  * Create Account
+  * Book Tour
+  * Enjoy Varanasi
+* Why Join Us feature grid
+* Stats section (tourists, bookings, tours)
+* Testimonials section
+* Blue/white gradient theme
+* Rounded cards, shadows
+* Button hover & click animations
+* Fully mobile‑responsive
+
+⚠️ This landing UI MUST stay visible even after login.
+
+---
+
+## 👤 USER FEATURES (`dashboard/index.html`)
+
+* Signup & Login (Firebase Auth)
+* Book tour form (Firestore write)
+* View ONLY own bookings
+* Booking status
+* Copy booking ID button with animation
+* Clean card‑based UI
+* Optimized Firestore reads (FREE tier)
+
+---
+
+## 🧑‍💼 ADMIN PANEL (`dashboard/admin.html`)
+
+### Access
+
+* Firebase login required
+* Role must be `admin` or `super_admin`
+* Redirect non‑admins
+
+### Admin Dashboard UI
+
+* Professional SaaS layout
+* Top stat cards:
+
+  * Total users
+  * Total bookings
+  * Active tours
+
+### Admin Features
+
+* View all bookings
+* Assign bookings to managers
+* Update booking status
+* Delete / disable bookings
+
+---
+
+## 🧑‍🔧 MANAGER PANEL (`dashboard/manager.html`)
+
+### Access
+
+* Firebase login required
+* Role must be `manager`
+
+### Manager Features
+
+* View ONLY assigned bookings
+* Update booking status
+* View customer contact details
+
+---
+
+## 🗄️ FIRESTORE DATABASE STRUCTURE
+
+```
+users/{uid}
+  - name
+  - email
+  - role
+  - createdAt
+
+bookings/{bookingId}
+  - userId
+  - managerId
+  - name
+  - phone
+  - tourPackage
+  - date
+  - status
+  - createdAt
+```
+
+---
+
+## 🔒 FIRESTORE SECURITY RULES (FREE OPTIMIZED)
+
+Rules MUST ensure:
+
+* No unauthenticated access
+* Users read only their own bookings
+* Managers read only assigned bookings
+* Admins read/write all bookings
+* Minimal reads & writes
+
+---
+
+## 🔧 FIREBASE INITIALIZATION RULES
+
+* Initialize Firebase ONLY ONCE per page
+* Auth listener runs AFTER initialization
+* No analytics
+* No preloading auth checks
+
+---
+
+## 🔗 MAIN WEBSITE CONNECTION
+
+* Main website and dashboard use SAME Firebase project
+* Bookings created on main site appear automatically in dashboards
+* No backend integration required
+
+---
+
+## 🚀 DEPLOYMENT
+
+* Use Firebase Hosting (FREE)
+* No environment variables required
+* Firebase config inside each HTML file
+
+---
+
+## 📦 REQUIRED OUTPUT (NO EXCEPTIONS)
+
+1. `dashboard/index.html` – User landing + dashboard (FULL CODE)
+2. `dashboard/admin.html` – Admin panel (FULL CODE)
+3. `dashboard/manager.html` – Manager panel (FULL CODE)
+4. Firebase FREE setup guide (step‑by‑step)
+5. Firestore database structure (JSON)
+6. Firestore security rules (FREE optimized)
+
+⚠️ No pseudo‑code. No placeholders. Must be **100% working**.
+
+Build this as a **real production system**.
+
+## 🔥 MASTER PROMPT — END
+
+---
+
+### ✅ THIS PROMPT INCLUDES EVERYTHING
+
+* Firebase Configuration
+* Signup & Signin
+* Role‑Based Authentication
+* Protected Routes
+* User / Manager / Admin / Super Admin dashboards
+* Firestore Security Rules
+* Public Booking Form compatibility
+* FREE‑only Firebase usage
+
+This is the **final, complete, Replit‑ready prompt**.
