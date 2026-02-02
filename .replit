@@ -45,10 +45,9 @@ publicDir = "dist"
 [userenv]
 
 [userenv.shared]
-"API Key" = "AIzaSyCtyR68dG9TEI_C89PvsdrGmpkE6vCtV0s"
-"Auth Domain" = "varanasi-scoot-darshan.firebaseapp.com"
-"Project ID" = "varanasi-scoot-darshan"
-"Storage Bucket" = "varanasi-scoot-darshan.firebasestorage.app"
-"Messaging Sender ID" = "437910870938"
-"App ID" = "1:437910870938:web:cb7b3043bcc39216143823"
-measurementId = "G-8WEEXP0FNF"
+VITE_FIREBASE_API_KEY = "AIzaSyCtyR68dG9TEI_C89PvsdrGmpkE6vCtV0s"
+VITE_FIREBASE_AUTH_DOMAIN = "varanasi-scoot-darshan.firebaseapp.com"
+VITE_FIREBASE_PROJECT_ID = "varanasi-scoot-darshan"
+VITE_FIREBASE_STORAGE_BUCKET = "varanasi-scoot-darshan.firebasestorage.app"
+VITE_FIREBASE_MESSAGING_SENDER_ID = "437910870938"
+VITE_FIREBASE_APP_ID = "1:437910870938:web:cb7b3043bcc39216143823"

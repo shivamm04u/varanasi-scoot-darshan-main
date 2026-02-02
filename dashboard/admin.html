@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - Baba Banarasi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f1f5f9;
+      min-height: 100vh;
+    }
+    .loader-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #f1f5f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    .loader {
+      width: 50px;
+      height: 50px;
+      border: 4px solid #e2e8f0;
+      border-top: 4px solid #667eea;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .hidden { display: none !important; }
+    
+    .access-denied {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+      padding: 2rem;
+    }
+    .access-denied h1 {
+      color: #ef4444;
+      margin-bottom: 1rem;
+    }
+    .access-denied a {
+      color: #667eea;
+      text-decoration: none;
+    }
+    
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 250px;
+      height: 100vh;
+      background: linear-gradient(180deg, #1e293b, #334155);
+      color: white;
+      padding: 1.5rem;
+      z-index: 100;
+    }
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .sidebar-logo span {
+      font-size: 24px;
+    }
+    .sidebar-logo h2 {
+      font-size: 1.1rem;
+    }
+    .sidebar-nav a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0.8rem 1rem;
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      border-radius: 10px;
+      margin-bottom: 0.5rem;
+      transition: all 0.3s;
+    }
+    .sidebar-nav a:hover,
+    .sidebar-nav a.active {
+      background: rgba(255,255,255,0.1);
+      color: white;
+    }
+    .sidebar-footer {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 1.5rem;
+      right: 1.5rem;
+    }
+    .sidebar-footer a {
+      display: block;
+      padding: 0.8rem 1rem;
+      color: #ef4444;
+      text-decoration: none;
+      border-radius: 10px;
+      text-align: center;
+      background: rgba(239, 68, 68, 0.1);
+    }
+    
+    .main-content {
+      margin-left: 250px;
+      padding: 2rem;
+    }
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    .page-header h1 {
+      color: #1e293b;
+    }
+    .admin-badge {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: white;
+      border-radius: 15px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+    .stat-card h3 {
+      color: #64748b;
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+    .stat-card .value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1e293b;
+    }
+    .stat-card.primary .value { color: #667eea; }
+    .stat-card.success .value { color: #22c55e; }
+    .stat-card.warning .value { color: #f59e0b; }
+    
+    .data-table {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      overflow: hidden;
+    }
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .table-header h2 {
+      color: #1e293b;
+    }
+    .filter-buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .filter-btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #f1f5f9;
+      color: #64748b;
+      font-size: 0.85rem;
+      transition: all 0.3s;
+    }
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: #667eea;
+      color: white;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 1rem 1.5rem;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    th {
+      background: #f8fafc;
+      color: #64748b;
+      font-weight: 500;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+    }
+    td {
+      color: #1e293b;
+    }
+    .status-badge {
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+    .status-pending { background: #fef3c7; color: #92400e; }
+    .status-confirmed { background: #d1fae5; color: #065f46; }
+    .status-completed { background: #dbeafe; color: #1e40af; }
+    .status-cancelled { background: #fee2e2; color: #991b1b; }
+    
+    .action-btn {
+      padding: 0.4rem 0.8rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      margin-right: 0.3rem;
+      transition: all 0.3s;
+    }
+    .action-btn.confirm { background: #d1fae5; color: #065f46; }
+    .action-btn.complete { background: #dbeafe; color: #1e40af; }
+    .action-btn.cancel { background: #fee2e2; color: #991b1b; }
+    .action-btn:hover { opacity: 0.8; }
+    
+    select.manager-select {
+      padding: 0.4rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      font-size: 0.85rem;
+    }
+    
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal {
+      background: white;
+      border-radius: 20px;
+      padding: 2rem;
+      width: 90%;
+      max-width: 400px;
+    }
+    .modal h2 {
+      margin-bottom: 1.5rem;
+      color: #1e293b;
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #333;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 0.8rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      font-size: 1rem;
+    }
+    .form-group input:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+    .btn {
+      padding: 0.8rem 1.5rem;
+      border-radius: 10px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+    }
+    .btn-outline {
+      background: transparent;
+      border: 2px solid #e2e8f0;
+      color: #64748b;
+    }
+    .modal-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .modal-buttons .btn { flex: 1; }
+    .error-message {
+      color: #ef4444;
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+      text-align: center;
+    }
+    
+    .no-data {
+      text-align: center;
+      padding: 3rem;
+      color: #64748b;
+    }
+    
+    @media (max-width: 768px) {
+      .sidebar { width: 70px; padding: 1rem 0.5rem; }
+      .sidebar-logo h2, .sidebar-nav span { display: none; }
+      .main-content { margin-left: 70px; padding: 1rem; }
+      table { font-size: 0.85rem; }
+      th, td { padding: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="loader-overlay" id="loader">
+    <div class="loader"></div>
+  </div>
+
+  <div class="access-denied hidden" id="accessDenied">
+    <h1>Access Denied</h1>
+    <p>You don't have permission to access this page.</p>
+    <p style="margin-top: 1rem;"><a href="index.html">Go to Dashboard</a></p>
+  </div>
+
+  <div class="hidden" id="adminPanel">
+    <nav class="sidebar">
+      <div class="sidebar-logo">
+        <span>🛵</span>
+        <h2>Admin Panel</h2>
+      </div>
+      <div class="sidebar-nav">
+        <a href="#" class="active"><span>📊</span> <span>Dashboard</span></a>
+        <a href="#bookings"><span>📋</span> <span>Bookings</span></a>
+        <a href="#users"><span>👥</span> <span>Users</span></a>
+        <a href="index.html"><span>🏠</span> <span>Main Site</span></a>
+      </div>
+      <div class="sidebar-footer">
+        <a href="#" onclick="logout()">Logout</a>
+      </div>
+    </nav>
+
+    <main class="main-content">
+      <div class="page-header">
+        <h1>Dashboard</h1>
+        <span class="admin-badge" id="roleBadge">Admin</span>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card primary">
+          <h3>Total Users</h3>
+          <div class="value" id="statUsers">0</div>
+        </div>
+        <div class="stat-card success">
+          <h3>Total Bookings</h3>
+          <div class="value" id="statBookings">0</div>
+        </div>
+        <div class="stat-card warning">
+          <h3>Pending Bookings</h3>
+          <div class="value" id="statPending">0</div>
+        </div>
+        <div class="stat-card">
+          <h3>Confirmed Tours</h3>
+          <div class="value" id="statConfirmed">0</div>
+        </div>
+      </div>
+
+      <div class="data-table" id="bookingsSection">
+        <div class="table-header">
+          <h2>All Bookings</h2>
+          <div class="filter-buttons">
+            <button class="filter-btn active" onclick="filterBookings('all')">All</button>
+            <button class="filter-btn" onclick="filterBookings('pending')">Pending</button>
+            <button class="filter-btn" onclick="filterBookings('confirmed')">Confirmed</button>
+            <button class="filter-btn" onclick="filterBookings('completed')">Completed</button>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Booking ID</th>
+              <th>Customer</th>
+              <th>Phone</th>
+              <th>Package</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Assign To</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="bookingsTable">
+            <tr><td colspan="8" class="no-data">Loading bookings...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <div class="modal-overlay hidden" id="loginModal">
+    <div class="modal">
+      <h2>Admin Login</h2>
+      <form onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="loginEmail" required>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="loginPassword" required>
+        </div>
+        <p id="loginError" class="error-message hidden"></p>
+        <div class="modal-buttons">
+          <a href="index.html" class="btn btn-outline" style="text-align: center; text-decoration: none;">Cancel</a>
+          <button type="submit" class="btn btn-primary">Login</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+    import { getFirestore, collection, getDocs, query, orderBy, doc, updateDoc, getDoc, where } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCtyR68dG9TEI_C89PvsdrGmpkE6vCtV0s",
+      authDomain: "varanasi-scoot-darshan.firebaseapp.com",
+      projectId: "varanasi-scoot-darshan",
+      storageBucket: "varanasi-scoot-darshan.firebasestorage.app",
+      messagingSenderId: "437910870938",
+      appId: "1:437910870938:web:cb7b3043bcc39216143823"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    let currentUser = null;
+    let allBookings = [];
+    let managers = [];
+    let currentFilter = 'all';
+
+    window.logout = async function() {
+      await signOut(auth);
+      window.location.href = 'index.html';
+    };
+
+    window.handleLogin = async function(e) {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      const errorEl = document.getElementById('loginError');
+      
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+      } catch (error) {
+        errorEl.textContent = error.message.replace('Firebase: ', '');
+        errorEl.classList.remove('hidden');
+      }
+    };
+
+    window.filterBookings = function(status) {
+      currentFilter = status;
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      renderBookings();
+    };
+
+    window.updateStatus = async function(bookingId, newStatus) {
+      try {
+        await updateDoc(doc(db, 'bookings', bookingId), { status: newStatus });
+        const booking = allBookings.find(b => b.id === bookingId);
+        if (booking) booking.status = newStatus;
+        renderBookings();
+        updateStats();
+      } catch (error) {
+        alert('Error updating status: ' + error.message);
+      }
+    };
+
+    window.assignManager = async function(bookingId, managerId) {
+      try {
+        await updateDoc(doc(db, 'bookings', bookingId), { managerId: managerId || null });
+        const booking = allBookings.find(b => b.id === bookingId);
+        if (booking) booking.managerId = managerId || null;
+      } catch (error) {
+        alert('Error assigning manager: ' + error.message);
+      }
+    };
+
+    async function loadManagers() {
+      try {
+        const q = query(collection(db, 'users'), where('role', 'in', ['manager', 'admin']));
+        const snapshot = await getDocs(q);
+        managers = [];
+        snapshot.forEach(doc => {
+          managers.push({ id: doc.id, ...doc.data() });
+        });
+      } catch (e) {}
+    }
+
+    async function loadBookings() {
+      try {
+        const q = query(collection(db, 'bookings'), orderBy('createdAt', 'desc'));
+        const snapshot = await getDocs(q);
+        allBookings = [];
+        snapshot.forEach(doc => {
+          allBookings.push({ id: doc.id, ...doc.data() });
+        });
+        renderBookings();
+        updateStats();
+      } catch (error) {
+        document.getElementById('bookingsTable').innerHTML = 
+          '<tr><td colspan="8" class="no-data">Error loading bookings</td></tr>';
+      }
+    }
+
+    function renderBookings() {
+      const tbody = document.getElementById('bookingsTable');
+      let filtered = allBookings;
+      
+      if (currentFilter !== 'all') {
+        filtered = allBookings.filter(b => b.status === currentFilter);
+      }
+      
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" class="no-data">No bookings found</td></tr>';
+        return;
+      }
+      
+      let html = '';
+      filtered.forEach(b => {
+        const managerOptions = managers.map(m => 
+          `<option value="${m.id}" ${b.managerId === m.id ? 'selected' : ''}>${m.name || m.email}</option>`
+        ).join('');
+        
+        html += `
+          <tr>
+            <td style="font-family: monospace; font-size: 0.8rem;">${b.id.substring(0, 8)}...</td>
+            <td>${b.name}</td>
+            <td>${b.phone}</td>
+            <td>${b.tourPackage}</td>
+            <td>${b.date}</td>
+            <td><span class="status-badge status-${b.status}">${b.status}</span></td>
+            <td>
+              <select class="manager-select" onchange="assignManager('${b.id}', this.value)">
+                <option value="">Unassigned</option>
+                ${managerOptions}
+              </select>
+            </td>
+            <td>
+              ${b.status === 'pending' ? `<button class="action-btn confirm" onclick="updateStatus('${b.id}', 'confirmed')">Confirm</button>` : ''}
+              ${b.status === 'confirmed' ? `<button class="action-btn complete" onclick="updateStatus('${b.id}', 'completed')">Complete</button>` : ''}
+              ${b.status !== 'cancelled' && b.status !== 'completed' ? `<button class="action-btn cancel" onclick="updateStatus('${b.id}', 'cancelled')">Cancel</button>` : ''}
+            </td>
+          </tr>
+        `;
+      });
+      tbody.innerHTML = html;
+    }
+
+    async function updateStats() {
+      try {
+        const usersSnapshot = await getDocs(collection(db, 'users'));
+        document.getElementById('statUsers').textContent = usersSnapshot.size;
+      } catch (e) {
+        document.getElementById('statUsers').textContent = '0';
+      }
+      
+      document.getElementById('statBookings').textContent = allBookings.length;
+      document.getElementById('statPending').textContent = allBookings.filter(b => b.status === 'pending').length;
+      document.getElementById('statConfirmed').textContent = allBookings.filter(b => b.status === 'confirmed').length;
+    }
+
+    async function checkAdminAccess(uid) {
+      try {
+        const userDoc = await getDoc(doc(db, 'users', uid));
+        if (userDoc.exists()) {
+          const role = userDoc.data().role;
+          if (role === 'admin' || role === 'super_admin') {
+            return { allowed: true, role };
+          }
+        }
+      } catch (e) {}
+      return { allowed: false, role: null };
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+      document.getElementById('loader').classList.add('hidden');
+      
+      if (user) {
+        const { allowed, role } = await checkAdminAccess(user.uid);
+        
+        if (allowed) {
+          currentUser = user;
+          document.getElementById('adminPanel').classList.remove('hidden');
+          document.getElementById('roleBadge').textContent = role === 'super_admin' ? 'Super Admin' : 'Admin';
+          await loadManagers();
+          await loadBookings();
+        } else {
+          document.getElementById('accessDenied').classList.remove('hidden');
+        }
+      } else {
+        document.getElementById('loginModal').classList.remove('hidden');
+      }
+    });
+  </script>
+</body>
+</html>
