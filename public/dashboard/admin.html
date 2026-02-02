@@ -3,34 +3,57 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel - Baba Banarasi</title>
+  <title>Super Admin Panel - Baba Banarasi</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #667eea;
+      --primary-dark: #5a67d8;
+      --secondary: #764ba2;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --info: #3b82f6;
+      --dark: #1e293b;
+      --gray: #64748b;
+      --light: #f1f5f9;
+      --white: #ffffff;
+      --sidebar-width: 280px;
+      --sidebar-collapsed: 80px;
+    }
     body {
       font-family: 'Poppins', sans-serif;
-      background: #f1f5f9;
+      background: var(--light);
       min-height: 100vh;
     }
+    
+    /* Loader */
     .loader-overlay {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: #f1f5f9;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       z-index: 9999;
     }
     .loader {
-      width: 50px;
-      height: 50px;
-      border: 4px solid #e2e8f0;
-      border-top: 4px solid #667eea;
+      width: 60px;
+      height: 60px;
+      border: 4px solid rgba(255,255,255,0.3);
+      border-top: 4px solid white;
       border-radius: 50%;
       animation: spin 1s linear infinite;
+    }
+    .loader-text {
+      color: white;
+      margin-top: 1rem;
+      font-size: 1.1rem;
     }
     @keyframes spin {
       0% { transform: rotate(0deg); }
@@ -38,133 +61,231 @@
     }
     .hidden { display: none !important; }
     
-    /* Sidebar Styles */
+    /* Sidebar */
     .sidebar {
       position: fixed;
       left: 0;
       top: 0;
-      width: 260px;
+      width: var(--sidebar-width);
       height: 100vh;
-      background: linear-gradient(180deg, #1e293b, #334155);
+      background: linear-gradient(180deg, #0f172a, #1e293b);
       color: white;
-      padding: 1.5rem;
       z-index: 100;
       transition: all 0.3s;
       overflow-y: auto;
+      overflow-x: hidden;
+    }
+    .sidebar::-webkit-scrollbar { width: 6px; }
+    .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
+    
+    .sidebar-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
     .sidebar-logo {
+      width: 45px;
+      height: 45px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 12px;
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 2rem;
-      padding-bottom: 1.5rem;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+      justify-content: center;
+      font-size: 1.5rem;
     }
-    .sidebar-logo span { font-size: 28px; }
-    .sidebar-logo h2 { font-size: 1.2rem; font-weight: 600; }
-    .sidebar-nav { margin-bottom: 2rem; }
-    .sidebar-nav a {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 0.9rem 1rem;
-      color: rgba(255,255,255,0.7);
-      text-decoration: none;
-      border-radius: 10px;
-      margin-bottom: 0.4rem;
-      transition: all 0.3s;
-      font-size: 0.95rem;
+    .sidebar-brand h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
     }
-    .sidebar-nav a:hover, .sidebar-nav a.active {
-      background: rgba(255,255,255,0.1);
-      color: white;
+    .sidebar-brand p {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.5);
     }
-    .sidebar-nav a.active {
-      background: linear-gradient(135deg, #667eea, #764ba2);
+    
+    .sidebar-nav {
+      padding: 1rem 0;
+    }
+    .nav-section {
+      padding: 0 1rem;
+      margin-bottom: 0.5rem;
     }
     .nav-section-title {
       color: rgba(255,255,255,0.4);
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      margin: 1.5rem 0 0.8rem 0.5rem;
+      letter-spacing: 1.5px;
+      padding: 1rem 0.5rem 0.5rem;
     }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0.8rem 1rem;
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      border-radius: 10px;
+      margin-bottom: 0.3rem;
+      transition: all 0.3s;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .nav-item:hover {
+      background: rgba(255,255,255,0.1);
+      color: white;
+    }
+    .nav-item.active {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+    .nav-item .icon {
+      width: 22px;
+      text-align: center;
+    }
+    .nav-item .badge {
+      margin-left: auto;
+      background: var(--danger);
+      color: white;
+      padding: 0.15rem 0.5rem;
+      border-radius: 10px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+    
     .sidebar-footer {
-      position: absolute;
-      bottom: 1.5rem;
-      left: 1.5rem;
-      right: 1.5rem;
+      padding: 1rem 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      margin-top: auto;
     }
-    .sidebar-footer a {
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1rem;
+    }
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+    }
+    .user-details h4 {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    .user-details p {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.5);
+    }
+    .logout-btn {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      padding: 0.9rem 1rem;
+      width: 100%;
+      padding: 0.8rem;
+      background: rgba(239, 68, 68, 0.15);
       color: #ef4444;
-      text-decoration: none;
+      border: none;
       border-radius: 10px;
-      background: rgba(239, 68, 68, 0.1);
       cursor: pointer;
+      font-size: 0.9rem;
       transition: all 0.3s;
     }
-    .sidebar-footer a:hover {
-      background: rgba(239, 68, 68, 0.2);
+    .logout-btn:hover {
+      background: rgba(239, 68, 68, 0.25);
     }
     
     /* Main Content */
     .main-content {
-      margin-left: 260px;
-      padding: 2rem;
+      margin-left: var(--sidebar-width);
+      min-height: 100vh;
       transition: all 0.3s;
     }
-    .page-header {
+    
+    /* Top Header */
+    .top-header {
+      background: white;
+      padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 2rem;
-      flex-wrap: wrap;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
       gap: 1rem;
     }
-    .page-header h1 { 
-      color: #1e293b; 
-      font-size: 1.8rem;
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--dark);
+    }
+    .page-title h1 {
+      font-size: 1.5rem;
+      color: var(--dark);
+    }
+    .page-title p {
+      font-size: 0.85rem;
+      color: var(--gray);
     }
     .header-right {
       display: flex;
       align-items: center;
       gap: 1rem;
     }
-    .admin-badge {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
-      padding: 0.5rem 1.2rem;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      font-weight: 500;
-    }
-    .refresh-btn {
-      background: white;
-      border: 1px solid #e2e8f0;
-      padding: 0.5rem 1rem;
+    .header-btn {
+      background: var(--light);
+      border: none;
+      padding: 0.6rem 1rem;
       border-radius: 10px;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 6px;
-      color: #64748b;
+      color: var(--gray);
       transition: all 0.3s;
+      font-size: 0.9rem;
     }
-    .refresh-btn:hover {
-      background: #667eea;
+    .header-btn:hover {
+      background: var(--primary);
       color: white;
-      border-color: #667eea;
+    }
+    .notification-btn {
+      position: relative;
+    }
+    .notification-btn .dot {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 8px;
+      height: 8px;
+      background: var(--danger);
+      border-radius: 50%;
+    }
+    
+    /* Content Area */
+    .content-area {
+      padding: 2rem;
     }
     
     /* Stats Grid */
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 1.5rem;
       margin-bottom: 2rem;
     }
@@ -175,10 +296,11 @@
       box-shadow: 0 4px 20px rgba(0,0,0,0.05);
       position: relative;
       overflow: hidden;
-      transition: transform 0.3s;
+      transition: all 0.3s;
     }
     .stat-card:hover {
       transform: translateY(-5px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
     }
     .stat-card::before {
       content: '';
@@ -188,66 +310,86 @@
       width: 4px;
       height: 100%;
     }
-    .stat-card h3 {
-      color: #64748b;
-      font-size: 0.9rem;
-      font-weight: 500;
-      margin-bottom: 0.5rem;
+    .stat-card .stat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
     }
-    .stat-card .value {
-      font-size: 2.2rem;
-      font-weight: 700;
-      color: #1e293b;
+    .stat-card h3 {
+      color: var(--gray);
+      font-size: 0.85rem;
+      font-weight: 500;
     }
     .stat-card .stat-icon {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
+      width: 45px;
+      height: 45px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+    }
+    .stat-card .value {
       font-size: 2rem;
-      opacity: 0.3;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 0.3rem;
     }
-    .stat-card.primary::before { background: #667eea; }
-    .stat-card.primary .value { color: #667eea; }
-    .stat-card.success::before { background: #22c55e; }
-    .stat-card.success .value { color: #22c55e; }
-    .stat-card.warning::before { background: #f59e0b; }
-    .stat-card.warning .value { color: #f59e0b; }
-    .stat-card.info::before { background: #3b82f6; }
-    .stat-card.info .value { color: #3b82f6; }
-    .stat-card.danger::before { background: #ef4444; }
-    .stat-card.danger .value { color: #ef4444; }
-    
-    /* Content Section */
-    .content-section {
-      margin-bottom: 2rem;
+    .stat-card .trend {
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
+    .trend.up { color: var(--success); }
+    .trend.down { color: var(--danger); }
     
-    /* Data Table */
-    .data-table {
+    .stat-card.primary::before { background: var(--primary); }
+    .stat-card.primary .stat-icon { background: rgba(102,126,234,0.15); color: var(--primary); }
+    .stat-card.success::before { background: var(--success); }
+    .stat-card.success .stat-icon { background: rgba(34,197,94,0.15); color: var(--success); }
+    .stat-card.warning::before { background: var(--warning); }
+    .stat-card.warning .stat-icon { background: rgba(245,158,11,0.15); color: var(--warning); }
+    .stat-card.info::before { background: var(--info); }
+    .stat-card.info .stat-icon { background: rgba(59,130,246,0.15); color: var(--info); }
+    .stat-card.danger::before { background: var(--danger); }
+    .stat-card.danger .stat-icon { background: rgba(239,68,68,0.15); color: var(--danger); }
+    .stat-card.secondary::before { background: var(--secondary); }
+    .stat-card.secondary .stat-icon { background: rgba(118,75,162,0.15); color: var(--secondary); }
+    
+    /* Cards & Tables */
+    .card {
       background: white;
       border-radius: 16px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.05);
       overflow: hidden;
+      margin-bottom: 1.5rem;
     }
-    .table-header {
+    .card-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid #e2e8f0;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1.5rem;
-      border-bottom: 1px solid #e2e8f0;
       flex-wrap: wrap;
       gap: 1rem;
     }
-    .table-header h2 { 
-      color: #1e293b; 
+    .card-header h2 {
       font-size: 1.2rem;
+      color: var(--dark);
     }
-    .table-actions {
+    .card-body {
+      padding: 1.5rem;
+    }
+    .card-actions {
       display: flex;
-      gap: 1rem;
+      gap: 0.75rem;
       flex-wrap: wrap;
       align-items: center;
     }
+    
+    /* Search & Filter */
     .search-box {
       position: relative;
     }
@@ -256,127 +398,103 @@
       border: 1px solid #e2e8f0;
       border-radius: 10px;
       font-size: 0.9rem;
-      width: 250px;
+      width: 280px;
       transition: all 0.3s;
     }
     .search-box input:focus {
       outline: none;
-      border-color: #667eea;
+      border-color: var(--primary);
       box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
     }
-    .search-box::before {
-      content: '🔍';
+    .search-box .search-icon {
       position: absolute;
       left: 0.8rem;
       top: 50%;
       transform: translateY(-50%);
-      font-size: 0.9rem;
-    }
-    .filter-buttons { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-    .filter-btn {
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      background: #f1f5f9;
-      color: #64748b;
-      font-size: 0.85rem;
-      transition: all 0.3s;
-      font-weight: 500;
-    }
-    .filter-btn:hover, .filter-btn.active {
-      background: #667eea;
-      color: white;
+      color: var(--gray);
     }
     
-    .table-wrapper { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; min-width: 900px; }
+    .filter-group {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 0.5rem 1rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      background: white;
+      color: var(--gray);
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+    
+    /* Table */
+    .table-wrapper {
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 800px;
+    }
     th, td {
-      padding: 1rem 1.5rem;
+      padding: 1rem 1.25rem;
       text-align: left;
       border-bottom: 1px solid #e2e8f0;
     }
     th {
       background: #f8fafc;
-      color: #64748b;
+      color: var(--gray);
       font-weight: 600;
       font-size: 0.8rem;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
-    td { 
-      color: #1e293b; 
+    td {
+      color: var(--dark);
       font-size: 0.9rem;
     }
     tbody tr:hover {
       background: #f8fafc;
     }
     
-    .status-badge {
-      padding: 0.35rem 0.9rem;
+    /* Badges */
+    .badge {
+      padding: 0.35rem 0.8rem;
       border-radius: 20px;
       font-size: 0.75rem;
       font-weight: 600;
       text-transform: capitalize;
     }
-    .status-pending { background: #fef3c7; color: #92400e; }
-    .status-confirmed { background: #d1fae5; color: #065f46; }
-    .status-completed { background: #dbeafe; color: #1e40af; }
-    .status-cancelled { background: #fee2e2; color: #991b1b; }
+    .badge-pending { background: #fef3c7; color: #92400e; }
+    .badge-confirmed { background: #d1fae5; color: #065f46; }
+    .badge-completed { background: #dbeafe; color: #1e40af; }
+    .badge-cancelled { background: #fee2e2; color: #991b1b; }
+    .badge-user { background: #f1f5f9; color: #64748b; }
+    .badge-manager { background: #dbeafe; color: #1e40af; }
+    .badge-admin { background: #fef3c7; color: #92400e; }
+    .badge-super_admin { background: #f3e8ff; color: #7c3aed; }
+    .badge-active { background: #d1fae5; color: #065f46; }
+    .badge-inactive { background: #fee2e2; color: #991b1b; }
     
-    .action-btn {
-      padding: 0.4rem 0.7rem;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.85rem;
-      margin-right: 0.3rem;
-      transition: all 0.3s;
-    }
-    .action-btn.confirm { background: #d1fae5; color: #065f46; }
-    .action-btn.complete { background: #dbeafe; color: #1e40af; }
-    .action-btn.cancel { background: #fee2e2; color: #991b1b; }
-    .action-btn.view { background: #f3e8ff; color: #7c3aed; }
-    .action-btn.edit { background: #fef3c7; color: #92400e; }
-    .action-btn.delete { background: #fee2e2; color: #991b1b; }
-    .action-btn:hover { opacity: 0.8; transform: scale(1.05); }
-    
-    select.manager-select {
-      padding: 0.5rem;
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
-      font-size: 0.85rem;
-      max-width: 130px;
-      background: white;
-      cursor: pointer;
-    }
-    select.manager-select:focus {
-      outline: none;
-      border-color: #667eea;
-    }
-    
-    .no-data {
-      text-align: center;
-      padding: 3rem;
-      color: #64748b;
-    }
-    .no-data span {
-      font-size: 3rem;
-      display: block;
-      margin-bottom: 1rem;
-    }
-    
-    /* User Section */
-    .user-info {
+    /* User Cell */
+    .user-cell {
       display: flex;
       align-items: center;
       gap: 10px;
     }
-    .user-avatar {
-      width: 36px;
-      height: 36px;
+    .user-cell .avatar {
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #667eea, #764ba2);
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
       display: flex;
       align-items: center;
       justify-content: center;
@@ -384,27 +502,181 @@
       font-weight: 600;
       font-size: 0.85rem;
     }
-    .user-details h4 {
+    .user-cell .info h4 {
       font-size: 0.9rem;
-      color: #1e293b;
       font-weight: 500;
+      color: var(--dark);
     }
-    .user-details p {
+    .user-cell .info p {
       font-size: 0.75rem;
-      color: #64748b;
+      color: var(--gray);
     }
     
-    .role-badge {
-      padding: 0.3rem 0.7rem;
-      border-radius: 20px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      text-transform: uppercase;
+    /* Action Buttons */
+    .action-btn {
+      padding: 0.4rem 0.6rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
     }
-    .role-user { background: #f1f5f9; color: #64748b; }
-    .role-manager { background: #dbeafe; color: #1e40af; }
-    .role-admin { background: #fef3c7; color: #92400e; }
-    .role-super_admin { background: #f3e8ff; color: #7c3aed; }
+    .action-btn:hover {
+      transform: scale(1.05);
+    }
+    .btn-view { background: #f3e8ff; color: #7c3aed; }
+    .btn-edit { background: #fef3c7; color: #92400e; }
+    .btn-delete { background: #fee2e2; color: #991b1b; }
+    .btn-confirm { background: #d1fae5; color: #065f46; }
+    .btn-complete { background: #dbeafe; color: #1e40af; }
+    
+    /* Buttons */
+    .btn {
+      padding: 0.7rem 1.5rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+    }
+    .btn-secondary {
+      background: var(--light);
+      color: var(--gray);
+    }
+    .btn-success {
+      background: var(--success);
+      color: white;
+    }
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+    .btn-sm {
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+    }
+    
+    /* Form Styles */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--dark);
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      transition: all 0.3s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    .form-group textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+    .form-group .hint {
+      font-size: 0.75rem;
+      color: var(--gray);
+      margin-top: 0.3rem;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+    
+    /* Switch Toggle */
+    .switch-group {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem;
+      background: var(--light);
+      border-radius: 10px;
+      margin-bottom: 1rem;
+    }
+    .switch-info h4 {
+      font-size: 0.95rem;
+      color: var(--dark);
+      margin-bottom: 0.2rem;
+    }
+    .switch-info p {
+      font-size: 0.8rem;
+      color: var(--gray);
+    }
+    .switch {
+      position: relative;
+      width: 50px;
+      height: 26px;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #cbd5e1;
+      transition: 0.3s;
+      border-radius: 26px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background: white;
+      transition: 0.3s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background: var(--success);
+    }
+    input:checked + .slider:before {
+      transform: translateX(24px);
+    }
     
     /* Modal */
     .modal-overlay {
@@ -421,6 +693,7 @@
       opacity: 0;
       visibility: hidden;
       transition: all 0.3s;
+      padding: 1rem;
     }
     .modal-overlay.active {
       opacity: 1;
@@ -429,15 +702,15 @@
     .modal {
       background: white;
       border-radius: 16px;
-      width: 90%;
-      max-width: 500px;
+      width: 100%;
+      max-width: 600px;
       max-height: 90vh;
       overflow-y: auto;
-      transform: translateY(-20px);
+      transform: translateY(-20px) scale(0.95);
       transition: all 0.3s;
     }
     .modal-overlay.active .modal {
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
     }
     .modal-header {
       padding: 1.5rem;
@@ -447,15 +720,23 @@
       align-items: center;
     }
     .modal-header h3 {
-      color: #1e293b;
+      color: var(--dark);
       font-size: 1.2rem;
     }
     .modal-close {
-      background: none;
+      background: var(--light);
       border: none;
-      font-size: 1.5rem;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      font-size: 1.2rem;
       cursor: pointer;
-      color: #64748b;
+      color: var(--gray);
+      transition: all 0.3s;
+    }
+    .modal-close:hover {
+      background: var(--danger);
+      color: white;
     }
     .modal-body {
       padding: 1.5rem;
@@ -467,54 +748,188 @@
       justify-content: flex-end;
       gap: 1rem;
     }
-    .form-group {
-      margin-bottom: 1.2rem;
-    }
-    .form-group label {
-      display: block;
-      margin-bottom: 0.5rem;
-      color: #374151;
-      font-weight: 500;
-      font-size: 0.9rem;
-    }
-    .form-group input,
-    .form-group select {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      border: 1px solid #e2e8f0;
-      border-radius: 10px;
-      font-size: 0.95rem;
-      transition: all 0.3s;
-    }
-    .form-group input:focus,
-    .form-group select:focus {
-      outline: none;
-      border-color: #667eea;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-    }
-    .btn {
-      padding: 0.7rem 1.5rem;
-      border: none;
-      border-radius: 10px;
+    
+    /* Image Upload */
+    .image-upload-area {
+      border: 2px dashed #e2e8f0;
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
       cursor: pointer;
-      font-size: 0.9rem;
-      font-weight: 500;
       transition: all 0.3s;
+      background: #fafafa;
     }
-    .btn-primary {
-      background: linear-gradient(135deg, #667eea, #764ba2);
+    .image-upload-area:hover {
+      border-color: var(--primary);
+      background: rgba(102, 126, 234, 0.05);
+    }
+    .image-upload-area .icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .image-upload-area p {
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+    .image-upload-area span {
+      color: var(--primary);
+      font-weight: 500;
+    }
+    .image-preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .image-preview {
+      position: relative;
+      aspect-ratio: 1;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .image-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .image-preview .remove-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 24px;
+      height: 24px;
+      background: var(--danger);
       color: white;
-    }
-    .btn-secondary {
-      background: #f1f5f9;
-      color: #64748b;
-    }
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 0.8rem;
     }
     
-    /* Toast Notification */
+    /* Tab Content */
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.3s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Content Editor */
+    .content-editor {
+      background: var(--light);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .content-editor h3 {
+      color: var(--dark);
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    /* Package Card */
+    .package-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    .package-card {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      transition: all 0.3s;
+    }
+    .package-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    }
+    .package-card .image {
+      height: 180px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      color: white;
+      position: relative;
+    }
+    .package-card .image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .package-card .content {
+      padding: 1.5rem;
+    }
+    .package-card h3 {
+      font-size: 1.1rem;
+      color: var(--dark);
+      margin-bottom: 0.5rem;
+    }
+    .package-card .price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    .package-card p {
+      color: var(--gray);
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+    }
+    .package-card .actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    /* Settings Sections */
+    .settings-section {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+    .settings-section h3 {
+      color: var(--dark);
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    /* Color Picker */
+    .color-option {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .color-option input[type="color"] {
+      width: 50px;
+      height: 40px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .color-option label {
+      color: var(--dark);
+      font-weight: 500;
+    }
+    
+    /* Toast */
     .toast-container {
       position: fixed;
       top: 20px;
@@ -523,7 +938,7 @@
     }
     .toast {
       background: white;
-      border-radius: 10px;
+      border-radius: 12px;
       padding: 1rem 1.5rem;
       box-shadow: 0 10px 40px rgba(0,0,0,0.15);
       display: flex;
@@ -532,278 +947,865 @@
       margin-bottom: 10px;
       transform: translateX(120%);
       transition: all 0.3s;
+      min-width: 280px;
     }
     .toast.show {
       transform: translateX(0);
     }
-    .toast.success { border-left: 4px solid #22c55e; }
-    .toast.error { border-left: 4px solid #ef4444; }
-    .toast.info { border-left: 4px solid #3b82f6; }
+    .toast.success { border-left: 4px solid var(--success); }
+    .toast.error { border-left: 4px solid var(--danger); }
+    .toast.info { border-left: 4px solid var(--info); }
+    .toast.warning { border-left: 4px solid var(--warning); }
     
-    /* Tabs */
-    .tab-buttons {
-      display: flex;
-      gap: 0.5rem;
-      margin-bottom: 1.5rem;
-      flex-wrap: wrap;
-    }
-    .tab-btn {
-      padding: 0.7rem 1.5rem;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
+    /* Charts placeholder */
+    .chart-container {
       background: white;
-      color: #64748b;
-      font-size: 0.9rem;
-      font-weight: 500;
-      transition: all 0.3s;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    }
-    .tab-btn:hover {
-      color: #667eea;
-    }
-    .tab-btn.active {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
-    }
-    .tab-content {
-      display: none;
-    }
-    .tab-content.active {
-      display: block;
+      border-radius: 16px;
+      padding: 1.5rem;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
     }
     
-    /* Mobile Responsive */
+    /* Analytics Grid */
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    /* No Data */
+    .no-data {
+      text-align: center;
+      padding: 3rem;
+      color: var(--gray);
+    }
+    .no-data .icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+    .no-data p {
+      font-size: 1rem;
+    }
+    
+    /* Responsive */
     @media (max-width: 1024px) {
-      .sidebar { width: 80px; padding: 1rem 0.5rem; }
-      .sidebar-logo h2, .sidebar-nav span, .nav-section-title { display: none; }
-      .sidebar-logo { justify-content: center; }
-      .sidebar-nav a { justify-content: center; padding: 0.9rem; }
-      .sidebar-footer a span { display: none; }
-      .main-content { margin-left: 80px; }
+      .sidebar {
+        transform: translateX(-100%);
+      }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      .main-content {
+        margin-left: 0;
+      }
+      .menu-toggle {
+        display: block;
+      }
+      .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 99;
+        display: none;
+      }
+      .sidebar-overlay.show {
+        display: block;
+      }
     }
     
     @media (max-width: 768px) {
-      .sidebar { 
-        width: 100%; 
-        height: auto; 
-        position: relative; 
+      .content-area {
         padding: 1rem;
       }
-      .sidebar-logo h2, .sidebar-nav span, .nav-section-title { display: block; }
-      .sidebar-nav { 
-        display: flex; 
-        flex-wrap: wrap; 
-        gap: 0.5rem; 
-        margin-bottom: 1rem; 
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
       }
-      .sidebar-nav a { padding: 0.5rem 1rem; }
-      .sidebar-footer { 
-        position: relative; 
-        bottom: 0; 
-        left: 0; 
-        right: 0;
-        margin-top: 1rem;
+      .stat-card .value {
+        font-size: 1.5rem;
       }
-      .main-content { margin-left: 0; padding: 1rem; }
-      .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-      .stat-card .value { font-size: 1.5rem; }
-      .search-box input { width: 100%; }
-      .table-actions { width: 100%; }
+      .search-box input {
+        width: 100%;
+      }
+      .card-actions {
+        width: 100%;
+        flex-direction: column;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      .top-header {
+        padding: 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .header-right {
+        width: 100%;
+        justify-content: flex-end;
+      }
     }
     
     @media (max-width: 480px) {
-      .stats-grid { grid-template-columns: 1fr; }
-      .page-header h1 { font-size: 1.4rem; }
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      .page-title h1 {
+        font-size: 1.2rem;
+      }
+      .modal {
+        max-width: 100%;
+        margin: 0.5rem;
+      }
     }
   </style>
 </head>
 <body>
+  <!-- Loader -->
   <div class="loader-overlay" id="loader">
     <div class="loader"></div>
+    <p class="loader-text">Loading Admin Panel...</p>
   </div>
 
+  <!-- Toast Container -->
   <div class="toast-container" id="toastContainer"></div>
 
+  <!-- Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+  <!-- Admin Panel -->
   <div class="hidden" id="adminPanel">
-    <nav class="sidebar">
-      <div class="sidebar-logo">
-        <span>🛵</span>
-        <h2>Baba Banarasi</h2>
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">🛵</div>
+        <div class="sidebar-brand">
+          <h2>Baba Banarasi</h2>
+          <p>Super Admin Panel</p>
+        </div>
       </div>
+      
       <div class="sidebar-nav">
-        <a href="#" class="active" data-tab="dashboard"><span>📊</span> <span>Dashboard</span></a>
-        <a href="#" data-tab="bookings"><span>📋</span> <span>Bookings</span></a>
-        <a href="#" data-tab="users"><span>👥</span> <span>Users</span></a>
-        <div class="nav-section-title">Quick Links</div>
-        <a href="index.html"><span>🏠</span> <span>Main Site</span></a>
-        <a href="manager.html"><span>👔</span> <span>Manager Panel</span></a>
+        <div class="nav-section">
+          <div class="nav-section-title">Main</div>
+          <a class="nav-item active" data-tab="dashboard">
+            <span class="icon">📊</span>
+            <span>Dashboard</span>
+          </a>
+          <a class="nav-item" data-tab="bookings">
+            <span class="icon">📋</span>
+            <span>Bookings</span>
+            <span class="badge" id="pendingBadge">0</span>
+          </a>
+          <a class="nav-item" data-tab="users">
+            <span class="icon">👥</span>
+            <span>Users</span>
+          </a>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">Content</div>
+          <a class="nav-item" data-tab="content">
+            <span class="icon">📝</span>
+            <span>Content Manager</span>
+          </a>
+          <a class="nav-item" data-tab="packages">
+            <span class="icon">📦</span>
+            <span>Packages</span>
+          </a>
+          <a class="nav-item" data-tab="destinations">
+            <span class="icon">📍</span>
+            <span>Destinations</span>
+          </a>
+          <a class="nav-item" data-tab="media">
+            <span class="icon">🖼️</span>
+            <span>Media Manager</span>
+          </a>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">Analytics</div>
+          <a class="nav-item" data-tab="analytics">
+            <span class="icon">📈</span>
+            <span>Reports</span>
+          </a>
+          <a class="nav-item" data-tab="reviews">
+            <span class="icon">⭐</span>
+            <span>Reviews</span>
+          </a>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">System</div>
+          <a class="nav-item" data-tab="settings">
+            <span class="icon">⚙️</span>
+            <span>Settings</span>
+          </a>
+          <a class="nav-item" href="index.html">
+            <span class="icon">🏠</span>
+            <span>View Website</span>
+          </a>
+        </div>
       </div>
+      
       <div class="sidebar-footer">
-        <a onclick="logout()"><span>🚪</span> <span>Logout</span></a>
+        <div class="user-info">
+          <div class="user-avatar" id="userAvatar">A</div>
+          <div class="user-details">
+            <h4 id="userName">Admin</h4>
+            <p id="userRole">Super Admin</p>
+          </div>
+        </div>
+        <button class="logout-btn" onclick="logout()">
+          <span>🚪</span> Logout
+        </button>
       </div>
     </nav>
 
+    <!-- Main Content -->
     <main class="main-content">
-      <div class="page-header">
-        <h1 id="pageTitle">Dashboard</h1>
+      <!-- Top Header -->
+      <header class="top-header">
+        <div class="header-left">
+          <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+          <div class="page-title">
+            <h1 id="pageTitle">Dashboard</h1>
+            <p id="pageSubtitle">Overview of your business</p>
+          </div>
+        </div>
         <div class="header-right">
-          <button class="refresh-btn" onclick="refreshData()">
+          <button class="header-btn" onclick="refreshData()">
             <span>🔄</span> Refresh
           </button>
-          <span class="admin-badge" id="roleBadge">Admin</span>
+          <button class="header-btn notification-btn">
+            <span>🔔</span>
+            <span class="dot"></span>
+          </button>
         </div>
-      </div>
+      </header>
 
-      <!-- Dashboard Tab -->
-      <div class="tab-content active" id="dashboardTab">
-        <div class="stats-grid">
-          <div class="stat-card primary">
-            <span class="stat-icon">👥</span>
-            <h3>Total Users</h3>
-            <div class="value" id="statUsers">0</div>
-          </div>
-          <div class="stat-card success">
-            <span class="stat-icon">📋</span>
-            <h3>Total Bookings</h3>
-            <div class="value" id="statBookings">0</div>
-          </div>
-          <div class="stat-card warning">
-            <span class="stat-icon">⏳</span>
-            <h3>Pending</h3>
-            <div class="value" id="statPending">0</div>
-          </div>
-          <div class="stat-card info">
-            <span class="stat-icon">✅</span>
-            <h3>Confirmed</h3>
-            <div class="value" id="statConfirmed">0</div>
-          </div>
-          <div class="stat-card">
-            <span class="stat-icon">🎉</span>
-            <h3>Completed</h3>
-            <div class="value" id="statCompleted">0</div>
-          </div>
-          <div class="stat-card danger">
-            <span class="stat-icon">❌</span>
-            <h3>Cancelled</h3>
-            <div class="value" id="statCancelled">0</div>
-          </div>
-        </div>
-
-        <div class="data-table">
-          <div class="table-header">
-            <h2>Recent Bookings</h2>
-            <a href="#" data-tab="bookings" class="filter-btn" onclick="switchTab('bookings')">View All →</a>
-          </div>
-          <div class="table-wrapper">
-            <table>
-              <thead>
-                <tr>
-                  <th>Customer</th>
-                  <th>Package</th>
-                  <th>Date</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody id="recentBookingsTable">
-                <tr><td colspan="4" class="no-data">Loading...</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- Bookings Tab -->
-      <div class="tab-content" id="bookingsTab">
-        <div class="data-table">
-          <div class="table-header">
-            <h2>All Bookings</h2>
-            <div class="table-actions">
-              <div class="search-box">
-                <input type="text" id="bookingSearch" placeholder="Search bookings..." onkeyup="searchBookings()">
+      <!-- Content Area -->
+      <div class="content-area">
+        <!-- Dashboard Tab -->
+        <div class="tab-content active" id="dashboardTab">
+          <div class="stats-grid">
+            <div class="stat-card primary">
+              <div class="stat-header">
+                <div>
+                  <h3>Total Bookings</h3>
+                  <div class="value" id="statTotalBookings">0</div>
+                  <div class="trend up">↑ 12% from last month</div>
+                </div>
+                <div class="stat-icon">📋</div>
               </div>
-              <div class="filter-buttons">
-                <button class="filter-btn active" onclick="filterBookings('all')">All</button>
-                <button class="filter-btn" onclick="filterBookings('pending')">Pending</button>
-                <button class="filter-btn" onclick="filterBookings('confirmed')">Confirmed</button>
-                <button class="filter-btn" onclick="filterBookings('completed')">Completed</button>
-                <button class="filter-btn" onclick="filterBookings('cancelled')">Cancelled</button>
+            </div>
+            <div class="stat-card success">
+              <div class="stat-header">
+                <div>
+                  <h3>Today's Bookings</h3>
+                  <div class="value" id="statTodayBookings">0</div>
+                  <div class="trend up">↑ 5 new today</div>
+                </div>
+                <div class="stat-icon">📅</div>
+              </div>
+            </div>
+            <div class="stat-card warning">
+              <div class="stat-header">
+                <div>
+                  <h3>Pending</h3>
+                  <div class="value" id="statPending">0</div>
+                  <div class="trend">Needs attention</div>
+                </div>
+                <div class="stat-icon">⏳</div>
+              </div>
+            </div>
+            <div class="stat-card info">
+              <div class="stat-header">
+                <div>
+                  <h3>Total Users</h3>
+                  <div class="value" id="statUsers">0</div>
+                  <div class="trend up">↑ 8% growth</div>
+                </div>
+                <div class="stat-icon">👥</div>
+              </div>
+            </div>
+            <div class="stat-card secondary">
+              <div class="stat-header">
+                <div>
+                  <h3>Revenue</h3>
+                  <div class="value" id="statRevenue">₹0</div>
+                  <div class="trend up">↑ 15% increase</div>
+                </div>
+                <div class="stat-icon">💰</div>
+              </div>
+            </div>
+            <div class="stat-card danger">
+              <div class="stat-header">
+                <div>
+                  <h3>Cancelled</h3>
+                  <div class="value" id="statCancelled">0</div>
+                  <div class="trend down">↓ 3% reduced</div>
+                </div>
+                <div class="stat-icon">❌</div>
               </div>
             </div>
           </div>
-          <div class="table-wrapper">
-            <table>
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Customer</th>
-                  <th>Phone</th>
-                  <th>Package</th>
-                  <th>Date</th>
-                  <th>Status</th>
-                  <th>Assigned To</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="bookingsTable">
-                <tr><td colspan="8" class="no-data"><span>📋</span>Loading bookings...</td></tr>
-              </tbody>
-            </table>
+
+          <div class="analytics-grid">
+            <div class="card">
+              <div class="card-header">
+                <h2>Recent Bookings</h2>
+                <a class="btn btn-sm btn-secondary" onclick="switchTab('bookings')">View All →</a>
+              </div>
+              <div class="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Customer</th>
+                      <th>Package</th>
+                      <th>Date</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recentBookingsTable">
+                    <tr><td colspan="4" class="no-data">Loading...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            
+            <div class="card">
+              <div class="card-header">
+                <h2>Quick Stats</h2>
+              </div>
+              <div class="card-body">
+                <div class="switch-group">
+                  <div class="switch-info">
+                    <h4>Booking System</h4>
+                    <p>Enable/disable new bookings</p>
+                  </div>
+                  <label class="switch">
+                    <input type="checkbox" id="bookingEnabled" checked onchange="toggleBookingSystem()">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+                <div class="switch-group">
+                  <div class="switch-info">
+                    <h4>Maintenance Mode</h4>
+                    <p>Show maintenance page</p>
+                  </div>
+                  <label class="switch">
+                    <input type="checkbox" id="maintenanceMode" onchange="toggleMaintenanceMode()">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+                <div style="margin-top:1rem;">
+                  <h4 style="margin-bottom:0.5rem;">Popular Packages</h4>
+                  <div id="popularPackages">Loading...</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Users Tab -->
-      <div class="tab-content" id="usersTab">
-        <div class="data-table">
-          <div class="table-header">
-            <h2>User Management</h2>
-            <div class="table-actions">
-              <div class="search-box">
-                <input type="text" id="userSearch" placeholder="Search users..." onkeyup="searchUsers()">
+        <!-- Bookings Tab -->
+        <div class="tab-content" id="bookingsTab">
+          <div class="card">
+            <div class="card-header">
+              <h2>All Bookings</h2>
+              <div class="card-actions">
+                <div class="search-box">
+                  <span class="search-icon">🔍</span>
+                  <input type="text" id="bookingSearch" placeholder="Search bookings..." oninput="searchBookings()">
+                </div>
+                <div class="filter-group">
+                  <button class="filter-btn active" onclick="filterBookings('all', this)">All</button>
+                  <button class="filter-btn" onclick="filterBookings('pending', this)">Pending</button>
+                  <button class="filter-btn" onclick="filterBookings('confirmed', this)">Confirmed</button>
+                  <button class="filter-btn" onclick="filterBookings('completed', this)">Completed</button>
+                  <button class="filter-btn" onclick="filterBookings('cancelled', this)">Cancelled</button>
+                </div>
               </div>
-              <button class="btn btn-primary" onclick="openAddUserModal()" id="addUserBtn" style="display:none;">
-                + Add User
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Customer</th>
+                    <th>Phone</th>
+                    <th>Package</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Assigned</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="bookingsTable">
+                  <tr><td colspan="8" class="no-data"><span class="icon">📋</span><p>Loading bookings...</p></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Users Tab -->
+        <div class="tab-content" id="usersTab">
+          <div class="card">
+            <div class="card-header">
+              <h2>User Management</h2>
+              <div class="card-actions">
+                <div class="search-box">
+                  <span class="search-icon">🔍</span>
+                  <input type="text" id="userSearch" placeholder="Search users..." oninput="searchUsers()">
+                </div>
+                <button class="btn btn-primary" onclick="openAddUserModal()">
+                  <span>➕</span> Add Manager
+                </button>
+              </div>
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>User</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Joined</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="usersTable">
+                  <tr><td colspan="7" class="no-data"><span class="icon">👥</span><p>Loading users...</p></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Content Manager Tab -->
+        <div class="tab-content" id="contentTab">
+          <div class="card">
+            <div class="card-header">
+              <h2>Content Manager</h2>
+              <button class="btn btn-primary" onclick="saveAllContent()">
+                <span>💾</span> Save All Changes
               </button>
             </div>
+            <div class="card-body">
+              <!-- Hero Section -->
+              <div class="content-editor">
+                <h3>🏠 Hero Section</h3>
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label>Hero Title</label>
+                    <input type="text" id="heroTitle" placeholder="Enter hero title">
+                  </div>
+                  <div class="form-group">
+                    <label>Hero Subtitle</label>
+                    <input type="text" id="heroSubtitle" placeholder="Enter hero subtitle">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Hero Description</label>
+                  <textarea id="heroDescription" placeholder="Enter hero description"></textarea>
+                </div>
+                <div class="form-group">
+                  <label>CTA Button Text</label>
+                  <input type="text" id="heroCTA" placeholder="e.g., Book Now">
+                </div>
+              </div>
+
+              <!-- About Section -->
+              <div class="content-editor">
+                <h3>ℹ️ About Section</h3>
+                <div class="form-group">
+                  <label>About Title</label>
+                  <input type="text" id="aboutTitle" placeholder="Enter about title">
+                </div>
+                <div class="form-group">
+                  <label>About Description</label>
+                  <textarea id="aboutDescription" placeholder="Enter about description"></textarea>
+                </div>
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label>Years of Experience</label>
+                    <input type="number" id="aboutYears" placeholder="e.g., 10">
+                  </div>
+                  <div class="form-group">
+                    <label>Happy Customers</label>
+                    <input type="number" id="aboutCustomers" placeholder="e.g., 5000">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Contact Section -->
+              <div class="content-editor">
+                <h3>📞 Contact Information</h3>
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="contactPhone" placeholder="+91 XXXXX XXXXX">
+                  </div>
+                  <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="contactEmail" placeholder="info@example.com">
+                  </div>
+                  <div class="form-group">
+                    <label>WhatsApp Number</label>
+                    <input type="tel" id="contactWhatsApp" placeholder="+91 XXXXX XXXXX">
+                  </div>
+                  <div class="form-group">
+                    <label>Address</label>
+                    <input type="text" id="contactAddress" placeholder="Full address">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Terms & Policies -->
+              <div class="content-editor">
+                <h3>📜 Terms & Policies</h3>
+                <div class="form-group">
+                  <label>Terms & Conditions</label>
+                  <textarea id="termsConditions" placeholder="Enter terms and conditions" style="min-height:200px;"></textarea>
+                </div>
+                <div class="form-group">
+                  <label>Privacy Policy</label>
+                  <textarea id="privacyPolicy" placeholder="Enter privacy policy" style="min-height:200px;"></textarea>
+                </div>
+                <div class="form-group">
+                  <label>Refund Policy</label>
+                  <textarea id="refundPolicy" placeholder="Enter refund policy" style="min-height:200px;"></textarea>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="table-wrapper">
-            <table>
-              <thead>
-                <tr>
-                  <th>User</th>
-                  <th>Email</th>
-                  <th>Phone</th>
-                  <th>Role</th>
-                  <th>Joined</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="usersTable">
-                <tr><td colspan="6" class="no-data"><span>👥</span>Loading users...</td></tr>
-              </tbody>
-            </table>
+        </div>
+
+        <!-- Packages Tab -->
+        <div class="tab-content" id="packagesTab">
+          <div class="card">
+            <div class="card-header">
+              <h2>Tour Packages</h2>
+              <button class="btn btn-primary" onclick="openPackageModal()">
+                <span>➕</span> Add Package
+              </button>
+            </div>
+            <div class="card-body">
+              <div class="package-grid" id="packagesGrid">
+                <!-- Packages will be loaded here -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Destinations Tab -->
+        <div class="tab-content" id="destinationsTab">
+          <div class="card">
+            <div class="card-header">
+              <h2>Destinations & Locations</h2>
+              <button class="btn btn-primary" onclick="openDestinationModal()">
+                <span>➕</span> Add Destination
+              </button>
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Featured</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="destinationsTable">
+                  <tr><td colspan="6" class="no-data"><span class="icon">📍</span><p>Loading destinations...</p></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Media Manager Tab -->
+        <div class="tab-content" id="mediaTab">
+          <div class="card">
+            <div class="card-header">
+              <h2>Media Manager</h2>
+              <div class="card-actions">
+                <select id="mediaFolder" class="filter-btn" onchange="loadMediaFolder()">
+                  <option value="banners">Banners</option>
+                  <option value="packages">Package Images</option>
+                  <option value="gallery">Gallery</option>
+                  <option value="destinations">Destinations</option>
+                </select>
+                <button class="btn btn-primary" onclick="document.getElementById('mediaUpload').click()">
+                  <span>📤</span> Upload Images
+                </button>
+                <input type="file" id="mediaUpload" multiple accept="image/*" style="display:none;" onchange="uploadMedia(this.files)">
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="image-upload-area" onclick="document.getElementById('mediaUpload').click()">
+                <div class="icon">📤</div>
+                <p>Drag and drop images here or <span>browse</span></p>
+                <p style="font-size:0.8rem;margin-top:0.5rem;">Supports: JPG, PNG, WebP (Max 5MB)</p>
+              </div>
+              <div class="image-preview-grid" id="mediaGrid">
+                <!-- Media will be loaded here -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Analytics Tab -->
+        <div class="tab-content" id="analyticsTab">
+          <div class="stats-grid">
+            <div class="stat-card primary">
+              <div class="stat-header">
+                <div>
+                  <h3>Total Revenue</h3>
+                  <div class="value" id="analyticsRevenue">₹0</div>
+                  <div class="trend up">This month</div>
+                </div>
+                <div class="stat-icon">💰</div>
+              </div>
+            </div>
+            <div class="stat-card success">
+              <div class="stat-header">
+                <div>
+                  <h3>Conversion Rate</h3>
+                  <div class="value">24%</div>
+                  <div class="trend up">↑ 3% improvement</div>
+                </div>
+                <div class="stat-icon">📈</div>
+              </div>
+            </div>
+            <div class="stat-card info">
+              <div class="stat-header">
+                <div>
+                  <h3>Avg. Booking Value</h3>
+                  <div class="value">₹2,500</div>
+                  <div class="trend up">↑ 8% increase</div>
+                </div>
+                <div class="stat-icon">📊</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="analytics-grid">
+            <div class="card">
+              <div class="card-header">
+                <h2>Booking Trends</h2>
+              </div>
+              <div class="card-body">
+                <div class="chart-container">
+                  <p>📊 Chart visualization would go here<br><small>Integrate with Chart.js for actual charts</small></p>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                <h2>Popular Destinations</h2>
+              </div>
+              <div class="card-body">
+                <div id="popularDestinations">
+                  <!-- Will be populated dynamically -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h2>Booking Report</h2>
+              <div class="card-actions">
+                <input type="date" id="reportStartDate" class="filter-btn">
+                <input type="date" id="reportEndDate" class="filter-btn">
+                <button class="btn btn-primary btn-sm" onclick="generateReport()">Generate Report</button>
+                <button class="btn btn-secondary btn-sm" onclick="exportReport()">📥 Export CSV</button>
+              </div>
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Package</th>
+                    <th>Bookings</th>
+                    <th>Revenue</th>
+                    <th>Avg. Rating</th>
+                  </tr>
+                </thead>
+                <tbody id="reportTable">
+                  <tr><td colspan="4" class="no-data">Select date range to generate report</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reviews Tab -->
+        <div class="tab-content" id="reviewsTab">
+          <div class="card">
+            <div class="card-header">
+              <h2>Customer Reviews</h2>
+              <div class="filter-group">
+                <button class="filter-btn active" onclick="filterReviews('all', this)">All</button>
+                <button class="filter-btn" onclick="filterReviews('pending', this)">Pending</button>
+                <button class="filter-btn" onclick="filterReviews('approved', this)">Approved</button>
+              </div>
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Customer</th>
+                    <th>Package</th>
+                    <th>Rating</th>
+                    <th>Review</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="reviewsTable">
+                  <tr><td colspan="7" class="no-data"><span class="icon">⭐</span><p>Loading reviews...</p></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div class="tab-content" id="settingsTab">
+          <div class="settings-section">
+            <h3>⚙️ General Settings</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Website Name</label>
+                <input type="text" id="siteName" placeholder="Baba Banarasi">
+              </div>
+              <div class="form-group">
+                <label>Tagline</label>
+                <input type="text" id="siteTagline" placeholder="Explore Varanasi with us">
+              </div>
+            </div>
+            <div class="switch-group">
+              <div class="switch-info">
+                <h4>Enable Booking System</h4>
+                <p>Allow customers to make new bookings</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="settingsBookingEnabled" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="switch-group">
+              <div class="switch-info">
+                <h4>Show Prices</h4>
+                <p>Display prices on the website</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="settingsShowPrices" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="settings-section">
+            <h3>🎨 Theme Settings</h3>
+            <div class="color-option">
+              <input type="color" id="primaryColor" value="#667eea">
+              <label>Primary Color</label>
+            </div>
+            <div class="color-option">
+              <input type="color" id="secondaryColor" value="#764ba2">
+              <label>Secondary Color</label>
+            </div>
+            <div class="form-group">
+              <label>Logo URL</label>
+              <input type="text" id="logoUrl" placeholder="https://example.com/logo.png">
+            </div>
+          </div>
+
+          <div class="settings-section">
+            <h3>📱 Social Media</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Facebook URL</label>
+                <input type="url" id="socialFacebook" placeholder="https://facebook.com/...">
+              </div>
+              <div class="form-group">
+                <label>Instagram URL</label>
+                <input type="url" id="socialInstagram" placeholder="https://instagram.com/...">
+              </div>
+              <div class="form-group">
+                <label>Twitter URL</label>
+                <input type="url" id="socialTwitter" placeholder="https://twitter.com/...">
+              </div>
+              <div class="form-group">
+                <label>YouTube URL</label>
+                <input type="url" id="socialYoutube" placeholder="https://youtube.com/...">
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-section">
+            <h3>🔍 SEO Settings</h3>
+            <div class="form-group">
+              <label>Meta Title</label>
+              <input type="text" id="seoTitle" placeholder="Baba Banarasi - Best Varanasi Tours">
+            </div>
+            <div class="form-group">
+              <label>Meta Description</label>
+              <textarea id="seoDescription" placeholder="Explore the spiritual city of Varanasi with our guided scooter tours..."></textarea>
+            </div>
+            <div class="form-group">
+              <label>Keywords (comma separated)</label>
+              <input type="text" id="seoKeywords" placeholder="varanasi, tours, scooter, darshan, ganga aarti">
+            </div>
+          </div>
+
+          <div style="text-align:right;margin-top:1rem;">
+            <button class="btn btn-primary" onclick="saveSettings()">
+              <span>💾</span> Save All Settings
+            </button>
           </div>
         </div>
       </div>
     </main>
   </div>
 
-  <!-- User Role Modal -->
+  <!-- Modals -->
+  <!-- User Modal -->
   <div class="modal-overlay" id="userModal">
     <div class="modal">
       <div class="modal-header">
-        <h3 id="modalTitle">Edit User Role</h3>
-        <button class="modal-close" onclick="closeModal()">×</button>
+        <h3 id="userModalTitle">Edit User</h3>
+        <button class="modal-close" onclick="closeModal('userModal')">×</button>
       </div>
       <div class="modal-body">
         <div class="form-group">
-          <label>User Name</label>
-          <input type="text" id="modalUserName" disabled>
+          <label>Name</label>
+          <input type="text" id="modalUserName">
         </div>
         <div class="form-group">
           <label>Email</label>
-          <input type="email" id="modalUserEmail" disabled>
+          <input type="email" id="modalUserEmail">
+        </div>
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="tel" id="modalUserPhone">
         </div>
         <div class="form-group">
           <label>Role</label>
@@ -814,34 +1816,179 @@
             <option value="super_admin">Super Admin</option>
           </select>
         </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select id="modalUserStatus">
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-        <button class="btn btn-primary" onclick="saveUserRole()">Save Changes</button>
+        <button class="btn btn-secondary" onclick="closeModal('userModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="saveUser()">Save Changes</button>
       </div>
     </div>
   </div>
 
-  <!-- Booking Details Modal -->
+  <!-- Booking Modal -->
   <div class="modal-overlay" id="bookingModal">
     <div class="modal">
       <div class="modal-header">
         <h3>Booking Details</h3>
-        <button class="modal-close" onclick="closeBookingModal()">×</button>
+        <button class="modal-close" onclick="closeModal('bookingModal')">×</button>
       </div>
       <div class="modal-body" id="bookingModalBody">
-        <!-- Content will be populated dynamically -->
+        <!-- Content populated dynamically -->
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" onclick="closeBookingModal()">Close</button>
+        <button class="btn btn-secondary" onclick="closeModal('bookingModal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Package Modal -->
+  <div class="modal-overlay" id="packageModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="packageModalTitle">Add Package</h3>
+        <button class="modal-close" onclick="closeModal('packageModal')">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Package Name</label>
+          <input type="text" id="packageName" placeholder="e.g., Morning Ganga Darshan">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Price (₹)</label>
+            <input type="number" id="packagePrice" placeholder="1500">
+          </div>
+          <div class="form-group">
+            <label>Duration</label>
+            <input type="text" id="packageDuration" placeholder="e.g., 3 Hours">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="packageDescription" placeholder="Describe the package..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Inclusions (one per line)</label>
+          <textarea id="packageInclusions" placeholder="Scooter ride&#10;Guide service&#10;Ganga Aarti viewing"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Package Image</label>
+          <input type="file" id="packageImage" accept="image/*">
+        </div>
+        <div class="switch-group">
+          <div class="switch-info">
+            <h4>Featured Package</h4>
+            <p>Show on homepage</p>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="packageFeatured">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('packageModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="savePackage()">Save Package</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Destination Modal -->
+  <div class="modal-overlay" id="destinationModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="destinationModalTitle">Add Destination</h3>
+        <button class="modal-close" onclick="closeModal('destinationModal')">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Destination Name</label>
+          <input type="text" id="destName" placeholder="e.g., Kashi Vishwanath Temple">
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select id="destCategory">
+            <option value="temple">Temple</option>
+            <option value="ghat">Ghat</option>
+            <option value="heritage">Heritage</option>
+            <option value="market">Market</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="destDescription" placeholder="Describe the destination..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Best Time to Visit</label>
+          <input type="text" id="destBestTime" placeholder="e.g., Early morning, 5-7 AM">
+        </div>
+        <div class="form-group">
+          <label>Destination Image</label>
+          <input type="file" id="destImage" accept="image/*">
+        </div>
+        <div class="switch-group">
+          <div class="switch-info">
+            <h4>Featured Destination</h4>
+            <p>Show as top destination</p>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="destFeatured">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('destinationModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="saveDestination()">Save Destination</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Manager Modal -->
+  <div class="modal-overlay" id="addManagerModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Add New Manager</h3>
+        <button class="modal-close" onclick="closeModal('addManagerModal')">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="newManagerName" placeholder="Enter full name">
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="newManagerEmail" placeholder="manager@example.com">
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" id="newManagerPhone" placeholder="+91 XXXXX XXXXX">
+        </div>
+        <div class="form-group">
+          <label>Temporary Password</label>
+          <input type="password" id="newManagerPassword" placeholder="Min 6 characters">
+          <p class="hint">Manager should change this after first login</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('addManagerModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="createManager()">Create Manager</button>
       </div>
     </div>
   </div>
 
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-    import { getFirestore, collection, getDocs, query, orderBy, doc, updateDoc, getDoc, where, deleteDoc, limit } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+    import { getAuth, onAuthStateChanged, signOut, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+    import { getFirestore, collection, getDocs, query, orderBy, doc, updateDoc, getDoc, setDoc, deleteDoc, where, addDoc, limit as firestoreLimit } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+    import { getStorage, ref, uploadBytes, getDownloadURL, listAll, deleteObject } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
 
     const firebaseConfig = {
       apiKey: "AIzaSyCtyR68dG9TEI_C89PvsdrGmpkE6vCtV0s",
@@ -855,21 +2002,31 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
+    const storage = getStorage(app);
 
-    let allBookings = [];
-    let allUsers = [];
-    let managers = [];
-    let currentFilter = 'all';
+    // Global state
     let currentUser = null;
     let currentUserRole = null;
+    let allBookings = [];
+    let allUsers = [];
+    let allPackages = [];
+    let allDestinations = [];
+    let allReviews = [];
+    let managers = [];
+    let siteContent = {};
+    let siteSettings = {};
+    let currentFilter = 'all';
     let editingUserId = null;
+    let editingPackageId = null;
+    let editingDestinationId = null;
 
     // Toast notification
     window.showToast = function(message, type = 'info') {
       const container = document.getElementById('toastContainer');
       const toast = document.createElement('div');
       toast.className = `toast ${type}`;
-      toast.innerHTML = `<span>${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span> ${message}`;
+      const icons = { success: '✅', error: '❌', info: 'ℹ️', warning: '⚠️' };
+      toast.innerHTML = `<span>${icons[type]}</span> ${message}`;
       container.appendChild(toast);
       setTimeout(() => toast.classList.add('show'), 10);
       setTimeout(() => {
@@ -878,41 +2035,89 @@
       }, 3000);
     };
 
+    // Sidebar toggle
+    window.toggleSidebar = function() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('sidebarOverlay').classList.toggle('show');
+    };
+
     // Tab switching
     window.switchTab = function(tabName) {
       document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
       document.getElementById(tabName + 'Tab').classList.add('active');
       document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
-      const titles = { dashboard: 'Dashboard', bookings: 'Bookings', users: 'User Management' };
-      document.getElementById('pageTitle').textContent = titles[tabName];
+      
+      const titles = {
+        dashboard: { title: 'Dashboard', subtitle: 'Overview of your business' },
+        bookings: { title: 'Bookings', subtitle: 'Manage all bookings' },
+        users: { title: 'User Management', subtitle: 'Manage users and roles' },
+        content: { title: 'Content Manager', subtitle: 'Edit website content' },
+        packages: { title: 'Tour Packages', subtitle: 'Manage tour packages' },
+        destinations: { title: 'Destinations', subtitle: 'Manage locations' },
+        media: { title: 'Media Manager', subtitle: 'Manage images and files' },
+        analytics: { title: 'Analytics & Reports', subtitle: 'View insights' },
+        reviews: { title: 'Customer Reviews', subtitle: 'Manage testimonials' },
+        settings: { title: 'Settings', subtitle: 'Configure website' }
+      };
+      
+      document.getElementById('pageTitle').textContent = titles[tabName]?.title || tabName;
+      document.getElementById('pageSubtitle').textContent = titles[tabName]?.subtitle || '';
+      
+      // Close sidebar on mobile
+      if (window.innerWidth <= 1024) {
+        document.getElementById('sidebar').classList.remove('open');
+        document.getElementById('sidebarOverlay').classList.remove('show');
+      }
     };
 
-    // Set up tab clicks
-    document.querySelectorAll('.sidebar-nav a[data-tab]').forEach(link => {
+    // Set up nav clicks
+    document.querySelectorAll('.nav-item[data-tab]').forEach(link => {
       link.addEventListener('click', (e) => {
         e.preventDefault();
         switchTab(link.dataset.tab);
       });
     });
 
+    // Logout
     window.logout = async function() {
-      await signOut(auth);
-      window.location.href = 'login.html';
+      try {
+        await signOut(auth);
+        window.location.href = 'login.html';
+      } catch (error) {
+        showToast('Error logging out', 'error');
+      }
     };
 
+    // Refresh data
     window.refreshData = async function() {
       showToast('Refreshing data...', 'info');
-      await loadManagers();
-      await loadBookings();
-      await loadUsers();
+      await Promise.all([
+        loadBookings(),
+        loadUsers(),
+        loadPackages(),
+        loadDestinations(),
+        loadReviews(),
+        loadSiteContent(),
+        loadSettings()
+      ]);
       showToast('Data refreshed!', 'success');
     };
 
-    window.filterBookings = function(status) {
+    // Modal functions
+    window.closeModal = function(modalId) {
+      document.getElementById(modalId).classList.remove('active');
+    };
+
+    window.openModal = function(modalId) {
+      document.getElementById(modalId).classList.add('active');
+    };
+
+    // ============ BOOKINGS ============
+    window.filterBookings = function(status, btn) {
       currentFilter = status;
-      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
+      document.querySelectorAll('#bookingsTab .filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
       renderBookings();
     };
 
@@ -920,125 +2125,72 @@
       renderBookings();
     };
 
-    window.searchUsers = function() {
-      renderUsers();
+    window.viewBooking = function(id) {
+      const b = allBookings.find(x => x.id === id);
+      if (!b) return;
+      
+      const manager = managers.find(m => m.id === b.managerId);
+      document.getElementById('bookingModalBody').innerHTML = `
+        <div style="display:grid;gap:1rem;">
+          <div><strong>Booking ID:</strong> <code>${b.id}</code></div>
+          <div><strong>Customer:</strong> ${b.name}</div>
+          <div><strong>Phone:</strong> <a href="tel:${b.phone}">${b.phone}</a></div>
+          <div><strong>Email:</strong> ${b.email || 'N/A'}</div>
+          <div><strong>Package:</strong> ${b.tourPackage}</div>
+          <div><strong>Date:</strong> ${b.date}</div>
+          <div><strong>Time:</strong> ${b.time || 'N/A'}</div>
+          <div><strong>Persons:</strong> ${b.persons || 1}</div>
+          <div><strong>Status:</strong> <span class="badge badge-${b.status}">${b.status}</span></div>
+          <div><strong>Assigned To:</strong> ${manager ? manager.name || manager.email : 'Not assigned'}</div>
+          <div><strong>Created:</strong> ${b.createdAt ? new Date(b.createdAt).toLocaleString() : 'N/A'}</div>
+          ${b.notes ? `<div><strong>Notes:</strong> ${b.notes}</div>` : ''}
+          ${b.amount ? `<div><strong>Amount:</strong> ₹${b.amount}</div>` : ''}
+        </div>
+      `;
+      openModal('bookingModal');
     };
 
-    window.updateStatus = async function(bookingId, newStatus) {
+    window.updateBookingStatus = async function(id, status) {
       try {
-        await updateDoc(doc(db, 'bookings', bookingId), { 
-          status: newStatus,
-          updatedAt: new Date().toISOString()
+        await updateDoc(doc(db, 'bookings', id), { 
+          status, 
+          updatedAt: new Date().toISOString() 
         });
-        const booking = allBookings.find(b => b.id === bookingId);
-        if (booking) booking.status = newStatus;
+        const b = allBookings.find(x => x.id === id);
+        if (b) b.status = status;
         renderBookings();
         renderRecentBookings();
         updateStats();
-        showToast(`Booking ${newStatus} successfully!`, 'success');
+        showToast(`Booking ${status}!`, 'success');
       } catch (error) {
         showToast('Error: ' + error.message, 'error');
       }
     };
 
-    window.assignManager = async function(bookingId, managerId) {
+    window.deleteBooking = async function(id) {
+      if (!confirm('Are you sure you want to delete this booking?')) return;
+      try {
+        await deleteDoc(doc(db, 'bookings', id));
+        allBookings = allBookings.filter(b => b.id !== id);
+        renderBookings();
+        updateStats();
+        showToast('Booking deleted!', 'success');
+      } catch (error) {
+        showToast('Error: ' + error.message, 'error');
+      }
+    };
+
+    window.assignBooking = async function(bookingId, managerId) {
       try {
         await updateDoc(doc(db, 'bookings', bookingId), { 
           managerId: managerId || null,
           updatedAt: new Date().toISOString()
         });
-        showToast('Manager assigned successfully!', 'success');
+        showToast('Booking assigned!', 'success');
       } catch (error) {
         showToast('Error: ' + error.message, 'error');
       }
     };
-
-    window.viewBooking = function(bookingId) {
-      const booking = allBookings.find(b => b.id === bookingId);
-      if (!booking) return;
-      
-      const manager = managers.find(m => m.id === booking.managerId);
-      const modalBody = document.getElementById('bookingModalBody');
-      modalBody.innerHTML = `
-        <div style="display:grid;gap:1rem;">
-          <div><strong>Booking ID:</strong> ${booking.id}</div>
-          <div><strong>Customer:</strong> ${booking.name}</div>
-          <div><strong>Phone:</strong> ${booking.phone}</div>
-          <div><strong>Email:</strong> ${booking.email || 'N/A'}</div>
-          <div><strong>Package:</strong> ${booking.tourPackage}</div>
-          <div><strong>Date:</strong> ${booking.date}</div>
-          <div><strong>Time:</strong> ${booking.time || 'N/A'}</div>
-          <div><strong>Status:</strong> <span class="status-badge status-${booking.status}">${booking.status}</span></div>
-          <div><strong>Assigned To:</strong> ${manager ? manager.name || manager.email : 'Not assigned'}</div>
-          <div><strong>Created:</strong> ${booking.createdAt ? new Date(booking.createdAt).toLocaleString() : 'N/A'}</div>
-          ${booking.notes ? `<div><strong>Notes:</strong> ${booking.notes}</div>` : ''}
-        </div>
-      `;
-      document.getElementById('bookingModal').classList.add('active');
-    };
-
-    window.closeBookingModal = function() {
-      document.getElementById('bookingModal').classList.remove('active');
-    };
-
-    window.editUserRole = function(userId) {
-      const user = allUsers.find(u => u.id === userId);
-      if (!user) return;
-      
-      editingUserId = userId;
-      document.getElementById('modalUserName').value = user.name || 'N/A';
-      document.getElementById('modalUserEmail').value = user.email;
-      document.getElementById('modalUserRole').value = user.role || 'user';
-      document.getElementById('userModal').classList.add('active');
-    };
-
-    window.closeModal = function() {
-      document.getElementById('userModal').classList.remove('active');
-      editingUserId = null;
-    };
-
-    window.saveUserRole = async function() {
-      if (!editingUserId) return;
-      
-      const newRole = document.getElementById('modalUserRole').value;
-      
-      try {
-        await updateDoc(doc(db, 'users', editingUserId), { role: newRole });
-        const user = allUsers.find(u => u.id === editingUserId);
-        if (user) user.role = newRole;
-        renderUsers();
-        closeModal();
-        showToast('User role updated successfully!', 'success');
-        await loadManagers();
-      } catch (error) {
-        showToast('Error: ' + error.message, 'error');
-      }
-    };
-
-    window.deleteUser = async function(userId) {
-      if (!confirm('Are you sure you want to delete this user?')) return;
-      
-      try {
-        await deleteDoc(doc(db, 'users', userId));
-        allUsers = allUsers.filter(u => u.id !== userId);
-        renderUsers();
-        updateStats();
-        showToast('User deleted successfully!', 'success');
-      } catch (error) {
-        showToast('Error: ' + error.message, 'error');
-      }
-    };
-
-    async function loadManagers() {
-      try {
-        const q = query(collection(db, 'users'), where('role', 'in', ['manager', 'admin', 'super_admin']));
-        const snapshot = await getDocs(q);
-        managers = [];
-        snapshot.forEach(doc => managers.push({ id: doc.id, ...doc.data() }));
-      } catch (e) {
-        console.error('Error loading managers:', e);
-      }
-    }
 
     async function loadBookings() {
       try {
@@ -1050,75 +2202,63 @@
         renderRecentBookings();
         updateStats();
       } catch (error) {
-        document.getElementById('bookingsTable').innerHTML = '<tr><td colspan="8" class="no-data"><span>❌</span>Error loading bookings</td></tr>';
-      }
-    }
-
-    async function loadUsers() {
-      try {
-        const q = query(collection(db, 'users'), orderBy('createdAt', 'desc'));
-        const snapshot = await getDocs(q);
-        allUsers = [];
-        snapshot.forEach(doc => allUsers.push({ id: doc.id, ...doc.data() }));
-        renderUsers();
-      } catch (error) {
-        document.getElementById('usersTable').innerHTML = '<tr><td colspan="6" class="no-data"><span>❌</span>Error loading users</td></tr>';
+        console.error('Error loading bookings:', error);
       }
     }
 
     function renderBookings() {
       const tbody = document.getElementById('bookingsTable');
-      const searchTerm = document.getElementById('bookingSearch').value.toLowerCase();
+      const search = document.getElementById('bookingSearch').value.toLowerCase();
       
       let filtered = currentFilter === 'all' ? allBookings : allBookings.filter(b => b.status === currentFilter);
-      
-      if (searchTerm) {
+      if (search) {
         filtered = filtered.filter(b => 
-          b.name?.toLowerCase().includes(searchTerm) ||
-          b.phone?.includes(searchTerm) ||
-          b.tourPackage?.toLowerCase().includes(searchTerm)
+          b.name?.toLowerCase().includes(search) ||
+          b.phone?.includes(search) ||
+          b.tourPackage?.toLowerCase().includes(search) ||
+          b.id.toLowerCase().includes(search)
         );
       }
       
       if (filtered.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="8" class="no-data"><span>📋</span>No bookings found</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="8" class="no-data"><span class="icon">📋</span><p>No bookings found</p></td></tr>';
         return;
       }
       
-      let html = '';
-      filtered.forEach(b => {
+      tbody.innerHTML = filtered.map(b => {
         const opts = managers.map(m => `<option value="${m.id}" ${b.managerId === m.id ? 'selected' : ''}>${m.name || m.email}</option>`).join('');
-        html += `
+        return `
           <tr>
-            <td style="font-family:monospace;font-size:0.8rem;color:#64748b;">${b.id.substring(0,8)}...</td>
+            <td><code style="font-size:0.75rem;">${b.id.substring(0,8)}...</code></td>
             <td>
-              <div class="user-info">
-                <div class="user-avatar">${(b.name || 'U').charAt(0).toUpperCase()}</div>
-                <div class="user-details">
+              <div class="user-cell">
+                <div class="avatar">${(b.name || 'U').charAt(0).toUpperCase()}</div>
+                <div class="info">
                   <h4>${b.name}</h4>
+                  <p>${b.email || ''}</p>
                 </div>
               </div>
             </td>
             <td>${b.phone}</td>
             <td>${b.tourPackage}</td>
             <td>${b.date}</td>
-            <td><span class="status-badge status-${b.status}">${b.status}</span></td>
+            <td><span class="badge badge-${b.status}">${b.status}</span></td>
             <td>
-              <select class="manager-select" onchange="assignManager('${b.id}',this.value)">
+              <select class="filter-btn" style="font-size:0.8rem;padding:0.4rem;" onchange="assignBooking('${b.id}',this.value)">
                 <option value="">Not assigned</option>
                 ${opts}
               </select>
             </td>
             <td>
-              <button class="action-btn view" onclick="viewBooking('${b.id}')" title="View">👁️</button>
-              ${b.status === 'pending' ? `<button class="action-btn confirm" onclick="updateStatus('${b.id}','confirmed')" title="Confirm">✓</button>` : ''}
-              ${b.status === 'confirmed' ? `<button class="action-btn complete" onclick="updateStatus('${b.id}','completed')" title="Complete">✓✓</button>` : ''}
-              ${b.status !== 'cancelled' && b.status !== 'completed' ? `<button class="action-btn cancel" onclick="updateStatus('${b.id}','cancelled')" title="Cancel">✗</button>` : ''}
+              <button class="action-btn btn-view" onclick="viewBooking('${b.id}')" title="View">👁️</button>
+              ${b.status === 'pending' ? `<button class="action-btn btn-confirm" onclick="updateBookingStatus('${b.id}','confirmed')" title="Confirm">✓</button>` : ''}
+              ${b.status === 'confirmed' ? `<button class="action-btn btn-complete" onclick="updateBookingStatus('${b.id}','completed')" title="Complete">✓✓</button>` : ''}
+              ${b.status !== 'cancelled' && b.status !== 'completed' ? `<button class="action-btn btn-delete" onclick="updateBookingStatus('${b.id}','cancelled')" title="Cancel">✗</button>` : ''}
+              <button class="action-btn btn-delete" onclick="deleteBooking('${b.id}')" title="Delete">🗑️</button>
             </td>
           </tr>
         `;
-      });
-      tbody.innerHTML = html;
+      }).join('');
     }
 
     function renderRecentBookings() {
@@ -1130,93 +2270,760 @@
         return;
       }
       
-      let html = '';
-      recent.forEach(b => {
-        html += `
-          <tr>
-            <td>
-              <div class="user-info">
-                <div class="user-avatar">${(b.name || 'U').charAt(0).toUpperCase()}</div>
-                <div class="user-details">
-                  <h4>${b.name}</h4>
-                  <p>${b.phone}</p>
-                </div>
+      tbody.innerHTML = recent.map(b => `
+        <tr>
+          <td>
+            <div class="user-cell">
+              <div class="avatar">${(b.name || 'U').charAt(0).toUpperCase()}</div>
+              <div class="info">
+                <h4>${b.name}</h4>
+                <p>${b.phone}</p>
               </div>
-            </td>
-            <td>${b.tourPackage}</td>
-            <td>${b.date}</td>
-            <td><span class="status-badge status-${b.status}">${b.status}</span></td>
-          </tr>
-        `;
-      });
-      tbody.innerHTML = html;
+            </div>
+          </td>
+          <td>${b.tourPackage}</td>
+          <td>${b.date}</td>
+          <td><span class="badge badge-${b.status}">${b.status}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    // ============ USERS ============
+    window.searchUsers = function() {
+      renderUsers();
+    };
+
+    window.openAddUserModal = function() {
+      openModal('addManagerModal');
+    };
+
+    window.editUser = function(id) {
+      const u = allUsers.find(x => x.id === id);
+      if (!u) return;
+      
+      editingUserId = id;
+      document.getElementById('userModalTitle').textContent = 'Edit User';
+      document.getElementById('modalUserName').value = u.name || '';
+      document.getElementById('modalUserEmail').value = u.email || '';
+      document.getElementById('modalUserPhone').value = u.phone || '';
+      document.getElementById('modalUserRole').value = u.role || 'user';
+      document.getElementById('modalUserStatus').value = u.status || 'active';
+      openModal('userModal');
+    };
+
+    window.saveUser = async function() {
+      if (!editingUserId) return;
+      
+      const data = {
+        name: document.getElementById('modalUserName').value,
+        phone: document.getElementById('modalUserPhone').value,
+        role: document.getElementById('modalUserRole').value,
+        status: document.getElementById('modalUserStatus').value,
+        updatedAt: new Date().toISOString()
+      };
+      
+      try {
+        await updateDoc(doc(db, 'users', editingUserId), data);
+        const u = allUsers.find(x => x.id === editingUserId);
+        if (u) Object.assign(u, data);
+        renderUsers();
+        closeModal('userModal');
+        await loadManagers();
+        showToast('User updated!', 'success');
+      } catch (error) {
+        showToast('Error: ' + error.message, 'error');
+      }
+    };
+
+    window.disableUser = async function(id) {
+      const u = allUsers.find(x => x.id === id);
+      if (!u) return;
+      
+      const newStatus = u.status === 'active' ? 'inactive' : 'active';
+      try {
+        await updateDoc(doc(db, 'users', id), { status: newStatus });
+        u.status = newStatus;
+        renderUsers();
+        showToast(`User ${newStatus}!`, 'success');
+      } catch (error) {
+        showToast('Error: ' + error.message, 'error');
+      }
+    };
+
+    window.deleteUser = async function(id) {
+      if (!confirm('Are you sure you want to delete this user?')) return;
+      try {
+        await deleteDoc(doc(db, 'users', id));
+        allUsers = allUsers.filter(u => u.id !== id);
+        renderUsers();
+        updateStats();
+        showToast('User deleted!', 'success');
+      } catch (error) {
+        showToast('Error: ' + error.message, 'error');
+      }
+    };
+
+    window.createManager = async function() {
+      const name = document.getElementById('newManagerName').value;
+      const email = document.getElementById('newManagerEmail').value;
+      const phone = document.getElementById('newManagerPhone').value;
+      const password = document.getElementById('newManagerPassword').value;
+      
+      if (!name || !email || !password) {
+        showToast('Please fill all required fields', 'warning');
+        return;
+      }
+      
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await setDoc(doc(db, 'users', userCredential.user.uid), {
+          name,
+          email,
+          phone,
+          role: 'manager',
+          status: 'active',
+          createdAt: new Date().toISOString()
+        });
+        
+        closeModal('addManagerModal');
+        await loadUsers();
+        await loadManagers();
+        showToast('Manager created successfully!', 'success');
+        
+        // Clear form
+        document.getElementById('newManagerName').value = '';
+        document.getElementById('newManagerEmail').value = '';
+        document.getElementById('newManagerPhone').value = '';
+        document.getElementById('newManagerPassword').value = '';
+      } catch (error) {
+        showToast('Error: ' + error.message, 'error');
+      }
+    };
+
+    async function loadUsers() {
+      try {
+        const snapshot = await getDocs(collection(db, 'users'));
+        allUsers = [];
+        snapshot.forEach(doc => allUsers.push({ id: doc.id, ...doc.data() }));
+        renderUsers();
+      } catch (error) {
+        console.error('Error loading users:', error);
+      }
+    }
+
+    async function loadManagers() {
+      try {
+        const q = query(collection(db, 'users'), where('role', 'in', ['manager', 'admin', 'super_admin']));
+        const snapshot = await getDocs(q);
+        managers = [];
+        snapshot.forEach(doc => managers.push({ id: doc.id, ...doc.data() }));
+      } catch (error) {
+        console.error('Error loading managers:', error);
+      }
     }
 
     function renderUsers() {
       const tbody = document.getElementById('usersTable');
-      const searchTerm = document.getElementById('userSearch')?.value?.toLowerCase() || '';
+      const search = document.getElementById('userSearch')?.value?.toLowerCase() || '';
       
       let filtered = allUsers;
-      if (searchTerm) {
+      if (search) {
         filtered = filtered.filter(u => 
-          u.name?.toLowerCase().includes(searchTerm) ||
-          u.email?.toLowerCase().includes(searchTerm) ||
-          u.phone?.includes(searchTerm)
+          u.name?.toLowerCase().includes(search) ||
+          u.email?.toLowerCase().includes(search) ||
+          u.phone?.includes(search)
         );
       }
       
       if (filtered.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" class="no-data"><span>👥</span>No users found</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" class="no-data"><span class="icon">👥</span><p>No users found</p></td></tr>';
         return;
       }
       
-      let html = '';
-      filtered.forEach(u => {
+      tbody.innerHTML = filtered.map(u => {
         const role = u.role || 'user';
-        const joinDate = u.createdAt ? new Date(u.createdAt).toLocaleDateString() : 'N/A';
-        const canEdit = currentUserRole === 'super_admin' || (currentUserRole === 'admin' && role !== 'super_admin' && role !== 'admin');
+        const status = u.status || 'active';
+        const canEdit = currentUserRole === 'super_admin' || (currentUserRole === 'admin' && !['super_admin', 'admin'].includes(role));
         
-        html += `
+        return `
           <tr>
             <td>
-              <div class="user-info">
-                <div class="user-avatar">${(u.name || u.email || 'U').charAt(0).toUpperCase()}</div>
-                <div class="user-details">
+              <div class="user-cell">
+                <div class="avatar">${(u.name || u.email || 'U').charAt(0).toUpperCase()}</div>
+                <div class="info">
                   <h4>${u.name || 'No name'}</h4>
                 </div>
               </div>
             </td>
             <td>${u.email}</td>
             <td>${u.phone || 'N/A'}</td>
-            <td><span class="role-badge role-${role}">${role.replace('_', ' ')}</span></td>
-            <td>${joinDate}</td>
+            <td><span class="badge badge-${role}">${role.replace('_', ' ')}</span></td>
+            <td><span class="badge badge-${status}">${status}</span></td>
+            <td>${u.createdAt ? new Date(u.createdAt).toLocaleDateString() : 'N/A'}</td>
             <td>
               ${canEdit ? `
-                <button class="action-btn edit" onclick="editUserRole('${u.id}')" title="Edit Role">✏️</button>
+                <button class="action-btn btn-edit" onclick="editUser('${u.id}')" title="Edit">✏️</button>
+                <button class="action-btn btn-${status === 'active' ? 'delete' : 'confirm'}" onclick="disableUser('${u.id}')" title="${status === 'active' ? 'Disable' : 'Enable'}">
+                  ${status === 'active' ? '🚫' : '✓'}
+                </button>
               ` : ''}
-              ${currentUserRole === 'super_admin' && u.id !== currentUser.uid ? `
-                <button class="action-btn delete" onclick="deleteUser('${u.id}')" title="Delete">🗑️</button>
+              ${currentUserRole === 'super_admin' && u.id !== currentUser?.uid ? `
+                <button class="action-btn btn-delete" onclick="deleteUser('${u.id}')" title="Delete">🗑️</button>
               ` : ''}
             </td>
           </tr>
         `;
-      });
-      tbody.innerHTML = html;
+      }).join('');
     }
 
-    async function updateStats() {
-      document.getElementById('statUsers').textContent = allUsers.length;
-      document.getElementById('statBookings').textContent = allBookings.length;
+    // ============ PACKAGES ============
+    window.openPackageModal = function(id = null) {
+      editingPackageId = id;
+      if (id) {
+        const p = allPackages.find(x => x.id === id);
+        if (p) {
+          document.getElementById('packageModalTitle').textContent = 'Edit Package';
+          document.getElementById('packageName').value = p.name || '';
+          document.getElementById('packagePrice').value = p.price || '';
+          document.getElementById('packageDuration').value = p.duration || '';
+          document.getElementById('packageDescription').value = p.description || '';
+          document.getElementById('packageInclusions').value = (p.inclusions || []).join('\n');
+          document.getElementById('packageFeatured').checked = p.featured || false;
+        }
+      } else {
+        document.getElementById('packageModalTitle').textContent = 'Add Package';
+        document.getElementById('packageName').value = '';
+        document.getElementById('packagePrice').value = '';
+        document.getElementById('packageDuration').value = '';
+        document.getElementById('packageDescription').value = '';
+        document.getElementById('packageInclusions').value = '';
+        document.getElementById('packageFeatured').checked = false;
+      }
+      openModal('packageModal');
+    };
+
+    window.savePackage = async function() {
+      const data = {
+        name: document.getElementById('packageName').value,
+        price: parseInt(document.getElementById('packagePrice').value) || 0,
+        duration: document.getElementById('packageDuration').value,
+        description: document.getElementById('packageDescription').value,
+        inclusions: document.getElementById('packageInclusions').value.split('\n').filter(x => x.trim()),
+        featured: document.getElementById('packageFeatured').checked,
+        updatedAt: new Date().toISOString()
+      };
+      
+      try {
+        if (editingPackageId) {
+          await updateDoc(doc(db, 'packages', editingPackageId), data);
+          showToast('Package updated!', 'success');
+        } else {
+          data.createdAt = new Date().toISOString();
+          await addDoc(collection(db, 'packages'), data);
+          showToast('Package created!', 'success');
+        }
+        closeModal('packageModal');
+        await loadPackages();
+      } catch (error) {
+        showToast('Error: ' + error.message, 'error');
+      }
+    };
+
+    window.deletePackage = async function(id) {
+      if (!confirm('Are you sure you want to delete this package?')) return;
+      try {
+        await deleteDoc(doc(db, 'packages', id));
+        allPackages = allPackages.filter(p => p.id !== id);
+        renderPackages();
+        showToast('Package deleted!', 'success');
+      } catch (error) {
+        showToast('Error: ' + error.message, 'error');
+      }
+    };
+
+    async function loadPackages() {
+      try {
+        const snapshot = await getDocs(collection(db, 'packages'));
+        allPackages = [];
+        snapshot.forEach(doc => allPackages.push({ id: doc.id, ...doc.data() }));
+        renderPackages();
+      } catch (error) {
+        console.error('Error loading packages:', error);
+      }
+    }
+
+    function renderPackages() {
+      const grid = document.getElementById('packagesGrid');
+      
+      if (allPackages.length === 0) {
+        grid.innerHTML = '<div class="no-data"><span class="icon">📦</span><p>No packages yet. Click "Add Package" to create one.</p></div>';
+        return;
+      }
+      
+      grid.innerHTML = allPackages.map(p => `
+        <div class="package-card">
+          <div class="image">
+            ${p.imageUrl ? `<img src="${p.imageUrl}" alt="${p.name}">` : '🛵'}
+          </div>
+          <div class="content">
+            <h3>${p.name}</h3>
+            <div class="price">₹${p.price}</div>
+            <p>${p.duration} • ${p.description?.substring(0, 80)}...</p>
+            <div class="actions">
+              <button class="btn btn-sm btn-secondary" onclick="openPackageModal('${p.id}')">✏️ Edit</button>
+              <button class="btn btn-sm btn-danger" onclick="deletePackage('${p.id}')">🗑️ Delete</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ============ DESTINATIONS ============
+    window.openDestinationModal = function(id = null) {
+      editingDestinationId = id;
+      if (id) {
+        const d = allDestinations.find(x => x.id === id);
+        if (d) {
+          document.getElementById('destinationModalTitle').textContent = 'Edit Destination';
+          document.getElementById('destName').value = d.name || '';
+          document.getElementById('destCategory').value = d.category || 'temple';
+          document.getElementById('destDescription').value = d.description || '';
+          document.getElementById('destBestTime').value = d.bestTime || '';
+          document.getElementById('destFeatured').checked = d.featured || false;
+        }
+      } else {
+        document.getElementById('destinationModalTitle').textContent = 'Add Destination';
+        document.getElementById('destName').value = '';
+        document.getElementById('destCategory').value = 'temple';
+        document.getElementById('destDescription').value = '';
+        document.getElementById('destBestTime').value = '';
+        document.getElementById('destFeatured').checked = false;
+      }
+      openModal('destinationModal');
+    };
+
+    window.saveDestination = async function() {
+      const data = {
+        name: document.getElementById('destName').value,
+        category: document.getElementById('destCategory').value,
+        description: document.getElementById('destDescription').value,
+        bestTime: document.getElementById('destBestTime').value,
+        featured: document.getElementById('destFeatured').checked,
+        status: 'active',
+        updatedAt: new Date().toISOString()
+      };
+      
+      try {
+        if (editingDestinationId) {
+          await updateDoc(doc(db, 'destinations', editingDestinationId), data);
+          showToast('Destination updated!', 'success');
+        } else {
+          data.createdAt = new Date().toISOString();
+          await addDoc(collection(db, 'destinations'), data);
+          showToast('Destination created!', 'success');
+        }
+        closeModal('destinationModal');
+        await loadDestinations();
+      } catch (error) {
+        showToast('Error: ' + error.message, 'error');
+      }
+    };
+
+    window.deleteDestination = async function(id) {
+      if (!confirm('Delete this destination?')) return;
+      try {
+        await deleteDoc(doc(db, 'destinations', id));
+        allDestinations = allDestinations.filter(d => d.id !== id);
+        renderDestinations();
+        showToast('Destination deleted!', 'success');
+      } catch (error) {
+        showToast('Error: ' + error.message, 'error');
+      }
+    };
+
+    window.toggleDestinationFeatured = async function(id) {
+      const d = allDestinations.find(x => x.id === id);
+      if (!d) return;
+      try {
+        await updateDoc(doc(db, 'destinations', id), { featured: !d.featured });
+        d.featured = !d.featured;
+        renderDestinations();
+        showToast('Updated!', 'success');
+      } catch (error) {
+        showToast('Error: ' + error.message, 'error');
+      }
+    };
+
+    async function loadDestinations() {
+      try {
+        const snapshot = await getDocs(collection(db, 'destinations'));
+        allDestinations = [];
+        snapshot.forEach(doc => allDestinations.push({ id: doc.id, ...doc.data() }));
+        renderDestinations();
+      } catch (error) {
+        console.error('Error loading destinations:', error);
+      }
+    }
+
+    function renderDestinations() {
+      const tbody = document.getElementById('destinationsTable');
+      
+      if (allDestinations.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="no-data"><span class="icon">📍</span><p>No destinations yet</p></td></tr>';
+        return;
+      }
+      
+      tbody.innerHTML = allDestinations.map(d => `
+        <tr>
+          <td>
+            <div style="width:60px;height:60px;border-radius:8px;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;color:white;font-size:1.5rem;">
+              ${d.imageUrl ? `<img src="${d.imageUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">` : '📍'}
+            </div>
+          </td>
+          <td><strong>${d.name}</strong></td>
+          <td><span class="badge badge-${d.category}">${d.category}</span></td>
+          <td>
+            <button class="action-btn ${d.featured ? 'btn-confirm' : 'btn-view'}" onclick="toggleDestinationFeatured('${d.id}')">
+              ${d.featured ? '⭐ Featured' : '☆ Feature'}
+            </button>
+          </td>
+          <td><span class="badge badge-${d.status || 'active'}">${d.status || 'active'}</span></td>
+          <td>
+            <button class="action-btn btn-edit" onclick="openDestinationModal('${d.id}')">✏️</button>
+            <button class="action-btn btn-delete" onclick="deleteDestination('${d.id}')">🗑️</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // ============ CONTENT MANAGER ============
+    async function loadSiteContent() {
+      try {
+        const homeDoc = await getDoc(doc(db, 'site_content', 'home'));
+        if (homeDoc.exists()) {
+          siteContent = homeDoc.data();
+          document.getElementById('heroTitle').value = siteContent.heroTitle || '';
+          document.getElementById('heroSubtitle').value = siteContent.heroSubtitle || '';
+          document.getElementById('heroDescription').value = siteContent.heroDescription || '';
+          document.getElementById('heroCTA').value = siteContent.heroCTA || '';
+          document.getElementById('aboutTitle').value = siteContent.aboutTitle || '';
+          document.getElementById('aboutDescription').value = siteContent.aboutDescription || '';
+          document.getElementById('aboutYears').value = siteContent.aboutYears || '';
+          document.getElementById('aboutCustomers').value = siteContent.aboutCustomers || '';
+          document.getElementById('contactPhone').value = siteContent.contactPhone || '';
+          document.getElementById('contactEmail').value = siteContent.contactEmail || '';
+          document.getElementById('contactWhatsApp').value = siteContent.contactWhatsApp || '';
+          document.getElementById('contactAddress').value = siteContent.contactAddress || '';
+          document.getElementById('termsConditions').value = siteContent.termsConditions || '';
+          document.getElementById('privacyPolicy').value = siteContent.privacyPolicy || '';
+          document.getElementById('refundPolicy').value = siteContent.refundPolicy || '';
+        }
+      } catch (error) {
+        console.error('Error loading content:', error);
+      }
+    }
+
+    window.saveAllContent = async function() {
+      const content = {
+        heroTitle: document.getElementById('heroTitle').value,
+        heroSubtitle: document.getElementById('heroSubtitle').value,
+        heroDescription: document.getElementById('heroDescription').value,
+        heroCTA: document.getElementById('heroCTA').value,
+        aboutTitle: document.getElementById('aboutTitle').value,
+        aboutDescription: document.getElementById('aboutDescription').value,
+        aboutYears: parseInt(document.getElementById('aboutYears').value) || 0,
+        aboutCustomers: parseInt(document.getElementById('aboutCustomers').value) || 0,
+        contactPhone: document.getElementById('contactPhone').value,
+        contactEmail: document.getElementById('contactEmail').value,
+        contactWhatsApp: document.getElementById('contactWhatsApp').value,
+        contactAddress: document.getElementById('contactAddress').value,
+        termsConditions: document.getElementById('termsConditions').value,
+        privacyPolicy: document.getElementById('privacyPolicy').value,
+        refundPolicy: document.getElementById('refundPolicy').value,
+        updatedAt: new Date().toISOString()
+      };
+      
+      try {
+        await setDoc(doc(db, 'site_content', 'home'), content);
+        showToast('Content saved successfully!', 'success');
+      } catch (error) {
+        showToast('Error: ' + error.message, 'error');
+      }
+    };
+
+    // ============ SETTINGS ============
+    async function loadSettings() {
+      try {
+        const settingsDoc = await getDoc(doc(db, 'settings', 'general'));
+        if (settingsDoc.exists()) {
+          siteSettings = settingsDoc.data();
+          document.getElementById('siteName').value = siteSettings.siteName || '';
+          document.getElementById('siteTagline').value = siteSettings.siteTagline || '';
+          document.getElementById('settingsBookingEnabled').checked = siteSettings.bookingEnabled !== false;
+          document.getElementById('settingsShowPrices').checked = siteSettings.showPrices !== false;
+          document.getElementById('primaryColor').value = siteSettings.primaryColor || '#667eea';
+          document.getElementById('secondaryColor').value = siteSettings.secondaryColor || '#764ba2';
+          document.getElementById('logoUrl').value = siteSettings.logoUrl || '';
+          document.getElementById('socialFacebook').value = siteSettings.socialFacebook || '';
+          document.getElementById('socialInstagram').value = siteSettings.socialInstagram || '';
+          document.getElementById('socialTwitter').value = siteSettings.socialTwitter || '';
+          document.getElementById('socialYoutube').value = siteSettings.socialYoutube || '';
+          document.getElementById('seoTitle').value = siteSettings.seoTitle || '';
+          document.getElementById('seoDescription').value = siteSettings.seoDescription || '';
+          document.getElementById('seoKeywords').value = siteSettings.seoKeywords || '';
+          
+          document.getElementById('bookingEnabled').checked = siteSettings.bookingEnabled !== false;
+          document.getElementById('maintenanceMode').checked = siteSettings.maintenanceMode || false;
+        }
+      } catch (error) {
+        console.error('Error loading settings:', error);
+      }
+    }
+
+    window.saveSettings = async function() {
+      const settings = {
+        siteName: document.getElementById('siteName').value,
+        siteTagline: document.getElementById('siteTagline').value,
+        bookingEnabled: document.getElementById('settingsBookingEnabled').checked,
+        showPrices: document.getElementById('settingsShowPrices').checked,
+        primaryColor: document.getElementById('primaryColor').value,
+        secondaryColor: document.getElementById('secondaryColor').value,
+        logoUrl: document.getElementById('logoUrl').value,
+        socialFacebook: document.getElementById('socialFacebook').value,
+        socialInstagram: document.getElementById('socialInstagram').value,
+        socialTwitter: document.getElementById('socialTwitter').value,
+        socialYoutube: document.getElementById('socialYoutube').value,
+        seoTitle: document.getElementById('seoTitle').value,
+        seoDescription: document.getElementById('seoDescription').value,
+        seoKeywords: document.getElementById('seoKeywords').value,
+        updatedAt: new Date().toISOString()
+      };
+      
+      try {
+        await setDoc(doc(db, 'settings', 'general'), settings);
+        showToast('Settings saved!', 'success');
+      } catch (error) {
+        showToast('Error: ' + error.message, 'error');
+      }
+    };
+
+    window.toggleBookingSystem = async function() {
+      const enabled = document.getElementById('bookingEnabled').checked;
+      try {
+        await updateDoc(doc(db, 'settings', 'general'), { bookingEnabled: enabled });
+        showToast(`Booking system ${enabled ? 'enabled' : 'disabled'}!`, enabled ? 'success' : 'warning');
+      } catch (error) {
+        showToast('Error: ' + error.message, 'error');
+      }
+    };
+
+    window.toggleMaintenanceMode = async function() {
+      const enabled = document.getElementById('maintenanceMode').checked;
+      try {
+        await updateDoc(doc(db, 'settings', 'general'), { maintenanceMode: enabled });
+        showToast(`Maintenance mode ${enabled ? 'enabled' : 'disabled'}!`, enabled ? 'warning' : 'success');
+      } catch (error) {
+        showToast('Error: ' + error.message, 'error');
+      }
+    };
+
+    // ============ MEDIA MANAGER ============
+    window.loadMediaFolder = async function() {
+      const folder = document.getElementById('mediaFolder').value;
+      const grid = document.getElementById('mediaGrid');
+      grid.innerHTML = '<div class="no-data">Loading...</div>';
+      
+      try {
+        const folderRef = ref(storage, folder);
+        const result = await listAll(folderRef);
+        
+        if (result.items.length === 0) {
+          grid.innerHTML = '<div class="no-data"><span class="icon">🖼️</span><p>No images in this folder</p></div>';
+          return;
+        }
+        
+        const urls = await Promise.all(result.items.map(async item => ({
+          name: item.name,
+          url: await getDownloadURL(item),
+          ref: item
+        })));
+        
+        grid.innerHTML = urls.map(img => `
+          <div class="image-preview">
+            <img src="${img.url}" alt="${img.name}">
+            <button class="remove-btn" onclick="deleteMedia('${img.name}')">×</button>
+          </div>
+        `).join('');
+      } catch (error) {
+        grid.innerHTML = `<div class="no-data"><span class="icon">❌</span><p>Error loading media</p></div>`;
+      }
+    };
+
+    window.uploadMedia = async function(files) {
+      if (!files.length) return;
+      
+      const folder = document.getElementById('mediaFolder').value;
+      showToast('Uploading...', 'info');
+      
+      try {
+        for (const file of files) {
+          const storageRef = ref(storage, `${folder}/${Date.now()}_${file.name}`);
+          await uploadBytes(storageRef, file);
+        }
+        showToast('Upload complete!', 'success');
+        loadMediaFolder();
+      } catch (error) {
+        showToast('Error: ' + error.message, 'error');
+      }
+    };
+
+    window.deleteMedia = async function(name) {
+      if (!confirm('Delete this image?')) return;
+      
+      const folder = document.getElementById('mediaFolder').value;
+      try {
+        const imgRef = ref(storage, `${folder}/${name}`);
+        await deleteObject(imgRef);
+        showToast('Image deleted!', 'success');
+        loadMediaFolder();
+      } catch (error) {
+        showToast('Error: ' + error.message, 'error');
+      }
+    };
+
+    // ============ REVIEWS ============
+    window.filterReviews = function(status, btn) {
+      document.querySelectorAll('#reviewsTab .filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderReviews(status);
+    };
+
+    window.approveReview = async function(id) {
+      try {
+        await updateDoc(doc(db, 'reviews', id), { status: 'approved' });
+        const r = allReviews.find(x => x.id === id);
+        if (r) r.status = 'approved';
+        renderReviews();
+        showToast('Review approved!', 'success');
+      } catch (error) {
+        showToast('Error: ' + error.message, 'error');
+      }
+    };
+
+    window.deleteReview = async function(id) {
+      if (!confirm('Delete this review?')) return;
+      try {
+        await deleteDoc(doc(db, 'reviews', id));
+        allReviews = allReviews.filter(r => r.id !== id);
+        renderReviews();
+        showToast('Review deleted!', 'success');
+      } catch (error) {
+        showToast('Error: ' + error.message, 'error');
+      }
+    };
+
+    async function loadReviews() {
+      try {
+        const snapshot = await getDocs(collection(db, 'reviews'));
+        allReviews = [];
+        snapshot.forEach(doc => allReviews.push({ id: doc.id, ...doc.data() }));
+        renderReviews();
+      } catch (error) {
+        console.error('Error loading reviews:', error);
+      }
+    }
+
+    function renderReviews(filterStatus = 'all') {
+      const tbody = document.getElementById('reviewsTable');
+      let filtered = filterStatus === 'all' ? allReviews : allReviews.filter(r => r.status === filterStatus);
+      
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="no-data"><span class="icon">⭐</span><p>No reviews found</p></td></tr>';
+        return;
+      }
+      
+      tbody.innerHTML = filtered.map(r => `
+        <tr>
+          <td>
+            <div class="user-cell">
+              <div class="avatar">${(r.name || 'U').charAt(0).toUpperCase()}</div>
+              <div class="info">
+                <h4>${r.name || 'Anonymous'}</h4>
+              </div>
+            </div>
+          </td>
+          <td>${r.package || 'N/A'}</td>
+          <td>${'⭐'.repeat(r.rating || 5)}</td>
+          <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;">${r.review || ''}</td>
+          <td>${r.createdAt ? new Date(r.createdAt).toLocaleDateString() : 'N/A'}</td>
+          <td><span class="badge badge-${r.status || 'pending'}">${r.status || 'pending'}</span></td>
+          <td>
+            ${r.status !== 'approved' ? `<button class="action-btn btn-confirm" onclick="approveReview('${r.id}')">✓</button>` : ''}
+            <button class="action-btn btn-delete" onclick="deleteReview('${r.id}')">🗑️</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // ============ ANALYTICS ============
+    window.generateReport = function() {
+      // Placeholder for report generation
+      showToast('Report generation would go here', 'info');
+    };
+
+    window.exportReport = function() {
+      // Simple CSV export
+      const headers = ['ID', 'Customer', 'Phone', 'Package', 'Date', 'Status'];
+      const rows = allBookings.map(b => [b.id, b.name, b.phone, b.tourPackage, b.date, b.status]);
+      const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
+      
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `bookings_${new Date().toISOString().split('T')[0]}.csv`;
+      a.click();
+      showToast('CSV exported!', 'success');
+    };
+
+    // ============ STATS ============
+    function updateStats() {
+      const today = new Date().toISOString().split('T')[0];
+      const todayBookings = allBookings.filter(b => b.date === today || (b.createdAt && b.createdAt.startsWith(today)));
+      
+      document.getElementById('statTotalBookings').textContent = allBookings.length;
+      document.getElementById('statTodayBookings').textContent = todayBookings.length;
       document.getElementById('statPending').textContent = allBookings.filter(b => b.status === 'pending').length;
-      document.getElementById('statConfirmed').textContent = allBookings.filter(b => b.status === 'confirmed').length;
-      document.getElementById('statCompleted').textContent = allBookings.filter(b => b.status === 'completed').length;
+      document.getElementById('statUsers').textContent = allUsers.length;
       document.getElementById('statCancelled').textContent = allBookings.filter(b => b.status === 'cancelled').length;
+      document.getElementById('pendingBadge').textContent = allBookings.filter(b => b.status === 'pending').length;
+      
+      // Revenue calculation
+      const revenue = allBookings
+        .filter(b => b.status === 'completed')
+        .reduce((sum, b) => sum + (b.amount || 0), 0);
+      document.getElementById('statRevenue').textContent = `₹${revenue.toLocaleString()}`;
+      document.getElementById('analyticsRevenue').textContent = `₹${revenue.toLocaleString()}`;
+      
+      // Popular packages
+      const packageCounts = {};
+      allBookings.forEach(b => {
+        packageCounts[b.tourPackage] = (packageCounts[b.tourPackage] || 0) + 1;
+      });
+      const sorted = Object.entries(packageCounts).sort((a, b) => b[1] - a[1]).slice(0, 5);
+      document.getElementById('popularPackages').innerHTML = sorted.length ? sorted.map(([pkg, count]) => `
+        <div style="display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid #e2e8f0;">
+          <span>${pkg}</span>
+          <span class="badge badge-primary">${count}</span>
+        </div>
+      `).join('') : '<p style="color:var(--gray);">No data yet</p>';
     }
 
+    // ============ AUTH CHECK ============
     async function getUserRole(uid) {
       try {
         const userDoc = await getDoc(doc(db, 'users', uid));
-        if (userDoc.exists()) return userDoc.data().role;
+        if (userDoc.exists()) return userDoc.data();
       } catch (e) {}
       return null;
     }
@@ -1228,26 +3035,35 @@
       }
 
       currentUser = user;
-      const role = await getUserRole(user.uid);
-      currentUserRole = role;
+      const userData = await getUserRole(user.uid);
+      currentUserRole = userData?.role;
 
-      if (role !== 'admin' && role !== 'super_admin') {
+      if (currentUserRole !== 'admin' && currentUserRole !== 'super_admin') {
         showToast('Access denied. Admin privileges required.', 'error');
         setTimeout(() => window.location.href = 'login.html', 2000);
         return;
       }
 
+      // Update UI
       document.getElementById('loader').classList.add('hidden');
       document.getElementById('adminPanel').classList.remove('hidden');
-      document.getElementById('roleBadge').textContent = role === 'super_admin' ? '👑 Super Admin' : '🔧 Admin';
-      
-      if (role === 'super_admin') {
-        document.getElementById('addUserBtn').style.display = 'block';
-      }
+      document.getElementById('userName').textContent = userData?.name || user.email;
+      document.getElementById('userRole').textContent = currentUserRole === 'super_admin' ? 'Super Admin' : 'Admin';
+      document.getElementById('userAvatar').textContent = (userData?.name || user.email).charAt(0).toUpperCase();
 
-      await loadManagers();
-      await loadBookings();
-      await loadUsers();
+      // Load all data
+      await Promise.all([
+        loadManagers(),
+        loadBookings(),
+        loadUsers(),
+        loadPackages(),
+        loadDestinations(),
+        loadReviews(),
+        loadSiteContent(),
+        loadSettings()
+      ]);
+      
+      loadMediaFolder();
     });
   </script>
 </body>
