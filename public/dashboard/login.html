@@ -126,10 +126,6 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
-
-    .hidden {
-      display: none;
-    }
   </style>
 </head>
 <body>
@@ -138,11 +134,11 @@
     <h2 id="title">Login</h2>
 
     <div class="input-group">
-      <input type="email" id="email" placeholder="Email" autocomplete="email" />
+      <input type="email" id="email" placeholder="Email" />
     </div>
 
     <div class="input-group">
-      <input type="password" id="password" placeholder="Password" autocomplete="current-password" />
+      <input type="password" id="password" placeholder="Password" />
     </div>
 
     <button id="submitBtn">Login</button>
@@ -165,8 +161,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebas
 import { 
   getAuth,
   signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  onAuthStateChanged
+  createUserWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { 
   getFirestore,
@@ -186,17 +181,9 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-let app, auth, db;
-
-try {
-  app = initializeApp(firebaseConfig);
-  auth = getAuth(app);
-  db = getFirestore(app);
-  console.log("Firebase initialized successfully");
-} catch (error) {
-  console.error("Firebase initialization error:", error);
-  showError("Failed to initialize app. Please refresh the page.");
-}
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
 // DOM Elements
 const emailInput = document.getElementById("email");
@@ -209,50 +196,29 @@ const successMsg = document.getElementById("successMsg");
 const loader = document.getElementById("loader");
 
 let isLoginMode = true;
-let isProcessing = false;
-
-// Check if user is already logged in
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    console.log("User already logged in:", user.email);
-    showLoader(true);
-    await redirectByRole(user.uid);
-  }
-});
 
 // Toggle between Login and Signup
-toggleMode.addEventListener('click', () => {
-  if (isProcessing) return;
-  
+toggleMode.onclick = () => {
   isLoginMode = !isLoginMode;
   
   if (isLoginMode) {
     title.textContent = "Login";
     submitBtn.textContent = "Login";
     toggleMode.textContent = "Don't have an account? Sign up";
-    passwordInput.setAttribute('autocomplete', 'current-password');
   } else {
     title.textContent = "Sign Up";
     submitBtn.textContent = "Sign Up";
     toggleMode.textContent = "Already have an account? Login";
-    passwordInput.setAttribute('autocomplete', 'new-password');
   }
   
   clearMessages();
   emailInput.value = "";
   passwordInput.value = "";
-  emailInput.focus();
-});
+};
 
 // Submit button handler
-submitBtn.addEventListener('click', async (e) => {
+submitBtn.onclick = async (e) => {
   e.preventDefault();
-  await handleSubmit();
-});
-
-// Handle form submission
-async function handleSubmit() {
-  if (isProcessing) return;
   
   const email = emailInput.value.trim();
   const password = passwordInput.value.trim();
@@ -263,101 +229,62 @@ async function handleSubmit() {
     return;
   }
   
-  if (!isValidEmail(email)) {
-    showError("Please enter a valid email address");
-    return;
-  }
-  
   if (password.length < 6) {
     showError("Password must be at least 6 characters");
     return;
   }
   
-  isProcessing = true;
   clearMessages();
   showLoader(true);
   submitBtn.disabled = true;
   
   try {
     if (isLoginMode) {
-      await handleLogin(email, password);
+      // LOGIN
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      showSuccess("Login successful! Redirecting...");
+      await redirectByRole(userCredential.user.uid);
     } else {
-      await handleSignup(email, password);
+      // SIGNUP
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      
+      // Create user document
+      await setDoc(doc(db, "users", userCredential.user.uid), {
+        email: email,
+        role: "user",
+        createdAt: new Date()
+      });
+      
+      showSuccess("Account created! Redirecting...");
+      setTimeout(() => {
+        window.location.href = "/dashboard/index.html";
+      }, 1000);
     }
-  } catch (err) {
-    console.error("Auth error:", err);
-    showError(getErrorMessage(err.code || err.message));
+  } catch (error) {
+    showError(getErrorMessage(error.code));
     showLoader(false);
     submitBtn.disabled = false;
-    isProcessing = false;
   }
-}
-
-// Handle Login
-async function handleLogin(email, password) {
-  try {
-    console.log("Attempting login for:", email);
-    const cred = await signInWithEmailAndPassword(auth, email, password);
-    console.log("Login successful:", cred.user.uid);
-    showSuccess("Login successful! Redirecting...");
-    await redirectByRole(cred.user.uid);
-  } catch (error) {
-    console.error("Login error:", error);
-    throw error;
-  }
-}
-
-// Handle Signup
-async function handleSignup(email, password) {
-  try {
-    console.log("Attempting signup for:", email);
-    const cred = await createUserWithEmailAndPassword(auth, email, password);
-    console.log("Signup successful:", cred.user.uid);
-
-    // Create user document in Firestore
-    await setDoc(doc(db, "users", cred.user.uid), {
-      email: email,
-      role: "user",
-      createdAt: new Date().toISOString()
-    });
-
-    showSuccess("Account created! Redirecting...");
-    
-    setTimeout(() => {
-      window.location.href = "/dashboard/index.html";
-    }, 1500);
-  } catch (error) {
-    console.error("Signup error:", error);
-    throw error;
-  }
-}
+};
 
 // Redirect based on user role
 async function redirectByRole(uid) {
   try {
-    console.log("Fetching user role for:", uid);
     const userDoc = await getDoc(doc(db, "users", uid));
     
     if (!userDoc.exists()) {
-      console.warn("User document not found, creating default user role");
-      
-      // Create user document if it doesn't exist
+      // If no user doc exists, create one with default role
       await setDoc(doc(db, "users", uid), {
         email: auth.currentUser.email,
         role: "user",
-        createdAt: new Date().toISOString()
+        createdAt: new Date()
       });
-      
       window.location.href = "/dashboard/index.html";
       return;
     }
 
-    const userData = userDoc.data();
-    const role = userData.role || "user";
-    
-    console.log("User role:", role);
+    const role = userDoc.data().role || "user";
 
-    // Redirect based on role
     if (role === "super_admin" || role === "admin") {
       window.location.href = "/dashboard/admin.html";
     } else if (role === "manager") {
@@ -365,13 +292,10 @@ async function redirectByRole(uid) {
     } else {
       window.location.href = "/dashboard/index.html";
     }
-  } catch (err) {
-    console.error("Error in redirectByRole:", err);
-    showError("Error loading user profile. Please try again.");
+  } catch (error) {
+    showError("Error loading profile");
     showLoader(false);
     submitBtn.disabled = false;
-    isProcessing = false;
-    await auth.signOut();
   }
 }
 
@@ -397,43 +321,37 @@ function showLoader(show) {
   loader.style.display = show ? "block" : "none";
 }
 
-function isValidEmail(email) {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-}
-
 function getErrorMessage(errorCode) {
-  const errorMessages = {
-    "auth/invalid-email": "Invalid email address format",
-    "auth/user-disabled": "This account has been disabled",
-    "auth/user-not-found": "No account found with this email",
-    "auth/wrong-password": "Incorrect password",
-    "auth/invalid-credential": "Invalid email or password",
-    "auth/email-already-in-use": "This email is already registered",
-    "auth/weak-password": "Password must be at least 6 characters",
-    "auth/network-request-failed": "Network error. Check your connection",
-    "auth/too-many-requests": "Too many attempts. Please try again later",
-    "auth/operation-not-allowed": "Operation not allowed. Contact support",
-    "permission-denied": "Permission denied. Please contact administrator"
-  };
-  
-  return errorMessages[errorCode] || `Error: ${errorCode || 'Unknown error'}`;
+  switch (errorCode) {
+    case "auth/invalid-email":
+      return "Invalid email address";
+    case "auth/user-disabled":
+      return "This account has been disabled";
+    case "auth/user-not-found":
+      return "No account found with this email";
+    case "auth/wrong-password":
+      return "Incorrect password";
+    case "auth/invalid-credential":
+      return "Invalid email or password";
+    case "auth/email-already-in-use":
+      return "Email already registered";
+    case "auth/weak-password":
+      return "Password is too weak";
+    case "auth/network-request-failed":
+      return "Network error. Check your connection";
+    case "auth/too-many-requests":
+      return "Too many attempts. Try again later";
+    default:
+      return "An error occurred. Please try again";
+  }
 }
 
-// Allow Enter key to submit
-emailInput.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") handleSubmit();
-});
+// Enter key support
+emailInput.onkeypress = passwordInput.onkeypress = (e) => {
+  if (e.key === "Enter") submitBtn.click();
+};
 
-passwordInput.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") handleSubmit();
-});
-
-// Clear error on input
-emailInput.addEventListener("input", clearMessages);
-passwordInput.addEventListener("input", clearMessages);
-
-console.log("Login page loaded successfully");
+console.log("Login page loaded");
 </script>
 
 </body>
