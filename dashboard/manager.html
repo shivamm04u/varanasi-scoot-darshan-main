@@ -38,24 +38,6 @@
     }
     .hidden { display: none !important; }
     
-    .access-denied {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      text-align: center;
-      padding: 2rem;
-    }
-    .access-denied h1 {
-      color: #ef4444;
-      margin-bottom: 1rem;
-    }
-    .access-denied a {
-      color: #22c55e;
-      text-decoration: none;
-    }
-    
     .sidebar {
       position: fixed;
       left: 0;
@@ -75,12 +57,8 @@
       padding-bottom: 1rem;
       border-bottom: 1px solid rgba(255,255,255,0.1);
     }
-    .sidebar-logo span {
-      font-size: 24px;
-    }
-    .sidebar-logo h2 {
-      font-size: 1.1rem;
-    }
+    .sidebar-logo span { font-size: 24px; }
+    .sidebar-logo h2 { font-size: 1.1rem; }
     .sidebar-nav a {
       display: flex;
       align-items: center;
@@ -92,8 +70,7 @@
       margin-bottom: 0.5rem;
       transition: all 0.3s;
     }
-    .sidebar-nav a:hover,
-    .sidebar-nav a.active {
+    .sidebar-nav a:hover, .sidebar-nav a.active {
       background: rgba(255,255,255,0.1);
       color: white;
     }
@@ -111,6 +88,7 @@
       border-radius: 10px;
       text-align: center;
       background: rgba(239, 68, 68, 0.1);
+      cursor: pointer;
     }
     
     .main-content {
@@ -123,9 +101,7 @@
       align-items: center;
       margin-bottom: 2rem;
     }
-    .page-header h1 {
-      color: #1e293b;
-    }
+    .page-header h1 { color: #1e293b; }
     .manager-badge {
       background: linear-gradient(135deg, #22c55e, #16a34a);
       color: white;
@@ -167,20 +143,13 @@
       overflow: hidden;
     }
     .table-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       padding: 1.5rem;
       border-bottom: 1px solid #e2e8f0;
     }
-    .table-header h2 {
-      color: #1e293b;
-    }
+    .table-header h2 { color: #1e293b; }
     
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
+    .table-wrapper { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 700px; }
     th, td {
       padding: 1rem 1.5rem;
       text-align: left;
@@ -193,9 +162,7 @@
       font-size: 0.85rem;
       text-transform: uppercase;
     }
-    td {
-      color: #1e293b;
-    }
+    td { color: #1e293b; }
     .status-badge {
       padding: 0.3rem 0.8rem;
       border-radius: 20px;
@@ -220,111 +187,28 @@
     .action-btn.complete { background: #dbeafe; color: #1e40af; }
     .action-btn:hover { opacity: 0.8; }
     
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.5);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-    .modal {
-      background: white;
-      border-radius: 20px;
-      padding: 2rem;
-      width: 90%;
-      max-width: 400px;
-    }
-    .modal h2 {
-      margin-bottom: 1.5rem;
-      color: #1e293b;
-    }
-    .form-group {
-      margin-bottom: 1rem;
-    }
-    .form-group label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: 500;
-      color: #333;
-    }
-    .form-group input {
-      width: 100%;
-      padding: 0.8rem;
-      border: 2px solid #e2e8f0;
-      border-radius: 10px;
-      font-size: 1rem;
-    }
-    .form-group input:focus {
-      outline: none;
-      border-color: #22c55e;
-    }
-    .btn {
-      padding: 0.8rem 1.5rem;
-      border-radius: 10px;
-      font-weight: 500;
-      cursor: pointer;
-      border: none;
-      transition: all 0.3s;
-    }
-    .btn-primary {
-      background: linear-gradient(135deg, #22c55e, #16a34a);
-      color: white;
-    }
-    .btn-outline {
-      background: transparent;
-      border: 2px solid #e2e8f0;
-      color: #64748b;
-    }
-    .modal-buttons {
-      display: flex;
-      gap: 1rem;
-      margin-top: 1.5rem;
-    }
-    .modal-buttons .btn { flex: 1; }
-    .error-message {
-      color: #ef4444;
-      font-size: 0.85rem;
-      margin-top: 0.5rem;
-      text-align: center;
-    }
-    
     .no-data {
       text-align: center;
       padding: 3rem;
       color: #64748b;
     }
     
-    .customer-info {
-      font-size: 0.85rem;
-    }
-    .customer-info .phone {
+    .phone-link {
       color: #22c55e;
       font-weight: 500;
+      text-decoration: none;
     }
     
     @media (max-width: 768px) {
       .sidebar { width: 70px; padding: 1rem 0.5rem; }
       .sidebar-logo h2, .sidebar-nav span { display: none; }
       .main-content { margin-left: 70px; padding: 1rem; }
-      table { font-size: 0.85rem; }
-      th, td { padding: 0.8rem; }
     }
   </style>
 </head>
 <body>
   <div class="loader-overlay" id="loader">
     <div class="loader"></div>
-  </div>
-
-  <div class="access-denied hidden" id="accessDenied">
-    <h1>Access Denied</h1>
-    <p>You don't have permission to access this page.</p>
-    <p style="margin-top: 1rem;"><a href="index.html">Go to Dashboard</a></p>
   </div>
 
   <div class="hidden" id="managerPanel">
@@ -335,10 +219,10 @@
       </div>
       <div class="sidebar-nav">
         <a href="#" class="active"><span>📋</span> <span>My Bookings</span></a>
-        <a href="index.html"><span>🏠</span> <span>Main Site</span></a>
+        <a href="/"><span>🏠</span> <span>Main Site</span></a>
       </div>
       <div class="sidebar-footer">
-        <a href="#" onclick="logout()">Logout</a>
+        <a onclick="logout()">Logout</a>
       </div>
     </nav>
 
@@ -367,50 +251,31 @@
         <div class="table-header">
           <h2>Assigned Bookings</h2>
         </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Booking ID</th>
-              <th>Customer</th>
-              <th>Contact</th>
-              <th>Package</th>
-              <th>Tour Date</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="bookingsTable">
-            <tr><td colspan="7" class="no-data">Loading your bookings...</td></tr>
-          </tbody>
-        </table>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Customer</th>
+                <th>Phone</th>
+                <th>Package</th>
+                <th>Tour Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="bookingsTable">
+              <tr><td colspan="7" class="no-data">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </main>
   </div>
 
-  <div class="modal-overlay hidden" id="loginModal">
-    <div class="modal">
-      <h2>Manager Login</h2>
-      <form onsubmit="handleLogin(event)">
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" id="loginEmail" required>
-        </div>
-        <div class="form-group">
-          <label>Password</label>
-          <input type="password" id="loginPassword" required>
-        </div>
-        <p id="loginError" class="error-message hidden"></p>
-        <div class="modal-buttons">
-          <a href="index.html" class="btn btn-outline" style="text-align: center; text-decoration: none;">Cancel</a>
-          <button type="submit" class="btn btn-primary">Login</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
     import { getFirestore, collection, getDocs, query, orderBy, doc, updateDoc, getDoc, where } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
     const firebaseConfig = {
@@ -431,21 +296,7 @@
 
     window.logout = async function() {
       await signOut(auth);
-      window.location.href = 'index.html';
-    };
-
-    window.handleLogin = async function(e) {
-      e.preventDefault();
-      const email = document.getElementById('loginEmail').value;
-      const password = document.getElementById('loginPassword').value;
-      const errorEl = document.getElementById('loginError');
-      
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
-      } catch (error) {
-        errorEl.textContent = error.message.replace('Firebase: ', '');
-        errorEl.classList.remove('hidden');
-      }
+      window.location.href = 'login.html';
     };
 
     window.updateStatus = async function(bookingId, newStatus) {
@@ -456,7 +307,7 @@
         renderBookings();
         updateStats();
       } catch (error) {
-        alert('Error updating status: ' + error.message);
+        alert('Error: ' + error.message);
       }
     };
 
@@ -469,14 +320,11 @@
         );
         const snapshot = await getDocs(q);
         myBookings = [];
-        snapshot.forEach(doc => {
-          myBookings.push({ id: doc.id, ...doc.data() });
-        });
+        snapshot.forEach(doc => myBookings.push({ id: doc.id, ...doc.data() }));
         renderBookings();
         updateStats();
       } catch (error) {
-        document.getElementById('bookingsTable').innerHTML = 
-          '<tr><td colspan="7" class="no-data">Error loading bookings. Make sure you have assigned bookings.</td></tr>';
+        document.getElementById('bookingsTable').innerHTML = '<tr><td colspan="7" class="no-data">No bookings assigned yet.</td></tr>';
       }
     }
 
@@ -484,7 +332,7 @@
       const tbody = document.getElementById('bookingsTable');
       
       if (myBookings.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" class="no-data">No bookings assigned to you yet.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" class="no-data">No bookings assigned to you.</td></tr>';
         return;
       }
       
@@ -492,17 +340,15 @@
       myBookings.forEach(b => {
         html += `
           <tr>
-            <td style="font-family: monospace; font-size: 0.8rem;">${b.id.substring(0, 8)}...</td>
+            <td style="font-family:monospace;font-size:0.8rem;">${b.id.substring(0,8)}...</td>
             <td>${b.name}</td>
-            <td class="customer-info">
-              <span class="phone">${b.phone}</span>
-            </td>
+            <td><a href="tel:${b.phone}" class="phone-link">${b.phone}</a></td>
             <td>${b.tourPackage}</td>
             <td>${b.date}</td>
             <td><span class="status-badge status-${b.status}">${b.status}</span></td>
             <td>
-              ${b.status === 'pending' ? `<button class="action-btn confirm" onclick="updateStatus('${b.id}', 'confirmed')">Confirm</button>` : ''}
-              ${b.status === 'confirmed' ? `<button class="action-btn complete" onclick="updateStatus('${b.id}', 'completed')">Complete</button>` : ''}
+              ${b.status === 'pending' ? `<button class="action-btn confirm" onclick="updateStatus('${b.id}','confirmed')">Confirm</button>` : ''}
+              ${b.status === 'confirmed' ? `<button class="action-btn complete" onclick="updateStatus('${b.id}','completed')">Complete</button>` : ''}
             </td>
           </tr>
         `;
@@ -516,35 +362,31 @@
       document.getElementById('statCompleted').textContent = myBookings.filter(b => b.status === 'completed').length;
     }
 
-    async function checkManagerAccess(uid) {
+    async function getUserRole(uid) {
       try {
         const userDoc = await getDoc(doc(db, 'users', uid));
-        if (userDoc.exists()) {
-          const role = userDoc.data().role;
-          if (role === 'manager' || role === 'admin' || role === 'super_admin') {
-            return true;
-          }
-        }
+        if (userDoc.exists()) return userDoc.data().role;
       } catch (e) {}
-      return false;
+      return null;
     }
 
     onAuthStateChanged(auth, async (user) => {
-      document.getElementById('loader').classList.add('hidden');
-      
-      if (user) {
-        const hasAccess = await checkManagerAccess(user.uid);
-        
-        if (hasAccess) {
-          currentUser = user;
-          document.getElementById('managerPanel').classList.remove('hidden');
-          await loadMyBookings();
-        } else {
-          document.getElementById('accessDenied').classList.remove('hidden');
-        }
-      } else {
-        document.getElementById('loginModal').classList.remove('hidden');
+      if (!user) {
+        window.location.href = 'login.html';
+        return;
       }
+
+      const role = await getUserRole(user.uid);
+
+      if (role !== 'manager' && role !== 'admin' && role !== 'super_admin') {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      currentUser = user;
+      document.getElementById('loader').classList.add('hidden');
+      document.getElementById('managerPanel').classList.remove('hidden');
+      await loadMyBookings();
     });
   </script>
 </body>
