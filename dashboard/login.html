@@ -1,245 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - Baba Banarasi</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <title>Login | Varanasi Scoot Darshan</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #e3f2fd, #ffffff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 1rem;
     }
-    .loader-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
+
+    .card {
+      background: #fff;
       width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
+      max-width: 400px;
+      padding: 30px;
+      border-radius: 14px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
     }
+
+    h2 {
+      text-align: center;
+      color: #1565c0;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #1565c0;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0d47a1;
+    }
+
+    .toggle {
+      text-align: center;
+      margin-top: 12px;
+      cursor: pointer;
+      color: #1565c0;
+      font-size: 14px;
+    }
+
+    .error {
+      color: red;
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
     .loader {
-      width: 50px;
-      height: 50px;
-      border: 4px solid rgba(255,255,255,0.3);
-      border-top: 4px solid #fff;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-    .loader-text {
-      color: white;
-      margin-top: 1rem;
-      font-size: 0.9rem;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    .hidden { display: none !important; }
-    
-    .login-container {
-      width: 100%;
-      max-width: 420px;
-    }
-    .login-header {
       text-align: center;
-      margin-bottom: 2rem;
-    }
-    .logo {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 1rem;
-    }
-    .logo-icon {
-      width: 60px;
-      height: 60px;
-      background: white;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 30px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    }
-    .logo-text {
-      color: white;
-      font-size: 1.8rem;
-      font-weight: 700;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.2);
-    }
-    .login-subtitle {
-      color: rgba(255,255,255,0.9);
-      font-size: 1rem;
-    }
-    
-    .login-card {
-      background: white;
-      border-radius: 24px;
-      padding: 2.5rem;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    }
-    .tabs {
-      display: flex;
-      gap: 0;
-      margin-bottom: 2rem;
-      background: #f1f5f9;
-      border-radius: 12px;
-      padding: 4px;
-    }
-    .tab {
-      flex: 1;
-      padding: 0.8rem;
-      border: none;
-      background: transparent;
-      font-size: 1rem;
-      font-weight: 500;
-      color: #64748b;
-      cursor: pointer;
-      border-radius: 10px;
-      transition: all 0.3s;
-    }
-    .tab.active {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
-      box-shadow: 0 4px 15px rgba(102,126,234,0.4);
-    }
-    
-    .form-group {
-      margin-bottom: 1.5rem;
-    }
-    .form-group label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: 500;
-      color: #333;
-    }
-    .form-group input {
-      width: 100%;
-      padding: 1rem 1.2rem;
-      border: 2px solid #e2e8f0;
-      border-radius: 12px;
-      font-size: 1rem;
-      transition: all 0.3s;
-    }
-    .form-group input:focus {
-      outline: none;
-      border-color: #667eea;
-      box-shadow: 0 0 0 4px rgba(102,126,234,0.1);
-    }
-    
-    .btn-submit {
-      width: 100%;
-      padding: 1rem;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
-      border: none;
-      border-radius: 12px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    .btn-submit:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 30px rgba(102,126,234,0.4);
-    }
-    .btn-submit:disabled {
-      opacity: 0.7;
-      cursor: not-allowed;
-      transform: none;
-    }
-    
-    .message {
-      padding: 0.8rem 1rem;
-      border-radius: 10px;
-      margin-bottom: 1rem;
-      font-size: 0.9rem;
-      text-align: center;
-    }
-    .message.error {
-      background: #fee2e2;
-      color: #991b1b;
-    }
-    .message.success {
-      background: #d1fae5;
-      color: #065f46;
-    }
-    
-    .back-link {
-      display: block;
-      text-align: center;
-      margin-top: 1.5rem;
-      color: rgba(255,255,255,0.9);
-      text-decoration: none;
-      font-size: 0.9rem;
-    }
-    .back-link:hover {
-      color: white;
-      text-decoration: underline;
+      display: none;
     }
   </style>
 </head>
 <body>
-  <div class="loader-overlay" id="loader">
-    <div class="loader"></div>
-    <p class="loader-text">Loading...</p>
-  </div>
 
-  <div class="login-container hidden" id="loginContainer">
-    <div class="login-header">
-      <div class="logo">
-        <div class="logo-icon">🛵</div>
-        <span class="logo-text">Baba Banarasi</span>
-      </div>
-      <p class="login-subtitle">Solo Scooter Darshan Dashboard</p>
+  <div class="card">
+    <h2 id="title">Login</h2>
+
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Password" />
+
+    <button id="submitBtn">Login</button>
+
+    <div class="toggle" id="toggleMode">
+      Don’t have an account? Sign up
     </div>
 
-    <div class="login-card">
-      <div class="tabs">
-        <button class="tab active" id="loginTab" onclick="switchTab('login')">Login</button>
-        <button class="tab" id="signupTab" onclick="switchTab('signup')">Sign Up</button>
-      </div>
-
-      <div id="messageBox" class="message hidden"></div>
-
-      <form id="authForm" onsubmit="handleSubmit(event)">
-        <div class="form-group hidden" id="nameGroup">
-          <label>Full Name</label>
-          <input type="text" id="nameInput" placeholder="Enter your full name">
-        </div>
-        <div class="form-group">
-          <label>Email Address</label>
-          <input type="email" id="emailInput" required placeholder="Enter your email">
-        </div>
-        <div class="form-group">
-          <label>Password</label>
-          <input type="password" id="passwordInput" required placeholder="Enter password" minlength="6">
-        </div>
-        <button type="submit" class="btn-submit" id="submitBtn">Login</button>
-      </form>
-    </div>
-
-    <a href="/" class="back-link">← Back to Main Website</a>
+    <div class="error" id="error"></div>
+    <div class="loader" id="loader">Checking authentication…</div>
   </div>
 
-  <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-    import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
+  <script>
+    // 🔥 YOUR EXISTING FIREBASE CONFIG (UNCHANGED)
     const firebaseConfig = {
       apiKey: "AIzaSyCtyR68dG9TEI_C89PvsdrGmpkE6vCtV0s",
       authDomain: "varanasi-scoot-darshan.firebaseapp.com",
@@ -249,92 +110,61 @@
       appId: "1:437910870938:web:cb7b3043bcc39216143823"
     };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+    firebase.initializeApp(firebaseConfig);
 
-    let currentMode = 'login';
+    const auth = firebase.auth();
+    const db = firebase.firestore();
 
-    window.switchTab = function(mode) {
-      currentMode = mode;
-      document.getElementById('loginTab').classList.toggle('active', mode === 'login');
-      document.getElementById('signupTab').classList.toggle('active', mode === 'signup');
-      document.getElementById('nameGroup').classList.toggle('hidden', mode === 'login');
-      document.getElementById('submitBtn').textContent = mode === 'login' ? 'Login' : 'Create Account';
-      document.getElementById('messageBox').classList.add('hidden');
+    let isLogin = true;
+
+    const title = document.getElementById("title");
+    const submitBtn = document.getElementById("submitBtn");
+    const toggleMode = document.getElementById("toggleMode");
+    const errorBox = document.getElementById("error");
+    const loader = document.getElementById("loader");
+
+    toggleMode.onclick = () => {
+      isLogin = !isLogin;
+      title.innerText = isLogin ? "Login" : "Sign Up";
+      submitBtn.innerText = isLogin ? "Login" : "Create Account";
+      toggleMode.innerText = isLogin
+        ? "Don’t have an account? Sign up"
+        : "Already have an account? Login";
+      errorBox.innerText = "";
     };
 
-    function showMessage(text, type) {
-      const box = document.getElementById('messageBox');
-      box.textContent = text;
-      box.className = 'message ' + type;
-    }
-
-    async function redirectByRole(uid) {
-      try {
-        const userDoc = await getDoc(doc(db, 'users', uid));
-        if (userDoc.exists()) {
-          const role = userDoc.data().role;
-          if (role === 'admin' || role === 'super_admin') {
-            window.location.href = 'admin.html';
-          } else if (role === 'manager') {
-            window.location.href = 'manager.html';
-          } else {
-            window.location.href = 'index.html';
-          }
-        } else {
-          window.location.href = 'index.html';
-        }
-      } catch (e) {
-        window.location.href = 'index.html';
-      }
-    }
-
-    window.handleSubmit = async function(e) {
-      e.preventDefault();
-      const btn = document.getElementById('submitBtn');
-      btn.disabled = true;
-      btn.textContent = 'Please wait...';
-      
-      const email = document.getElementById('emailInput').value;
-      const password = document.getElementById('passwordInput').value;
-      const name = document.getElementById('nameInput').value;
+    submitBtn.onclick = async () => {
+      const email = email.value;
+      const password = document.getElementById("password").value;
+      errorBox.innerText = "";
 
       try {
-        if (currentMode === 'login') {
-          const userCred = await signInWithEmailAndPassword(auth, email, password);
-          showMessage('Login successful! Redirecting...', 'success');
-          await redirectByRole(userCred.user.uid);
+        if (isLogin) {
+          await auth.signInWithEmailAndPassword(email, password);
         } else {
-          const userCred = await createUserWithEmailAndPassword(auth, email, password);
-          await setDoc(doc(db, 'users', userCred.user.uid), {
-            name: name || email.split('@')[0],
-            email: email,
-            role: 'user',
-            createdAt: serverTimestamp()
+          const cred = await auth.createUserWithEmailAndPassword(email, password);
+          await db.collection("users").doc(cred.user.uid).set({
+            email,
+            role: "user",
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
           });
-          showMessage('Account created! Redirecting...', 'success');
-          window.location.href = 'index.html';
         }
-      } catch (error) {
-        let msg = error.message.replace('Firebase: ', '');
-        if (msg.includes('auth/invalid-credential')) msg = 'Invalid email or password';
-        if (msg.includes('auth/email-already-in-use')) msg = 'Email already registered. Please login.';
-        showMessage(msg, 'error');
-        btn.disabled = false;
-        btn.textContent = currentMode === 'login' ? 'Login' : 'Create Account';
+      } catch (err) {
+        errorBox.innerText = err.message;
       }
     };
 
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        document.getElementById('loader').querySelector('.loader-text').textContent = 'Redirecting...';
-        await redirectByRole(user.uid);
-      } else {
-        document.getElementById('loader').classList.add('hidden');
-        document.getElementById('loginContainer').classList.remove('hidden');
+    auth.onAuthStateChanged(async (user) => {
+      if (!user) return;
+
+      loader.style.display = "block";
+
+      const snap = await db.collection("users").doc(user.uid).get();
+      if (!snap.exists) {
+        errorBox.innerText = "User role not found.";
+        return;
       }
-    });
-  </script>
-</body>
-</html>
+
+      const role = snap.data().role;
+
+      if (role === "admin"
