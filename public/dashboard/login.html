@@ -38,6 +38,12 @@
       border-radius: 8px;
       border: 1px solid #ccc;
       font-size: 15px;
+      box-sizing: border-box;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #1565c0;
     }
 
     button {
@@ -49,10 +55,16 @@
       border-radius: 8px;
       font-size: 16px;
       cursor: pointer;
+      transition: background 0.3s ease;
     }
 
     button:hover {
       background: #0d47a1;
+    }
+
+    button:disabled {
+      background: #90caf9;
+      cursor: not-allowed;
     }
 
     .toggle {
@@ -61,6 +73,11 @@
       cursor: pointer;
       color: #1565c0;
       font-size: 14px;
+      text-decoration: underline;
+    }
+
+    .toggle:hover {
+      color: #0d47a1;
     }
 
     .error {
@@ -68,11 +85,38 @@
       text-align: center;
       margin-top: 10px;
       font-size: 14px;
+      display: none;
+    }
+
+    .success {
+      color: green;
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
+      display: none;
     }
 
     .loader {
       text-align: center;
+      margin-top: 15px;
       display: none;
+      color: #1565c0;
+      font-size: 14px;
+    }
+
+    .spinner {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #1565c0;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 10px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
   </style>
 </head>
@@ -81,17 +125,22 @@
   <div class="card">
     <h2 id="title">Login</h2>
 
-    <input type="email" id="email" placeholder="Email" />
-    <input type="password" id="password" placeholder="Password" />
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="password" placeholder="Password" required />
 
     <button id="submitBtn">Login</button>
 
     <div class="toggle" id="toggleMode">
-      Don’t have an account? Sign up
+      Don't have an account? Sign up
     </div>
 
     <div class="error" id="error"></div>
-    <div class="loader" id="loader">Checking authentication…</div>
+    <div class="success" id="success"></div>
+    
+    <div class="loader" id="loader">
+      <div class="spinner"></div>
+      Processing...
+    </div>
   </div>
 
   <script type="module">
@@ -99,7 +148,8 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebas
 import { 
   getAuth,
   signInWithEmailAndPassword,
-  createUserWithEmailAndPassword
+  createUserWithEmailAndPassword,
+  onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { 
   getFirestore,
@@ -121,50 +171,183 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const email = document.getElementById("email");
-const password = document.getElementById("password");
+// DOM Elements
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const submitBtn = document.getElementById("submitBtn");
+const toggleMode = document.getElementById("toggleMode");
+const title = document.getElementById("title");
+const errorDiv = document.getElementById("error");
+const successDiv = document.getElementById("success");
+const loader = document.getElementById("loader");
 
-document.getElementById("loginBtn").onclick = async (e) => {
-  e.preventDefault();
-  try {
-    const cred = await signInWithEmailAndPassword(auth, email.value, password.value);
-    redirectByRole(cred.user.uid);
-  } catch (err) {
-    alert(err.message);
+let isLoginMode = true;
+
+// Check if user is already logged in
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    redirectByRole(user.uid);
   }
-};
+});
 
-document.getElementById("signupBtn").onclick = async (e) => {
-  e.preventDefault();
-  try {
-    const cred = await createUserWithEmailAndPassword(auth, email.value, password.value);
-
-    await setDoc(doc(db, "users", cred.user.uid), {
-      email: email.value,
-      role: "user",
-      createdAt: new Date()
-    });
-
-    window.location.href = "/dashboard/index.html";
-  } catch (err) {
-    alert(err.message);
-  }
-};
-
-async function redirectByRole(uid) {
-  const snap = await getDoc(doc(db, "users", uid));
-  if (!snap.exists()) return alert("No role found");
-
-  const role = snap.data().role;
-
-  if (role === "super_admin" || role === "admin") {
-    window.location.href = "/dashboard/admin.html";
-  } else if (role === "manager") {
-    window.location.href = "/dashboard/manager.html";
+// Toggle between Login and Signup
+toggleMode.onclick = () => {
+  isLoginMode = !isLoginMode;
+  
+  if (isLoginMode) {
+    title.textContent = "Login";
+    submitBtn.textContent = "Login";
+    toggleMode.textContent = "Don't have an account? Sign up";
   } else {
+    title.textContent = "Sign Up";
+    submitBtn.textContent = "Sign Up";
+    toggleMode.textContent = "Already have an account? Login";
+  }
+  
+  // Clear messages and inputs
+  clearMessages();
+  emailInput.value = "";
+  passwordInput.value = "";
+};
+
+// Submit button handler
+submitBtn.onclick = async (e) => {
+  e.preventDefault();
+  
+  const email = emailInput.value.trim();
+  const password = passwordInput.value.trim();
+  
+  // Validation
+  if (!email || !password) {
+    showError("Please fill in all fields");
+    return;
+  }
+  
+  if (password.length < 6) {
+    showError("Password must be at least 6 characters");
+    return;
+  }
+  
+  clearMessages();
+  showLoader(true);
+  submitBtn.disabled = true;
+  
+  try {
+    if (isLoginMode) {
+      await handleLogin(email, password);
+    } else {
+      await handleSignup(email, password);
+    }
+  } catch (err) {
+    showError(getErrorMessage(err.code));
+  } finally {
+    showLoader(false);
+    submitBtn.disabled = false;
+  }
+};
+
+// Handle Login
+async function handleLogin(email, password) {
+  const cred = await signInWithEmailAndPassword(auth, email, password);
+  showSuccess("Login successful! Redirecting...");
+  await redirectByRole(cred.user.uid);
+}
+
+// Handle Signup
+async function handleSignup(email, password) {
+  const cred = await createUserWithEmailAndPassword(auth, email, password);
+
+  await setDoc(doc(db, "users", cred.user.uid), {
+    email: email,
+    role: "user",
+    createdAt: new Date()
+  });
+
+  showSuccess("Account created! Redirecting...");
+  setTimeout(() => {
     window.location.href = "/dashboard/index.html";
+  }, 1000);
+}
+
+// Redirect based on user role
+async function redirectByRole(uid) {
+  try {
+    const snap = await getDoc(doc(db, "users", uid));
+    
+    if (!snap.exists()) {
+      showError("User profile not found");
+      await auth.signOut();
+      return;
+    }
+
+    const role = snap.data().role;
+
+    if (role === "super_admin" || role === "admin") {
+      window.location.href = "/dashboard/admin.html";
+    } else if (role === "manager") {
+      window.location.href = "/dashboard/manager.html";
+    } else {
+      window.location.href = "/dashboard/index.html";
+    }
+  } catch (err) {
+    showError("Error loading user profile");
+    console.error(err);
+  }
+}
+
+// UI Helper Functions
+function showError(message) {
+  errorDiv.textContent = message;
+  errorDiv.style.display = "block";
+  successDiv.style.display = "none";
+}
+
+function showSuccess(message) {
+  successDiv.textContent = message;
+  successDiv.style.display = "block";
+  errorDiv.style.display = "none";
+}
+
+function clearMessages() {
+  errorDiv.style.display = "none";
+  successDiv.style.display = "none";
+}
+
+function showLoader(show) {
+  loader.style.display = show ? "block" : "none";
+}
+
+function getErrorMessage(errorCode) {
+  switch (errorCode) {
+    case "auth/invalid-email":
+      return "Invalid email address";
+    case "auth/user-disabled":
+      return "This account has been disabled";
+    case "auth/user-not-found":
+      return "No account found with this email";
+    case "auth/wrong-password":
+      return "Incorrect password";
+    case "auth/email-already-in-use":
+      return "Email already registered";
+    case "auth/weak-password":
+      return "Password is too weak";
+    case "auth/network-request-failed":
+      return "Network error. Please check your connection";
+    default:
+      return "An error occurred. Please try again";
+  }
+}
+
+// Allow Enter key to submit
+emailInput.addEventListener("keypress", handleEnter);
+passwordInput.addEventListener("keypress", handleEnter);
+
+function handleEnter(e) {
+  if (e.key === "Enter") {
+    submitBtn.click();
   }
 }
 </script>
+
 </body>
 </html>
