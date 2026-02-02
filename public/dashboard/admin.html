@@ -38,41 +38,56 @@
     }
     .hidden { display: none !important; }
     
+    /* Sidebar Styles */
     .sidebar {
       position: fixed;
       left: 0;
       top: 0;
-      width: 250px;
+      width: 260px;
       height: 100vh;
       background: linear-gradient(180deg, #1e293b, #334155);
       color: white;
       padding: 1.5rem;
       z-index: 100;
+      transition: all 0.3s;
+      overflow-y: auto;
     }
     .sidebar-logo {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       margin-bottom: 2rem;
-      padding-bottom: 1rem;
+      padding-bottom: 1.5rem;
       border-bottom: 1px solid rgba(255,255,255,0.1);
     }
-    .sidebar-logo span { font-size: 24px; }
-    .sidebar-logo h2 { font-size: 1.1rem; }
+    .sidebar-logo span { font-size: 28px; }
+    .sidebar-logo h2 { font-size: 1.2rem; font-weight: 600; }
+    .sidebar-nav { margin-bottom: 2rem; }
     .sidebar-nav a {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 0.8rem 1rem;
+      gap: 12px;
+      padding: 0.9rem 1rem;
       color: rgba(255,255,255,0.7);
       text-decoration: none;
       border-radius: 10px;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.4rem;
       transition: all 0.3s;
+      font-size: 0.95rem;
     }
     .sidebar-nav a:hover, .sidebar-nav a.active {
       background: rgba(255,255,255,0.1);
       color: white;
+    }
+    .sidebar-nav a.active {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+    }
+    .nav-section-title {
+      color: rgba(255,255,255,0.4);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 1.5rem 0 0.8rem 0.5rem;
     }
     .sidebar-footer {
       position: absolute;
@@ -81,46 +96,97 @@
       right: 1.5rem;
     }
     .sidebar-footer a {
-      display: block;
-      padding: 0.8rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0.9rem 1rem;
       color: #ef4444;
       text-decoration: none;
       border-radius: 10px;
-      text-align: center;
       background: rgba(239, 68, 68, 0.1);
       cursor: pointer;
+      transition: all 0.3s;
+    }
+    .sidebar-footer a:hover {
+      background: rgba(239, 68, 68, 0.2);
     }
     
+    /* Main Content */
     .main-content {
-      margin-left: 250px;
+      margin-left: 260px;
       padding: 2rem;
+      transition: all 0.3s;
     }
     .page-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
     }
-    .page-header h1 { color: #1e293b; }
+    .page-header h1 { 
+      color: #1e293b; 
+      font-size: 1.8rem;
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
     .admin-badge {
       background: linear-gradient(135deg, #667eea, #764ba2);
       color: white;
-      padding: 0.5rem 1rem;
+      padding: 0.5rem 1.2rem;
       border-radius: 20px;
       font-size: 0.85rem;
+      font-weight: 500;
+    }
+    .refresh-btn {
+      background: white;
+      border: 1px solid #e2e8f0;
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #64748b;
+      transition: all 0.3s;
+    }
+    .refresh-btn:hover {
+      background: #667eea;
+      color: white;
+      border-color: #667eea;
     }
     
+    /* Stats Grid */
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 1.5rem;
       margin-bottom: 2rem;
     }
     .stat-card {
       background: white;
-      border-radius: 15px;
+      border-radius: 16px;
       padding: 1.5rem;
       box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s;
+    }
+    .stat-card:hover {
+      transform: translateY(-5px);
+    }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
     }
     .stat-card h3 {
       color: #64748b;
@@ -129,17 +195,37 @@
       margin-bottom: 0.5rem;
     }
     .stat-card .value {
-      font-size: 2rem;
+      font-size: 2.2rem;
       font-weight: 700;
       color: #1e293b;
     }
+    .stat-card .stat-icon {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 2rem;
+      opacity: 0.3;
+    }
+    .stat-card.primary::before { background: #667eea; }
     .stat-card.primary .value { color: #667eea; }
+    .stat-card.success::before { background: #22c55e; }
     .stat-card.success .value { color: #22c55e; }
+    .stat-card.warning::before { background: #f59e0b; }
     .stat-card.warning .value { color: #f59e0b; }
+    .stat-card.info::before { background: #3b82f6; }
+    .stat-card.info .value { color: #3b82f6; }
+    .stat-card.danger::before { background: #ef4444; }
+    .stat-card.danger .value { color: #ef4444; }
     
+    /* Content Section */
+    .content-section {
+      margin-bottom: 2rem;
+    }
+    
+    /* Data Table */
     .data-table {
       background: white;
-      border-radius: 15px;
+      border-radius: 16px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.05);
       overflow: hidden;
     }
@@ -152,7 +238,40 @@
       flex-wrap: wrap;
       gap: 1rem;
     }
-    .table-header h2 { color: #1e293b; }
+    .table-header h2 { 
+      color: #1e293b; 
+      font-size: 1.2rem;
+    }
+    .table-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .search-box {
+      position: relative;
+    }
+    .search-box input {
+      padding: 0.6rem 1rem 0.6rem 2.5rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      width: 250px;
+      transition: all 0.3s;
+    }
+    .search-box input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    .search-box::before {
+      content: '🔍';
+      position: absolute;
+      left: 0.8rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.9rem;
+    }
     .filter-buttons { display: flex; gap: 0.5rem; flex-wrap: wrap; }
     .filter-btn {
       padding: 0.5rem 1rem;
@@ -163,6 +282,7 @@
       color: #64748b;
       font-size: 0.85rem;
       transition: all 0.3s;
+      font-weight: 500;
     }
     .filter-btn:hover, .filter-btn.active {
       background: #667eea;
@@ -170,7 +290,7 @@
     }
     
     .table-wrapper { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; min-width: 800px; }
+    table { width: 100%; border-collapse: collapse; min-width: 900px; }
     th, td {
       padding: 1rem 1.5rem;
       text-align: left;
@@ -179,16 +299,25 @@
     th {
       background: #f8fafc;
       color: #64748b;
-      font-weight: 500;
-      font-size: 0.85rem;
+      font-weight: 600;
+      font-size: 0.8rem;
       text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
-    td { color: #1e293b; }
+    td { 
+      color: #1e293b; 
+      font-size: 0.9rem;
+    }
+    tbody tr:hover {
+      background: #f8fafc;
+    }
+    
     .status-badge {
-      padding: 0.3rem 0.8rem;
+      padding: 0.35rem 0.9rem;
       border-radius: 20px;
       font-size: 0.75rem;
-      font-weight: 500;
+      font-weight: 600;
+      text-transform: capitalize;
     }
     .status-pending { background: #fef3c7; color: #92400e; }
     .status-confirmed { background: #d1fae5; color: #065f46; }
@@ -196,25 +325,34 @@
     .status-cancelled { background: #fee2e2; color: #991b1b; }
     
     .action-btn {
-      padding: 0.4rem 0.8rem;
+      padding: 0.4rem 0.7rem;
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       margin-right: 0.3rem;
       transition: all 0.3s;
     }
     .action-btn.confirm { background: #d1fae5; color: #065f46; }
     .action-btn.complete { background: #dbeafe; color: #1e40af; }
     .action-btn.cancel { background: #fee2e2; color: #991b1b; }
-    .action-btn:hover { opacity: 0.8; }
+    .action-btn.view { background: #f3e8ff; color: #7c3aed; }
+    .action-btn.edit { background: #fef3c7; color: #92400e; }
+    .action-btn.delete { background: #fee2e2; color: #991b1b; }
+    .action-btn:hover { opacity: 0.8; transform: scale(1.05); }
     
     select.manager-select {
-      padding: 0.4rem;
+      padding: 0.5rem;
       border: 1px solid #e2e8f0;
-      border-radius: 6px;
+      border-radius: 8px;
       font-size: 0.85rem;
-      max-width: 120px;
+      max-width: 130px;
+      background: white;
+      cursor: pointer;
+    }
+    select.manager-select:focus {
+      outline: none;
+      border-color: #667eea;
     }
     
     .no-data {
@@ -222,11 +360,261 @@
       padding: 3rem;
       color: #64748b;
     }
+    .no-data span {
+      font-size: 3rem;
+      display: block;
+      margin-bottom: 1rem;
+    }
+    
+    /* User Section */
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+    .user-details h4 {
+      font-size: 0.9rem;
+      color: #1e293b;
+      font-weight: 500;
+    }
+    .user-details p {
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+    
+    .role-badge {
+      padding: 0.3rem 0.7rem;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .role-user { background: #f1f5f9; color: #64748b; }
+    .role-manager { background: #dbeafe; color: #1e40af; }
+    .role-admin { background: #fef3c7; color: #92400e; }
+    .role-super_admin { background: #f3e8ff; color: #7c3aed; }
+    
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .modal {
+      background: white;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+      transform: translateY(-20px);
+      transition: all 0.3s;
+    }
+    .modal-overlay.active .modal {
+      transform: translateY(0);
+    }
+    .modal-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-header h3 {
+      color: #1e293b;
+      font-size: 1.2rem;
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #64748b;
+    }
+    .modal-body {
+      padding: 1.5rem;
+    }
+    .modal-footer {
+      padding: 1.5rem;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+    }
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #374151;
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      transition: all 0.3s;
+    }
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    .btn {
+      padding: 0.7rem 1.5rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+    }
+    .btn-secondary {
+      background: #f1f5f9;
+      color: #64748b;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    /* Toast Notification */
+    .toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 2000;
+    }
+    .toast {
+      background: white;
+      border-radius: 10px;
+      padding: 1rem 1.5rem;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      transform: translateX(120%);
+      transition: all 0.3s;
+    }
+    .toast.show {
+      transform: translateX(0);
+    }
+    .toast.success { border-left: 4px solid #22c55e; }
+    .toast.error { border-left: 4px solid #ef4444; }
+    .toast.info { border-left: 4px solid #3b82f6; }
+    
+    /* Tabs */
+    .tab-buttons {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      padding: 0.7rem 1.5rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background: white;
+      color: #64748b;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.3s;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    .tab-btn:hover {
+      color: #667eea;
+    }
+    .tab-btn.active {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    
+    /* Mobile Responsive */
+    @media (max-width: 1024px) {
+      .sidebar { width: 80px; padding: 1rem 0.5rem; }
+      .sidebar-logo h2, .sidebar-nav span, .nav-section-title { display: none; }
+      .sidebar-logo { justify-content: center; }
+      .sidebar-nav a { justify-content: center; padding: 0.9rem; }
+      .sidebar-footer a span { display: none; }
+      .main-content { margin-left: 80px; }
+    }
     
     @media (max-width: 768px) {
-      .sidebar { width: 70px; padding: 1rem 0.5rem; }
-      .sidebar-logo h2, .sidebar-nav span { display: none; }
-      .main-content { margin-left: 70px; padding: 1rem; }
+      .sidebar { 
+        width: 100%; 
+        height: auto; 
+        position: relative; 
+        padding: 1rem;
+      }
+      .sidebar-logo h2, .sidebar-nav span, .nav-section-title { display: block; }
+      .sidebar-nav { 
+        display: flex; 
+        flex-wrap: wrap; 
+        gap: 0.5rem; 
+        margin-bottom: 1rem; 
+      }
+      .sidebar-nav a { padding: 0.5rem 1rem; }
+      .sidebar-footer { 
+        position: relative; 
+        bottom: 0; 
+        left: 0; 
+        right: 0;
+        margin-top: 1rem;
+      }
+      .main-content { margin-left: 0; padding: 1rem; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+      .stat-card .value { font-size: 1.5rem; }
+      .search-box input { width: 100%; }
+      .table-actions { width: 100%; }
+    }
+    
+    @media (max-width: 480px) {
+      .stats-grid { grid-template-columns: 1fr; }
+      .page-header h1 { font-size: 1.4rem; }
     }
   </style>
 </head>
@@ -235,83 +623,225 @@
     <div class="loader"></div>
   </div>
 
+  <div class="toast-container" id="toastContainer"></div>
+
   <div class="hidden" id="adminPanel">
     <nav class="sidebar">
       <div class="sidebar-logo">
         <span>🛵</span>
-        <h2>Admin Panel</h2>
+        <h2>Baba Banarasi</h2>
       </div>
       <div class="sidebar-nav">
-        <a href="#" class="active"><span>📊</span> <span>Dashboard</span></a>
-        <a href="/"><span>🏠</span> <span>Main Site</span></a>
+        <a href="#" class="active" data-tab="dashboard"><span>📊</span> <span>Dashboard</span></a>
+        <a href="#" data-tab="bookings"><span>📋</span> <span>Bookings</span></a>
+        <a href="#" data-tab="users"><span>👥</span> <span>Users</span></a>
+        <div class="nav-section-title">Quick Links</div>
+        <a href="index.html"><span>🏠</span> <span>Main Site</span></a>
+        <a href="manager.html"><span>👔</span> <span>Manager Panel</span></a>
       </div>
       <div class="sidebar-footer">
-        <a onclick="logout()">Logout</a>
+        <a onclick="logout()"><span>🚪</span> <span>Logout</span></a>
       </div>
     </nav>
 
     <main class="main-content">
       <div class="page-header">
-        <h1>Admin Dashboard</h1>
-        <span class="admin-badge" id="roleBadge">Admin</span>
-      </div>
-
-      <div class="stats-grid">
-        <div class="stat-card primary">
-          <h3>Total Users</h3>
-          <div class="value" id="statUsers">0</div>
-        </div>
-        <div class="stat-card success">
-          <h3>Total Bookings</h3>
-          <div class="value" id="statBookings">0</div>
-        </div>
-        <div class="stat-card warning">
-          <h3>Pending</h3>
-          <div class="value" id="statPending">0</div>
-        </div>
-        <div class="stat-card">
-          <h3>Confirmed</h3>
-          <div class="value" id="statConfirmed">0</div>
+        <h1 id="pageTitle">Dashboard</h1>
+        <div class="header-right">
+          <button class="refresh-btn" onclick="refreshData()">
+            <span>🔄</span> Refresh
+          </button>
+          <span class="admin-badge" id="roleBadge">Admin</span>
         </div>
       </div>
 
-      <div class="data-table">
-        <div class="table-header">
-          <h2>All Bookings</h2>
-          <div class="filter-buttons">
-            <button class="filter-btn active" onclick="filterBookings('all')">All</button>
-            <button class="filter-btn" onclick="filterBookings('pending')">Pending</button>
-            <button class="filter-btn" onclick="filterBookings('confirmed')">Confirmed</button>
-            <button class="filter-btn" onclick="filterBookings('completed')">Completed</button>
+      <!-- Dashboard Tab -->
+      <div class="tab-content active" id="dashboardTab">
+        <div class="stats-grid">
+          <div class="stat-card primary">
+            <span class="stat-icon">👥</span>
+            <h3>Total Users</h3>
+            <div class="value" id="statUsers">0</div>
+          </div>
+          <div class="stat-card success">
+            <span class="stat-icon">📋</span>
+            <h3>Total Bookings</h3>
+            <div class="value" id="statBookings">0</div>
+          </div>
+          <div class="stat-card warning">
+            <span class="stat-icon">⏳</span>
+            <h3>Pending</h3>
+            <div class="value" id="statPending">0</div>
+          </div>
+          <div class="stat-card info">
+            <span class="stat-icon">✅</span>
+            <h3>Confirmed</h3>
+            <div class="value" id="statConfirmed">0</div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-icon">🎉</span>
+            <h3>Completed</h3>
+            <div class="value" id="statCompleted">0</div>
+          </div>
+          <div class="stat-card danger">
+            <span class="stat-icon">❌</span>
+            <h3>Cancelled</h3>
+            <div class="value" id="statCancelled">0</div>
           </div>
         </div>
-        <div class="table-wrapper">
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Customer</th>
-                <th>Phone</th>
-                <th>Package</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Assign</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="bookingsTable">
-              <tr><td colspan="8" class="no-data">Loading...</td></tr>
-            </tbody>
-          </table>
+
+        <div class="data-table">
+          <div class="table-header">
+            <h2>Recent Bookings</h2>
+            <a href="#" data-tab="bookings" class="filter-btn" onclick="switchTab('bookings')">View All →</a>
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Customer</th>
+                  <th>Package</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="recentBookingsTable">
+                <tr><td colspan="4" class="no-data">Loading...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bookings Tab -->
+      <div class="tab-content" id="bookingsTab">
+        <div class="data-table">
+          <div class="table-header">
+            <h2>All Bookings</h2>
+            <div class="table-actions">
+              <div class="search-box">
+                <input type="text" id="bookingSearch" placeholder="Search bookings..." onkeyup="searchBookings()">
+              </div>
+              <div class="filter-buttons">
+                <button class="filter-btn active" onclick="filterBookings('all')">All</button>
+                <button class="filter-btn" onclick="filterBookings('pending')">Pending</button>
+                <button class="filter-btn" onclick="filterBookings('confirmed')">Confirmed</button>
+                <button class="filter-btn" onclick="filterBookings('completed')">Completed</button>
+                <button class="filter-btn" onclick="filterBookings('cancelled')">Cancelled</button>
+              </div>
+            </div>
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Customer</th>
+                  <th>Phone</th>
+                  <th>Package</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Assigned To</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="bookingsTable">
+                <tr><td colspan="8" class="no-data"><span>📋</span>Loading bookings...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Users Tab -->
+      <div class="tab-content" id="usersTab">
+        <div class="data-table">
+          <div class="table-header">
+            <h2>User Management</h2>
+            <div class="table-actions">
+              <div class="search-box">
+                <input type="text" id="userSearch" placeholder="Search users..." onkeyup="searchUsers()">
+              </div>
+              <button class="btn btn-primary" onclick="openAddUserModal()" id="addUserBtn" style="display:none;">
+                + Add User
+              </button>
+            </div>
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Role</th>
+                  <th>Joined</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="usersTable">
+                <tr><td colspan="6" class="no-data"><span>👥</span>Loading users...</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </main>
   </div>
 
+  <!-- User Role Modal -->
+  <div class="modal-overlay" id="userModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="modalTitle">Edit User Role</h3>
+        <button class="modal-close" onclick="closeModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>User Name</label>
+          <input type="text" id="modalUserName" disabled>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="modalUserEmail" disabled>
+        </div>
+        <div class="form-group">
+          <label>Role</label>
+          <select id="modalUserRole">
+            <option value="user">User</option>
+            <option value="manager">Manager</option>
+            <option value="admin">Admin</option>
+            <option value="super_admin">Super Admin</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveUserRole()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Booking Details Modal -->
+  <div class="modal-overlay" id="bookingModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Booking Details</h3>
+        <button class="modal-close" onclick="closeBookingModal()">×</button>
+      </div>
+      <div class="modal-body" id="bookingModalBody">
+        <!-- Content will be populated dynamically -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeBookingModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
     import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-    import { getFirestore, collection, getDocs, query, orderBy, doc, updateDoc, getDoc, where } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+    import { getFirestore, collection, getDocs, query, orderBy, doc, updateDoc, getDoc, where, deleteDoc, limit } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
     const firebaseConfig = {
       apiKey: "AIzaSyCtyR68dG9TEI_C89PvsdrGmpkE6vCtV0s",
@@ -327,12 +857,56 @@
     const db = getFirestore(app);
 
     let allBookings = [];
+    let allUsers = [];
     let managers = [];
     let currentFilter = 'all';
+    let currentUser = null;
+    let currentUserRole = null;
+    let editingUserId = null;
+
+    // Toast notification
+    window.showToast = function(message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.innerHTML = `<span>${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span> ${message}`;
+      container.appendChild(toast);
+      setTimeout(() => toast.classList.add('show'), 10);
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    };
+
+    // Tab switching
+    window.switchTab = function(tabName) {
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+      document.getElementById(tabName + 'Tab').classList.add('active');
+      document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+      const titles = { dashboard: 'Dashboard', bookings: 'Bookings', users: 'User Management' };
+      document.getElementById('pageTitle').textContent = titles[tabName];
+    };
+
+    // Set up tab clicks
+    document.querySelectorAll('.sidebar-nav a[data-tab]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        switchTab(link.dataset.tab);
+      });
+    });
 
     window.logout = async function() {
       await signOut(auth);
       window.location.href = 'login.html';
+    };
+
+    window.refreshData = async function() {
+      showToast('Refreshing data...', 'info');
+      await loadManagers();
+      await loadBookings();
+      await loadUsers();
+      showToast('Data refreshed!', 'success');
     };
 
     window.filterBookings = function(status) {
@@ -342,23 +916,116 @@
       renderBookings();
     };
 
+    window.searchBookings = function() {
+      renderBookings();
+    };
+
+    window.searchUsers = function() {
+      renderUsers();
+    };
+
     window.updateStatus = async function(bookingId, newStatus) {
       try {
-        await updateDoc(doc(db, 'bookings', bookingId), { status: newStatus });
+        await updateDoc(doc(db, 'bookings', bookingId), { 
+          status: newStatus,
+          updatedAt: new Date().toISOString()
+        });
         const booking = allBookings.find(b => b.id === bookingId);
         if (booking) booking.status = newStatus;
         renderBookings();
+        renderRecentBookings();
         updateStats();
+        showToast(`Booking ${newStatus} successfully!`, 'success');
       } catch (error) {
-        alert('Error: ' + error.message);
+        showToast('Error: ' + error.message, 'error');
       }
     };
 
     window.assignManager = async function(bookingId, managerId) {
       try {
-        await updateDoc(doc(db, 'bookings', bookingId), { managerId: managerId || null });
+        await updateDoc(doc(db, 'bookings', bookingId), { 
+          managerId: managerId || null,
+          updatedAt: new Date().toISOString()
+        });
+        showToast('Manager assigned successfully!', 'success');
       } catch (error) {
-        alert('Error: ' + error.message);
+        showToast('Error: ' + error.message, 'error');
+      }
+    };
+
+    window.viewBooking = function(bookingId) {
+      const booking = allBookings.find(b => b.id === bookingId);
+      if (!booking) return;
+      
+      const manager = managers.find(m => m.id === booking.managerId);
+      const modalBody = document.getElementById('bookingModalBody');
+      modalBody.innerHTML = `
+        <div style="display:grid;gap:1rem;">
+          <div><strong>Booking ID:</strong> ${booking.id}</div>
+          <div><strong>Customer:</strong> ${booking.name}</div>
+          <div><strong>Phone:</strong> ${booking.phone}</div>
+          <div><strong>Email:</strong> ${booking.email || 'N/A'}</div>
+          <div><strong>Package:</strong> ${booking.tourPackage}</div>
+          <div><strong>Date:</strong> ${booking.date}</div>
+          <div><strong>Time:</strong> ${booking.time || 'N/A'}</div>
+          <div><strong>Status:</strong> <span class="status-badge status-${booking.status}">${booking.status}</span></div>
+          <div><strong>Assigned To:</strong> ${manager ? manager.name || manager.email : 'Not assigned'}</div>
+          <div><strong>Created:</strong> ${booking.createdAt ? new Date(booking.createdAt).toLocaleString() : 'N/A'}</div>
+          ${booking.notes ? `<div><strong>Notes:</strong> ${booking.notes}</div>` : ''}
+        </div>
+      `;
+      document.getElementById('bookingModal').classList.add('active');
+    };
+
+    window.closeBookingModal = function() {
+      document.getElementById('bookingModal').classList.remove('active');
+    };
+
+    window.editUserRole = function(userId) {
+      const user = allUsers.find(u => u.id === userId);
+      if (!user) return;
+      
+      editingUserId = userId;
+      document.getElementById('modalUserName').value = user.name || 'N/A';
+      document.getElementById('modalUserEmail').value = user.email;
+      document.getElementById('modalUserRole').value = user.role || 'user';
+      document.getElementById('userModal').classList.add('active');
+    };
+
+    window.closeModal = function() {
+      document.getElementById('userModal').classList.remove('active');
+      editingUserId = null;
+    };
+
+    window.saveUserRole = async function() {
+      if (!editingUserId) return;
+      
+      const newRole = document.getElementById('modalUserRole').value;
+      
+      try {
+        await updateDoc(doc(db, 'users', editingUserId), { role: newRole });
+        const user = allUsers.find(u => u.id === editingUserId);
+        if (user) user.role = newRole;
+        renderUsers();
+        closeModal();
+        showToast('User role updated successfully!', 'success');
+        await loadManagers();
+      } catch (error) {
+        showToast('Error: ' + error.message, 'error');
+      }
+    };
+
+    window.deleteUser = async function(userId) {
+      if (!confirm('Are you sure you want to delete this user?')) return;
+      
+      try {
+        await deleteDoc(doc(db, 'users', userId));
+        allUsers = allUsers.filter(u => u.id !== userId);
+        renderUsers();
+        updateStats();
+        showToast('User deleted successfully!', 'success');
+      } catch (error) {
+        showToast('Error: ' + error.message, 'error');
       }
     };
 
@@ -368,7 +1035,9 @@
         const snapshot = await getDocs(q);
         managers = [];
         snapshot.forEach(doc => managers.push({ id: doc.id, ...doc.data() }));
-      } catch (e) {}
+      } catch (e) {
+        console.error('Error loading managers:', e);
+      }
     }
 
     async function loadBookings() {
@@ -378,18 +1047,41 @@
         allBookings = [];
         snapshot.forEach(doc => allBookings.push({ id: doc.id, ...doc.data() }));
         renderBookings();
+        renderRecentBookings();
         updateStats();
       } catch (error) {
-        document.getElementById('bookingsTable').innerHTML = '<tr><td colspan="8" class="no-data">Error loading</td></tr>';
+        document.getElementById('bookingsTable').innerHTML = '<tr><td colspan="8" class="no-data"><span>❌</span>Error loading bookings</td></tr>';
+      }
+    }
+
+    async function loadUsers() {
+      try {
+        const q = query(collection(db, 'users'), orderBy('createdAt', 'desc'));
+        const snapshot = await getDocs(q);
+        allUsers = [];
+        snapshot.forEach(doc => allUsers.push({ id: doc.id, ...doc.data() }));
+        renderUsers();
+      } catch (error) {
+        document.getElementById('usersTable').innerHTML = '<tr><td colspan="6" class="no-data"><span>❌</span>Error loading users</td></tr>';
       }
     }
 
     function renderBookings() {
       const tbody = document.getElementById('bookingsTable');
+      const searchTerm = document.getElementById('bookingSearch').value.toLowerCase();
+      
       let filtered = currentFilter === 'all' ? allBookings : allBookings.filter(b => b.status === currentFilter);
       
+      if (searchTerm) {
+        filtered = filtered.filter(b => 
+          b.name?.toLowerCase().includes(searchTerm) ||
+          b.phone?.includes(searchTerm) ||
+          b.tourPackage?.toLowerCase().includes(searchTerm)
+        );
+      }
+      
       if (filtered.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="8" class="no-data">No bookings found</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="8" class="no-data"><span>📋</span>No bookings found</td></tr>';
         return;
       }
       
@@ -398,17 +1090,113 @@
         const opts = managers.map(m => `<option value="${m.id}" ${b.managerId === m.id ? 'selected' : ''}>${m.name || m.email}</option>`).join('');
         html += `
           <tr>
-            <td style="font-family:monospace;font-size:0.8rem;">${b.id.substring(0,8)}...</td>
-            <td>${b.name}</td>
+            <td style="font-family:monospace;font-size:0.8rem;color:#64748b;">${b.id.substring(0,8)}...</td>
+            <td>
+              <div class="user-info">
+                <div class="user-avatar">${(b.name || 'U').charAt(0).toUpperCase()}</div>
+                <div class="user-details">
+                  <h4>${b.name}</h4>
+                </div>
+              </div>
+            </td>
             <td>${b.phone}</td>
             <td>${b.tourPackage}</td>
             <td>${b.date}</td>
             <td><span class="status-badge status-${b.status}">${b.status}</span></td>
-            <td><select class="manager-select" onchange="assignManager('${b.id}',this.value)"><option value="">--</option>${opts}</select></td>
             <td>
-              ${b.status === 'pending' ? `<button class="action-btn confirm" onclick="updateStatus('${b.id}','confirmed')">✓</button>` : ''}
-              ${b.status === 'confirmed' ? `<button class="action-btn complete" onclick="updateStatus('${b.id}','completed')">✓✓</button>` : ''}
-              ${b.status !== 'cancelled' && b.status !== 'completed' ? `<button class="action-btn cancel" onclick="updateStatus('${b.id}','cancelled')">✗</button>` : ''}
+              <select class="manager-select" onchange="assignManager('${b.id}',this.value)">
+                <option value="">Not assigned</option>
+                ${opts}
+              </select>
+            </td>
+            <td>
+              <button class="action-btn view" onclick="viewBooking('${b.id}')" title="View">👁️</button>
+              ${b.status === 'pending' ? `<button class="action-btn confirm" onclick="updateStatus('${b.id}','confirmed')" title="Confirm">✓</button>` : ''}
+              ${b.status === 'confirmed' ? `<button class="action-btn complete" onclick="updateStatus('${b.id}','completed')" title="Complete">✓✓</button>` : ''}
+              ${b.status !== 'cancelled' && b.status !== 'completed' ? `<button class="action-btn cancel" onclick="updateStatus('${b.id}','cancelled')" title="Cancel">✗</button>` : ''}
+            </td>
+          </tr>
+        `;
+      });
+      tbody.innerHTML = html;
+    }
+
+    function renderRecentBookings() {
+      const tbody = document.getElementById('recentBookingsTable');
+      const recent = allBookings.slice(0, 5);
+      
+      if (recent.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" class="no-data">No recent bookings</td></tr>';
+        return;
+      }
+      
+      let html = '';
+      recent.forEach(b => {
+        html += `
+          <tr>
+            <td>
+              <div class="user-info">
+                <div class="user-avatar">${(b.name || 'U').charAt(0).toUpperCase()}</div>
+                <div class="user-details">
+                  <h4>${b.name}</h4>
+                  <p>${b.phone}</p>
+                </div>
+              </div>
+            </td>
+            <td>${b.tourPackage}</td>
+            <td>${b.date}</td>
+            <td><span class="status-badge status-${b.status}">${b.status}</span></td>
+          </tr>
+        `;
+      });
+      tbody.innerHTML = html;
+    }
+
+    function renderUsers() {
+      const tbody = document.getElementById('usersTable');
+      const searchTerm = document.getElementById('userSearch')?.value?.toLowerCase() || '';
+      
+      let filtered = allUsers;
+      if (searchTerm) {
+        filtered = filtered.filter(u => 
+          u.name?.toLowerCase().includes(searchTerm) ||
+          u.email?.toLowerCase().includes(searchTerm) ||
+          u.phone?.includes(searchTerm)
+        );
+      }
+      
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="no-data"><span>👥</span>No users found</td></tr>';
+        return;
+      }
+      
+      let html = '';
+      filtered.forEach(u => {
+        const role = u.role || 'user';
+        const joinDate = u.createdAt ? new Date(u.createdAt).toLocaleDateString() : 'N/A';
+        const canEdit = currentUserRole === 'super_admin' || (currentUserRole === 'admin' && role !== 'super_admin' && role !== 'admin');
+        
+        html += `
+          <tr>
+            <td>
+              <div class="user-info">
+                <div class="user-avatar">${(u.name || u.email || 'U').charAt(0).toUpperCase()}</div>
+                <div class="user-details">
+                  <h4>${u.name || 'No name'}</h4>
+                </div>
+              </div>
+            </td>
+            <td>${u.email}</td>
+            <td>${u.phone || 'N/A'}</td>
+            <td><span class="role-badge role-${role}">${role.replace('_', ' ')}</span></td>
+            <td>${joinDate}</td>
+            <td>
+              ${canEdit ? `
+                <button class="action-btn edit" onclick="editUserRole('${u.id}')" title="Edit Role">✏️</button>
+              ` : ''}
+              ${currentUserRole === 'super_admin' && u.id !== currentUser.uid ? `
+                <button class="action-btn delete" onclick="deleteUser('${u.id}')" title="Delete">🗑️</button>
+              ` : ''}
             </td>
           </tr>
         `;
@@ -417,13 +1205,12 @@
     }
 
     async function updateStats() {
-      try {
-        const usersSnapshot = await getDocs(collection(db, 'users'));
-        document.getElementById('statUsers').textContent = usersSnapshot.size;
-      } catch (e) {}
+      document.getElementById('statUsers').textContent = allUsers.length;
       document.getElementById('statBookings').textContent = allBookings.length;
       document.getElementById('statPending').textContent = allBookings.filter(b => b.status === 'pending').length;
       document.getElementById('statConfirmed').textContent = allBookings.filter(b => b.status === 'confirmed').length;
+      document.getElementById('statCompleted').textContent = allBookings.filter(b => b.status === 'completed').length;
+      document.getElementById('statCancelled').textContent = allBookings.filter(b => b.status === 'cancelled').length;
     }
 
     async function getUserRole(uid) {
@@ -440,18 +1227,27 @@
         return;
       }
 
+      currentUser = user;
       const role = await getUserRole(user.uid);
+      currentUserRole = role;
 
       if (role !== 'admin' && role !== 'super_admin') {
-        window.location.href = 'login.html';
+        showToast('Access denied. Admin privileges required.', 'error');
+        setTimeout(() => window.location.href = 'login.html', 2000);
         return;
       }
 
       document.getElementById('loader').classList.add('hidden');
       document.getElementById('adminPanel').classList.remove('hidden');
-      document.getElementById('roleBadge').textContent = role === 'super_admin' ? 'Super Admin' : 'Admin';
+      document.getElementById('roleBadge').textContent = role === 'super_admin' ? '👑 Super Admin' : '🔧 Admin';
+      
+      if (role === 'super_admin') {
+        document.getElementById('addUserBtn').style.display = 'block';
+      }
+
       await loadManagers();
       await loadBookings();
+      await loadUsers();
     });
   </script>
 </body>
