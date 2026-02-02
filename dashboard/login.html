@@ -167,4 +167,14 @@
 
       const role = snap.data().role;
 
-      if (role === "admin"
+      if (role === "admin" || role === "super_admin") {
+        window.location.href = "/dashboard/admin.html";
+      } else if (role === "manager") {
+        window.location.href = "/dashboard/manager.html";
+      } else {
+        window.location.href = "/dashboard/index.html";
+      }
+    });
+  </script>
+</body>
+</html>
