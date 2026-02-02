@@ -4,9 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Baba Banarasi - Varanasi Scooter Darshan</title>
-  <meta name="description" content="Experience the real Banaras on a scooter with Baba Banarasi">
+  <meta name="description" content="Experience the real Banaras with Baba Banarasi">
   
-  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
   
   <style>
@@ -18,7 +17,6 @@
       line-height: 1.6;
     }
 
-    /* Your existing styles remain exactly the same */
     header {
       background: rgba(255,255,255,0.95);
       backdrop-filter: blur(10px);
@@ -57,10 +55,8 @@
       font-size: 22px;
     }
 
-    /* ============================================= */
-    /* SIGN IN / SIGN UP BUTTONS - TOP RIGHT CORNER */
-    /* ============================================= */
-    .auth-container {
+    /* ===== SIGN IN / SIGN UP BUTTONS - TOP RIGHT ===== */
+    #authContainer {
       position: fixed;
       top: 20px;
       right: 20px;
@@ -68,72 +64,61 @@
       font-family: 'Poppins', sans-serif;
     }
 
-    .auth-buttons,
-    .user-menu {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .auth-btn,
-    .user-name-btn,
-    .logout-btn {
-      padding: 10px 20px;
+    .auth-btn {
+      padding: 11px 22px;
       border-radius: 30px;
       font-weight: 600;
-      font-size: 14px;
+      font-size: 14.5px;
       text-decoration: none;
       transition: all 0.3s ease;
       cursor: pointer;
       border: none;
-      white-space: nowrap;
     }
 
-    .signin-btn {
+    .signin {
       background: transparent;
       color: #EA580C;
       border: 2.5px solid #EA580C;
     }
-    .signin-btn:hover {
+    .signin:hover {
       background: #EA580C;
       color: white;
     }
 
-    .signup-btn {
+    .signup {
       background: #EA580C;
       color: white;
       border: 2.5px solid #EA580C;
       box-shadow: 0 4px 15px rgba(234, 88, 12, 0.3);
     }
-    .signup-btn:hover {
+    .signup:hover {
       background: #c2410c;
       transform: translateY(-2px);
     }
 
-    .user-name-btn {
+    .user-greeting {
       background: rgba(255,255,255,0.95);
       color: #333;
       border: 2px solid #e2e8f0;
       backdrop-filter: blur(10px);
+      padding: 11px 20px;
+      border-radius: 30px;
+      font-weight: 600;
     }
-    .logout-btn {
+
+    .logout {
       background: #ef4444;
       color: white;
+      margin-left: 10px;
     }
-    .logout-btn:hover {
-      background: #dc2626;
-    }
+    .logout:hover { background: #dc2626; }
 
     @media (max-width: 768px) {
-      .auth-container { top: 15px; right: 15px; }
-      .auth-btn, .user-name-btn, .logout-btn {
-        padding: 8px 14px;
-        font-size: 13px;
-      }
+      #authContainer { top: 12px; right: 12px; }
+      .auth-btn { padding: 9px 16px; font-size: 13.5px; }
     }
-    /* ============================================= */
+    /* ================================================= */
 
-    /* Rest of your existing styles... */
     .hero {
       padding: 10rem 2rem 6rem;
       text-align: center;
@@ -144,8 +129,8 @@
     .hero::before {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.5);
+      inset: 0;
+      background: rgba(0,0,0,0.55);
     }
     .hero-content {
       position: relative;
@@ -153,60 +138,30 @@
       margin: 0 auto;
     }
     .hero h1 {
-      font-size: 3.5rem;
+      font-size: 3.8rem;
       margin-bottom: 1rem;
       font-family: 'Noto Sans Devanagari', sans-serif;
     }
     .hero p {
-      font-size: 1.3rem;
-      margin-bottom: 2rem;
+      font-size: 1.35rem;
+      margin-bottom: 2.5rem;
       opacity: 0.95;
     }
     .cta-btn {
       display: inline-block;
       background: #EA580C;
       color: white;
-      padding: 16px 40px;
+      padding: 18px 45px;
       border-radius: 50px;
-      font-size: 1.2rem;
+      font-size: 1.25rem;
       font-weight: 600;
       text-decoration: none;
-      box-shadow: 0 8px 25px rgba(234,88,12,0.4);
+      box-shadow: 0 10px 30px rgba(234,88,12,0.4);
       transition: all 0.3s;
     }
     .cta-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 15px 35px rgba(234,88,12,0.5);
-    }
-
-    /* Add your other sections here (features, testimonials, etc.) */
-    .features {
-      padding: 4rem 2rem;
-      background: white;
-      text-align: center;
-    }
-    .features h2 {
-      font-size: 2.5rem;
-      margin-bottom: 3rem;
-      color: #EA580C;
-    }
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    .feature-card {
-      padding: 2rem;
-      border-radius: 16px;
-      background: #fffbeb;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-    }
-    .feature-card h3 {
-      font-size: 1.4rem;
-      margin: 1rem 0;
-      color: #EA580C;
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(234,88,12,0.5);
     }
 
     footer {
@@ -214,23 +169,24 @@
       color: white;
       text-align: center;
       padding: 3rem 2rem;
+      margin-top: 5rem;
     }
   </style>
 </head>
 <body>
 
-  <!-- TOP-RIGHT SIGN IN / SIGN UP BUTTONS -->
-  <div class="auth-container" id="authButtons">
-    <div class="auth-buttons">
-      <a href="/login.html" class="auth-btn signin-btn">Sign In</a>
-      <a href="/login.html?mode=signup" class="auth-btn signup-btn">Sign Up</a>
+  <!-- TOP-RIGHT AUTH BUTTONS -->
+  <div id="authContainer">
+    <!-- Not logged in -->
+    <div id="notLoggedIn">
+      <a href="/login.html" class="auth-btn signin">Sign In</a>
+      <a href="/login.html?mode=signup" class="auth-btn signup">Sign Up</a>
     </div>
-  </div>
-
-  <div class="auth-container" id="userMenu" style="display:none;">
-    <div class="user-menu">
-      <button class="user-name-btn" id="userNameBtn">Namaste</button>
-      <button class="logout-btn" id="logoutBtn">Logout</button>
+    
+    <!-- Logged in -->
+    <div id="loggedIn" style="display:none;">
+      <span class="user-greeting" id="greetingText">Namaste</span>
+      <button class="auth-btn logout" id="logoutButton">Logout</button>
     </div>
   </div>
 
@@ -251,33 +207,11 @@
     </div>
   </section>
 
-  <section class="features">
-    <h2>Why Choose Baba Banarasi?</h2>
-    <div class="feature-grid">
-      <div class="feature-card">
-        <h3>Authentic Experience</h3>
-        <p>See the hidden ghats and temples only locals know</p>
-      </div>
-      <div class="feature-card">
-        <h3>Expert Local Guide</h3>
-        <p>Your personal storyteller of Banaras</p>
-      </div>
-      <div class="feature-card">
-        <h3>Best Price Guarantee</h3>
-        <p>Full Day ₹1,999 | Half Day ₹999</p>
-      </div>
-      <div class="feature-card">
-        <h3>100% Safe & Comfortable</h3>
-        <p>Well-maintained scooters & helmets</p>
-      </div>
-    </div>
-  </section>
-
   <footer>
-    <p>&copy; 2024 Baba Banarasi • Call/WhatsApp: <a href="tel:+917991301043">+91 79913 01043</a></p>
+    <p>&copy; 2024 Baba Banarasi • Call/WhatsApp: <a href="tel:+917991301043" style="color:#60a5fa;">+91 79913 01043</a></p>
   </footer>
 
-  <!-- FIREBASE AUTH SCRIPT - AUTO SHOW/HIDE BUTTONS -->
+  <!-- FIREBASE SCRIPT - AUTO SHOW/HIDE BUTTONS -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -294,29 +228,25 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    const authButtons = document.getElementById('authButtons');
-    const userMenu = document.getElementById('userMenu');
-    const userNameBtn = document.getElementById('userNameBtn');
-    const logoutBtn = document.getElementById('logoutBtn');
+    const notLoggedIn = document.getElementById('notLoggedIn');
+    const loggedIn = document.getElementById('loggedIn');
+    const greetingText = document.getElementById('greetingText');
+    const logoutButton = document.getElementById('logoutButton');
 
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        authButtons.style.display = 'none';
-        userMenu.style.display = 'flex';
+        notLoggedIn.style.display = 'none';
+        loggedIn.style.display = 'block';
         
         const name = user.displayName || user.email.split('@')[0];
-        userNameBtn.textContent = `Namaste, ${name.split(' ')[0]} 🙏`;
-        
-        userNameBtn.onclick = () => {
-          window.location.href = '/dashboard/index.html';
-        };
+        greetingText.textContent = `Namaste, ${name.split(' ')[0]} 🙏`;
       } else {
-        authButtons.style.display = 'flex';
-        userMenu.style.display = 'none';
+        notLoggedIn.style.display = 'block';
+        loggedIn.style.display = 'none';
       }
     });
 
-    logoutBtn.onclick = async () => {
+    logoutButton.onclick = async () => {
       await signOut(auth);
       window.location.reload();
     };
