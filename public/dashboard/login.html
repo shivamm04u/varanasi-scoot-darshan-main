@@ -94,87 +94,77 @@
     <div class="loader" id="loader">Checking authentication…</div>
   </div>
 
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { 
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { 
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-  <script>
-    // 🔥 YOUR EXISTING FIREBASE CONFIG (UNCHANGED)
-    const firebaseConfig = {
-      apiKey: "AIzaSyCtyR68dG9TEI_C89PvsdrGmpkE6vCtV0s",
-      authDomain: "varanasi-scoot-darshan.firebaseapp.com",
-      projectId: "varanasi-scoot-darshan",
-      storageBucket: "varanasi-scoot-darshan.firebasestorage.app",
-      messagingSenderId: "437910870938",
-      appId: "1:437910870938:web:cb7b3043bcc39216143823"
-    };
+const firebaseConfig = {
+  apiKey: "AIzaSyCtyR68dG9TEI_C89PvsdrGmpkE6vCtV0s",
+  authDomain: "varanasi-scoot-darshan.firebaseapp.com",
+  projectId: "varanasi-scoot-darshan",
+  storageBucket: "varanasi-scoot-darshan.firebasestorage.app",
+  messagingSenderId: "437910870938",
+  appId: "1:437910870938:web:cb7b3043bcc39216143823"
+};
 
-    firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+const email = document.getElementById("email");
+const password = document.getElementById("password");
 
-    let isLogin = true;
+document.getElementById("loginBtn").onclick = async (e) => {
+  e.preventDefault();
+  try {
+    const cred = await signInWithEmailAndPassword(auth, email.value, password.value);
+    redirectByRole(cred.user.uid);
+  } catch (err) {
+    alert(err.message);
+  }
+};
 
-    const title = document.getElementById("title");
-    const submitBtn = document.getElementById("submitBtn");
-    const toggleMode = document.getElementById("toggleMode");
-    const errorBox = document.getElementById("error");
-    const loader = document.getElementById("loader");
+document.getElementById("signupBtn").onclick = async (e) => {
+  e.preventDefault();
+  try {
+    const cred = await createUserWithEmailAndPassword(auth, email.value, password.value);
 
-    toggleMode.onclick = () => {
-      isLogin = !isLogin;
-      title.innerText = isLogin ? "Login" : "Sign Up";
-      submitBtn.innerText = isLogin ? "Login" : "Create Account";
-      toggleMode.innerText = isLogin
-        ? "Don’t have an account? Sign up"
-        : "Already have an account? Login";
-      errorBox.innerText = "";
-    };
-
-    submitBtn.onclick = async () => {
-      const email = email.value;
-      const password = document.getElementById("password").value;
-      errorBox.innerText = "";
-
-      try {
-        if (isLogin) {
-          await auth.signInWithEmailAndPassword(email, password);
-        } else {
-          const cred = await auth.createUserWithEmailAndPassword(email, password);
-          await db.collection("users").doc(cred.user.uid).set({
-            email,
-            role: "user",
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-          });
-        }
-      } catch (err) {
-        errorBox.innerText = err.message;
-      }
-    };
-
-    auth.onAuthStateChanged(async (user) => {
-      if (!user) return;
-
-      loader.style.display = "block";
-
-      const snap = await db.collection("users").doc(user.uid).get();
-      if (!snap.exists) {
-        errorBox.innerText = "User role not found.";
-        return;
-      }
-
-      const role = snap.data().role;
-
-      if (role === "admin" || role === "super_admin") {
-        window.location.href = "/dashboard/admin.html";
-      } else if (role === "manager") {
-        window.location.href = "/dashboard/manager.html";
-      } else {
-        window.location.href = "/dashboard/index.html";
-      }
+    await setDoc(doc(db, "users", cred.user.uid), {
+      email: email.value,
+      role: "user",
+      createdAt: new Date()
     });
-  </script>
+
+    window.location.href = "/dashboard/index.html";
+  } catch (err) {
+    alert(err.message);
+  }
+};
+
+async function redirectByRole(uid) {
+  const snap = await getDoc(doc(db, "users", uid));
+  if (!snap.exists()) return alert("No role found");
+
+  const role = snap.data().role;
+
+  if (role === "super_admin" || role === "admin") {
+    window.location.href = "/dashboard/admin.html";
+  } else if (role === "manager") {
+    window.location.href = "/dashboard/manager.html";
+  } else {
+    window.location.href = "/dashboard/index.html";
+  }
+}
+</script>
 </body>
 </html>
