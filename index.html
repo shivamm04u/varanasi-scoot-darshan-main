@@ -3,24 +3,61 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- TODO: Set the document title to the name of your application -->
-    <title>Lovable App</title>
-    <meta name="description" content="Lovable Generated Project" />
-    <meta name="author" content="Lovable" />
+    <title>Baba Banarasi - Varanasi Scooter Darshan</title>
+    <meta name="description" content="Experience real Banaras with Baba Banarasi" />
 
-    <!-- TODO: Update og:title to match your application name -->
-    <meta property="og:title" content="Lovable App" />
-    <meta property="og:description" content="Lovable Generated Project" />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+      .auth-container {
+        position: fixed;
+        top: 16px;
+        right: 16px;
+        z-index: 999999;
+        font-family: 'Poppins', sans-serif;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .auth-btn {
+        padding: 11px 22px;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 14px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+        box-shadow: 0 4px 15px rgba(234,88,12,0.3);
+      }
+      .signin {
+        background: transparent;
+        color: #EA580C;
+        border: 2.5px solid #EA580C;
+      }
+      .signin:hover { background: #EA580C; color: white; }
+      .signup {
+        background: #EA580C;
+        color: white;
+      }
+      .signup:hover { background: #c2410c; transform: translateY(-2px); }
 
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@Lovable" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+      @media (max-width: 480px) {
+        .auth-container { top: 12px; right: 12px; gap: 8px; }
+        .auth-btn { padding: 9px 16px; font-size: 13px; }
+      }
+    </style>
   </head>
 
   <body>
     <div id="root"></div>
+
+    <div class="auth-container">
+      <a href="/login.html" class="auth-btn signin">Sign In</a>
+      <a href="/login.html?mode=signup" class="auth-btn signup">Sign Up</a>
+    </div>
+
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
