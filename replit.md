@@ -67,6 +67,31 @@ npm run build
 
 Static files are output to the `dist` directory.
 
+## Firebase Dashboard System
+
+A standalone dashboard for managing bookings, located in `/dashboard/`:
+
+- **User Dashboard** (`/dashboard/index.html`) - Register, login, book tours, view booking history
+- **Admin Panel** (`/dashboard/admin.html`) - Manage all bookings, assign managers, update status
+- **Manager Panel** (`/dashboard/manager.html`) - View and manage assigned bookings
+
+### User Roles
+- `user` - Own bookings only
+- `manager` - Assigned bookings
+- `admin` - All bookings + user management
+- `super_admin` - Full system access
+
+### Firebase Project
+- Project: varanasi-scoot-darshan
+- Authentication: Email/Password
+- Database: Firestore
+
+## Recent Changes (Feb 2, 2026)
+
+- Added complete Firebase dashboard system (user/admin/manager panels)
+- Created Firestore security rules for role-based access
+- Updated location images with authentic photos
+
 ## Recent Changes (Jan 31, 2026)
 
 - Updated contact info (phone, email, Instagram)
@@ -75,7 +100,7 @@ Static files are output to the `dist` directory.
 - Fixed /locations route (created LocationsPage)
 - Replaced "Foreigner" with "Bagpackerrs" throughout
 - Rebuilt Locations page with Morning/Afternoon session groupings
-- Added stock images for all 13 sacred locations (in src/assets/locations/)
+- Added real photos for all 13 sacred locations (in src/assets/locations/)
 - Removed Scooter Type selection from booking form
 - Enhanced Testimonials with 12 reviews and "Show More" button
 - Default booking duration is now Full Day
