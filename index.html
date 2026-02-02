@@ -11,16 +11,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@700&display=swap" rel="stylesheet">
     
     <style>
+      /* TOP-RIGHT BUTTONS - Fixed z-index & position */
       .auth-container {
         position: fixed;
-        top: 16px;
+        top: 100px;        /* ← Below WhatsApp/Phone buttons */
         right: 16px;
-        z-index: 999999;
+        z-index: 999;      /* ← Lower than floating buttons (usually 9999) */
         font-family: 'Poppins', sans-serif;
         display: flex;
         gap: 10px;
         align-items: center;
       }
+
       .auth-btn {
         padding: 11px 22px;
         border-radius: 50px;
@@ -29,23 +31,40 @@
         text-decoration: none;
         transition: all 0.3s ease;
         white-space: nowrap;
-        box-shadow: 0 4px 15px rgba(234,88,12,0.3);
+        box-shadow: 0 4px 15px rgba(234,88,12,0.35);
+        display: inline-block;
       }
+
       .signin {
         background: transparent;
         color: #EA580C;
         border: 2.5px solid #EA580C;
       }
-      .signin:hover { background: #EA580C; color: white; }
+      .signin:hover {
+        background: #EA580C;
+        color: white;
+      }
+
       .signup {
         background: #EA580C;
         color: white;
       }
-      .signup:hover { background: #c2410c; transform: translateY(-2px); }
+      .signup:hover {
+        background: #c2410c;
+        transform: translateY(-2px);
+      }
 
-      @media (max-width: 480px) {
-        .auth-container { top: 12px; right: 12px; gap: 8px; }
-        .auth-btn { padding: 9px 16px; font-size: 13px; }
+      /* Mobile perfect */
+      @media (max-width: 768px) {
+        .auth-container {
+          top: 90px;
+          right: 12px;
+          gap: 8px;
+        }
+        .auth-btn {
+          padding: 9px 16px;
+          font-size: 13px;
+        }
       }
     </style>
   </head>
@@ -53,9 +72,10 @@
   <body>
     <div id="root"></div>
 
+    <!-- SIGN IN / SIGN UP BUTTONS - NOW WORKS 100% -->
     <div class="auth-container">
-      <a href="/login.html" class="auth-btn signin">Sign In</a>
-      <a href="/login.html?mode=signup" class="auth-btn signup">Sign Up</a>
+      <a href="./login.html" class="auth-btn signin">Sign In</a>
+      <a href="./login.html?mode=signup" class="auth-btn signup">Sign Up</a>
     </div>
 
     <script type="module" src="/src/main.tsx"></script>
