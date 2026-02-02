@@ -4,11 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Baba Banarasi - Varanasi Scooter Darshan</title>
+  <meta name="description" content="Experience the real Banaras with Baba Banarasi">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
   
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Poppins', sans-serif; background: #fff7ed; color: #333; line-height: 1.6; }
+    body { 
+      font-family: 'Poppins', sans-serif; 
+      background: linear-gradient(135deg, #FFF7ED 0%, #FFEDD5 100%);
+      color: #333; 
+      line-height: 1.6;
+    }
 
     header {
       background: rgba(255,255,255,0.95);
@@ -48,7 +57,7 @@
       font-size: 22px;
     }
 
-    /* TOP-RIGHT AUTH BUTTONS – THIS IS THE ONLY NEW THING */
+    /* TOP-RIGHT AUTH BUTTONS */
     .auth-container {
       position: fixed;
       top: 20px;
@@ -86,6 +95,7 @@
       background: rgba(255,255,255,0.95);
       color: #333;
       border: 2px solid #e2e8f0;
+      backdrop-filter: blur(10px);
     }
     .logout-btn {
       background: #ef4444;
@@ -97,28 +107,192 @@
       .auth-container { top: 15px; right: 15px; }
       .auth-btn, .user-btn, .logout-btn { padding: 8px 16px; font-size: 13px; }
     }
-    /* END OF NEW CODE */
 
-    .hero { padding: 10rem 2rem 6rem; text-align: center; background: url('https://images.unsplash.com/photo-1562502009-9c7383b79c8d') center/cover; color: white; position: relative; }
-    .hero::before { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.5); }
-    .hero-content { position: relative; max-width: 800px; margin: 0 auto; }
-    .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; font-family: 'Noto Sans Devanagari', sans-serif; }
-    .hero p { font-size: 1.3rem; margin-bottom: 2rem; }
+    .hero {
+      padding: 10rem 2rem 6rem;
+      text-align: center;
+      background: url('https://images.unsplash.com/photo-1599663253133-1e3c44f2f2d5?q=80&w=2070') center/cover no-repeat;
+      color: white;
+      position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+    }
+    .hero-content {
+      position: relative;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .hero h1 {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      font-family: 'Noto Sans Devanagari', sans-serif;
+    }
+    .hero p {
+      font-size: 1.4rem;
+      margin-bottom: 2.5rem;
+      opacity: 0.95;
+    }
     .cta-btn {
       display: inline-block;
       background: #EA580C;
       color: white;
-      padding: 16px 40px;
+      padding: 18px 50px;
       border-radius: 50px;
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       font-weight: 600;
       text-decoration: none;
-      box-shadow: 0 8px 25px rgba(234,88,12,0.4);
+      box-shadow: 0 10px 30px rgba(234,88,12,0.5);
+      transition: all 0.3s;
     }
-    .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(234,88,12,0.5); }
+    .cta-btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(234,88,12,0.6);
+    }
 
-    /* Your other sections remain exactly the same */
+    .features {
+      padding: 6rem 2rem;
+      background: white;
+      text-align: center;
+    }
+    .features h2 {
+      font-size: 2.8rem;
+      margin-bottom: 4rem;
+      color: #EA580C;
+    }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .feature-card {
+      padding: 2.5rem;
+      border-radius: 20px;
+      background: #fffbeb;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      transition: transform 0.3s;
+    }
+    .feature-card:hover { transform: translateY(-10px); }
+    .feature-card h3 {
+      font-size: 1.5rem;
+      margin: 1.5rem 0;
+      color: #EA580C;
+    }
+
     footer {
       background: #1e293b;
       color: white;
-      text-align: 
+      text-align: center;
+      padding: 4rem 2rem;
+      font-size: 1.1rem;
+    }
+    footer a { color: #60a5fa; text-decoration: none; }
+  </style>
+</head>
+<body>
+
+  <!-- TOP-RIGHT SIGN IN / SIGN UP -->
+  <div class="auth-container" id="authButtons">
+    <div class="auth-buttons">
+      <a href="/login.html" class="auth-btn signin-btn">Sign In</a>
+      <a href="/login.html?mode=signup" class="auth-btn signup-btn">Sign Up</a>
+    </div>
+  </div>
+
+  <div class="auth-container" id="userMenu" style="display:none;">
+    <div class="user-menu">
+      <button class="user-btn" id="userNameBtn">Namaste</button>
+      <button class="logout-btn" id="logoutBtn">Logout</button>
+    </div>
+  </div>
+
+  <header>
+    <div class="header-content">
+      <a href="/" class="logo">
+        <div class="logo-icon">🛵</div>
+        <span>Baba Banarasi</span>
+      </a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1>बाबा बनारसी</h1>
+      <p>Experience the real soul of Varanasi on a scooter with a local guide</p>
+      <a href="/login.html?mode=signup" class="cta-btn">Book Your Darshan Now</a>
+    </div>
+  </section>
+
+  <section class="features">
+    <h2>Why Choose Baba Banarasi?</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h3>🛕 Authentic Experience</h3>
+        <p>See the hidden ghats and temples only locals know</p>
+      </div>
+      <div class="feature-card">
+        <h3>👨‍🏫 Expert Local Guide</h3>
+        <p>Your personal storyteller of Banaras</p>
+      </div>
+      <div class="feature-card">
+        <h3>💰 Best Price Guarantee</h3>
+        <p>Full Day ₹1,999 | Half Day ₹999</p>
+      </div>
+      <div class="feature-card">
+        <h3>🛡️ 100% Safe & Comfortable</h3>
+        <p>Well-maintained scooters & helmets</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2024 Baba Banarasi • Call/WhatsApp: <a href="tel:+917991301043">+91 79913 01043</a></p>
+  </footer>
+
+  <!-- FIREBASE AUTH – AUTO SHOW/HIDE BUTTONS -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCtyR68dG9TEI_C89PvsdrGmpkE6vCtV0s",
+      authDomain: "varanasi-scoot-darshan.firebaseapp.com",
+      projectId: "varanasi-scoot-darshan",
+      storageBucket: "varanasi-scoot-darshan.firebasestorage.app",
+      messagingSenderId: "437910870938",
+      appId: "1:437910870938:web:cb7b3043bcc39216143823"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const authButtons = document.getElementById('authButtons');
+    const userMenu = document.getElementById('userMenu');
+    const userNameBtn = document.getElementById('userNameBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        authButtons.style.display = 'none';
+        userMenu.style.display = 'flex';
+        const name = user.displayName || user.email.split('@')[0];
+        userNameBtn.textContent = `Namaste, ${name.split(' ')[0]} 🙏`;
+        userNameBtn.onclick = () => location.href = '/dashboard/index.html';
+      } else {
+        authButtons.style.display = 'flex';
+        userMenu.style.display = 'none';
+      }
+    });
+
+    logoutBtn.onclick = async () => {
+      await signOut(auth);
+      location.reload();
+    };
+  </script>
+</body>
+</html>
