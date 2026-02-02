@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Manager Command Center - Varanasi Scoot Darshan</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -13,7 +13,7 @@
     }
 
     :root {
-      /* 2026 Color Palette - Inspired by Varanasi's spiritual essence */
+      /* 2026 Color Palette - Varanasi Spiritual Essence */
       --primary-glow: #A78BFA;
       --primary-deep: #7C3AED;
       --accent-sky: #38BDF8;
@@ -34,10 +34,16 @@
       --text-secondary: #94A3B8;
       --text-muted: #64748B;
       
+      /* Status Colors */
+      --success: #10B981;
+      --warning: #FBBF24;
+      --danger: #EF4444;
+      --info: #38BDF8;
+      
       /* Gradients */
       --gradient-primary: linear-gradient(135deg, #A78BFA 0%, #38BDF8 100%);
       --gradient-accent: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%);
-      --gradient-surface: linear-gradient(145deg, #1E293B 0%, #0F172A 100%);
+      --gradient-danger: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
       
       /* Shadows & Glows */
       --glow-primary: 0 0 40px rgba(167, 139, 250, 0.3);
@@ -102,8 +108,8 @@
       display: flex;
       align-items: center;
       gap: 15px;
-      margin-bottom: 3rem;
-      padding-bottom: 2rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
       border-bottom: 1px solid var(--glass-border);
     }
 
@@ -169,6 +175,7 @@
     .user-email {
       font-size: 0.9rem;
       color: var(--text-secondary);
+      word-break: break-all;
     }
 
     /* Navigation */
@@ -185,6 +192,7 @@
       position: relative;
       overflow: hidden;
       font-weight: 500;
+      cursor: pointer;
     }
 
     .nav-item::before {
@@ -224,9 +232,27 @@
       font-size: 1.3rem;
     }
 
+    .notification-badge {
+      position: absolute;
+      top: 8px;
+      right: 15px;
+      min-width: 20px;
+      height: 20px;
+      background: var(--danger);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0 6px;
+      box-shadow: 0 0 15px var(--danger);
+      animation: pulse 2s ease infinite;
+    }
+
     /* Logout Button */
     .logout-btn {
-      margin-top: auto;
+      margin-top: 2rem;
       padding: 1rem;
       background: rgba(239, 68, 68, 0.1);
       border: 1px solid rgba(239, 68, 68, 0.3);
@@ -239,10 +265,11 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
+      width: 100%;
     }
 
     .logout-btn:hover {
-      background: #EF4444;
+      background: var(--danger);
       color: white;
       transform: translateY(-2px);
       box-shadow: 0 10px 30px rgba(239, 68, 68, 0.3);
@@ -285,6 +312,28 @@
       align-items: center;
     }
 
+    /* Search Bar */
+    .search-bar {
+      background: var(--surface);
+      border: 1px solid var(--glass-border);
+      border-radius: 15px;
+      padding: 0.8rem 1.5rem;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      width: 300px;
+      transition: all 0.3s ease;
+    }
+
+    .search-bar:focus {
+      outline: none;
+      border-color: var(--primary-glow);
+      box-shadow: 0 0 20px rgba(167, 139, 250, 0.3);
+    }
+
+    .search-bar::placeholder {
+      color: var(--text-muted);
+    }
+
     /* Modern Button */
     .btn-modern {
       padding: 0.9rem 1.8rem;
@@ -320,6 +369,21 @@
     .btn-secondary:hover {
       background: var(--surface-light);
       box-shadow: var(--glow-accent);
+    }
+
+    /* Tab System */
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     /* Real-time Stats - Advanced Cards */
@@ -383,6 +447,10 @@
       background: linear-gradient(135deg, #38BDF8, #0EA5E9);
     }
 
+    .stat-card.danger::before {
+      background: var(--gradient-danger);
+    }
+
     .stat-header {
       display: flex;
       justify-content: space-between;
@@ -424,7 +492,7 @@
 
     .stat-change {
       font-size: 0.85rem;
-      color: #10B981;
+      color: var(--success);
       display: flex;
       align-items: center;
       gap: 5px;
@@ -432,10 +500,10 @@
     }
 
     .stat-change.negative {
-      color: #EF4444;
+      color: var(--danger);
     }
 
-    /* Data Table - Futuristic */
+    /* Data Section */
     .data-section {
       background: var(--glass-bg);
       backdrop-filter: blur(20px) saturate(180%);
@@ -443,6 +511,7 @@
       border-radius: 25px;
       overflow: hidden;
       box-shadow: var(--shadow-elevated);
+      margin-bottom: 2rem;
     }
 
     .section-header {
@@ -514,6 +583,21 @@
       font-size: 1rem;
     }
 
+    .phone-link {
+      color: var(--accent-sky);
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .phone-link:hover {
+      color: var(--primary-glow);
+      text-shadow: 0 0 10px var(--primary-glow);
+    }
+
     /* Status Badge - Glowing */
     .status-badge {
       padding: 0.5rem 1.2rem;
@@ -556,7 +640,13 @@
       border: 1px solid rgba(56, 189, 248, 0.3);
     }
 
-    /* Action Buttons - Minimal */
+    .status-cancelled {
+      background: rgba(239, 68, 68, 0.15);
+      color: #EF4444;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    /* Action Buttons */
     .action-btn {
       padding: 0.6rem 1.2rem;
       border: none;
@@ -597,20 +687,310 @@
       transform: translateY(-2px);
     }
 
-    /* Phone Link */
-    .phone-link {
-      color: var(--accent-sky);
-      text-decoration: none;
-      font-weight: 600;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+    .action-cancel {
+      background: rgba(239, 68, 68, 0.15);
+      color: #EF4444;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .action-cancel:hover {
+      background: #EF4444;
+      color: white;
+      box-shadow: 0 5px 20px rgba(239, 68, 68, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .action-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Editor Grid */
+    .editor-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+    }
+
+    .editor-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid var(--glass-border);
+      border-radius: 25px;
+      padding: 2rem;
+      box-shadow: var(--shadow-elevated);
       transition: all 0.3s ease;
     }
 
-    .phone-link:hover {
+    .editor-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--glow-primary), var(--shadow-elevated);
+    }
+
+    .editor-card h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 0.9rem 1.2rem;
+      background: var(--surface);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      color: var(--text-primary);
+      font-size: 1rem;
+      transition: all 0.3s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--primary-glow);
+      box-shadow: 0 0 20px rgba(167, 139, 250, 0.3);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .image-preview {
+      width: 100%;
+      height: 200px;
+      border-radius: 15px;
+      object-fit: cover;
+      margin-top: 1rem;
+      border: 2px solid var(--glass-border);
+      transition: all 0.3s ease;
+    }
+
+    .image-preview:hover {
+      border-color: var(--primary-glow);
+      box-shadow: var(--glow-primary);
+    }
+
+    .price-input {
+      position: relative;
+    }
+
+    .price-input::before {
+      content: '₹';
+      position: absolute;
+      left: 1.2rem;
+      top: 50%;
+      transform: translateY(-50%);
       color: var(--primary-glow);
-      text-shadow: 0 0 10px var(--primary-glow);
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .price-input input {
+      padding-left: 2.5rem;
+    }
+
+    /* Customer Card */
+    .customer-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .customer-card:hover {
+      transform: translateX(5px);
+      border-color: var(--primary-glow);
+      box-shadow: var(--glow-primary);
+    }
+
+    .customer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .customer-avatar {
+      width: 50px;
+      height: 50px;
+      background: var(--gradient-primary);
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: var(--glow-primary);
+    }
+
+    .customer-info h4 {
+      color: var(--text-primary);
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .customer-info p {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+
+    .customer-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--glass-border);
+    }
+
+    .customer-stat {
+      text-align: center;
+    }
+
+    .customer-stat-value {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--primary-glow);
+    }
+
+    .customer-stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Fleet Management */
+    .scooter-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .scooter-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--glow-primary);
+    }
+
+    .scooter-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .scooter-id {
+      font-family: 'Courier New', monospace;
+      color: var(--accent-sky);
+      font-weight: 700;
+    }
+
+    .scooter-status {
+      padding: 0.4rem 1rem;
+      border-radius: 15px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .scooter-available {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10B981;
+    }
+
+    .scooter-maintenance {
+      background: rgba(239, 68, 68, 0.15);
+      color: #EF4444;
+    }
+
+    .scooter-in-use {
+      background: rgba(251, 191, 36, 0.15);
+      color: #FBBF24;
+    }
+
+    .fuel-bar {
+      width: 100%;
+      height: 8px;
+      background: var(--surface);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 1rem;
+    }
+
+    .fuel-level {
+      height: 100%;
+      background: var(--gradient-primary);
+      transition: width 0.5s ease;
+      box-shadow: var(--glow-primary);
+    }
+
+    /* Alert Message */
+    .alert {
+      padding: 1.25rem 2rem;
+      border-radius: 20px;
+      margin-bottom: 2rem;
+      display: none;
+      font-weight: 600;
+      animation: slideIn 0.3s ease;
+      border: 1px solid;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .alert.success {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10B981;
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .alert.error {
+      background: rgba(239, 68, 68, 0.15);
+      color: #EF4444;
+      border-color: rgba(239, 68, 68, 0.3);
+    }
+
+    .alert.info {
+      background: rgba(56, 189, 248, 0.15);
+      color: #38BDF8;
+      border-color: rgba(56, 189, 248, 0.3);
     }
 
     /* Loading State */
@@ -652,7 +1032,87 @@
       display: none !important;
     }
 
+    /* Filter Bar */
+    .filter-bar {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 0.7rem 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--glass-border);
+      border-radius: 15px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+    }
+
+    .filter-btn:hover {
+      background: var(--surface-light);
+      border-color: var(--primary-glow);
+      color: var(--text-primary);
+    }
+
+    .filter-btn.active {
+      background: var(--gradient-primary);
+      border-color: transparent;
+      color: white;
+      box-shadow: var(--glow-primary);
+    }
+
+    /* Date Picker */
+    .date-range {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .date-input {
+      padding: 0.7rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      color: var(--text-primary);
+      font-size: 0.9rem;
+    }
+
+    .date-input:focus {
+      outline: none;
+      border-color: var(--primary-glow);
+      box-shadow: 0 0 15px rgba(167, 139, 250, 0.2);
+    }
+
+    /* Chart Container */
+    .chart-container {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid var(--glass-border);
+      border-radius: 25px;
+      padding: 2rem;
+      height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      box-shadow: var(--shadow-elevated);
+    }
+
     /* Responsive */
+    @media (max-width: 1024px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .editor-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     @media (max-width: 768px) {
       .sidebar {
         width: 80px;
@@ -665,8 +1125,18 @@
         display: none;
       }
 
+      .user-role {
+        text-align: center;
+      }
+
       .main-content {
         margin-left: 80px;
+        padding: 1.5rem;
+      }
+
+      .top-bar {
+        flex-direction: column;
+        gap: 1rem;
         padding: 1.5rem;
       }
 
@@ -674,49 +1144,27 @@
         font-size: 1.5rem;
       }
 
+      .search-bar {
+        width: 100%;
+      }
+
       .stats-grid {
         grid-template-columns: 1fr;
       }
-    }
 
-    /* Notification Badge */
-    .notification-badge {
-      position: absolute;
-      top: -5px;
-      right: -5px;
-      width: 20px;
-      height: 20px;
-      background: #EF4444;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.7rem;
-      font-weight: 700;
-      box-shadow: 0 0 15px #EF4444;
-      animation: pulse 2s ease infinite;
-    }
+      .top-actions {
+        width: 100%;
+        flex-wrap: wrap;
+      }
 
-    /* Search Bar */
-    .search-bar {
-      background: var(--surface);
-      border: 1px solid var(--glass-border);
-      border-radius: 15px;
-      padding: 0.8rem 1.5rem;
-      color: var(--text-primary);
-      font-size: 0.95rem;
-      width: 300px;
-      transition: all 0.3s ease;
-    }
+      .modern-table {
+        font-size: 0.85rem;
+      }
 
-    .search-bar:focus {
-      outline: none;
-      border-color: var(--primary-glow);
-      box-shadow: 0 0 20px rgba(167, 139, 250, 0.3);
-    }
-
-    .search-bar::placeholder {
-      color: var(--text-muted);
+      .modern-table th,
+      .modern-table td {
+        padding: 1rem;
+      }
     }
   </style>
 </head>
@@ -738,57 +1186,57 @@
 
       <div class="user-card">
         <div class="user-role">Manager</div>
-        <div class="user-email" id="userEmail">manager@example.com</div>
+        <div class="user-email" id="userEmail">Loading...</div>
       </div>
 
-      <a href="#" class="nav-item active">
+      <a class="nav-item active" onclick="switchTab('dashboard')">
         <span class="nav-icon">📊</span>
         <span>Dashboard</span>
       </a>
 
-      <a href="#" class="nav-item">
+      <a class="nav-item" onclick="switchTab('bookings')">
         <span class="nav-icon">📋</span>
         <span>Bookings</span>
-        <span class="notification-badge">5</span>
+        <span class="notification-badge" id="pendingCount">0</span>
       </a>
 
-      <a href="#" class="nav-item">
-        <span class="nav-icon">✏️</span>
-        <span>Edit Website</span>
-      </a>
-
-      <a href="#" class="nav-item">
+      <a class="nav-item" onclick="switchTab('customers')">
         <span class="nav-icon">👥</span>
         <span>Customers</span>
       </a>
 
-      <a href="#" class="nav-item">
-        <span class="nav-icon">📈</span>
-        <span>Analytics</span>
+      <a class="nav-item" onclick="switchTab('editor')">
+        <span class="nav-icon">✏️</span>
+        <span>Edit Website</span>
       </a>
 
-      <a href="#" class="nav-item">
+      <a class="nav-item" onclick="switchTab('fleet')">
         <span class="nav-icon">🛵</span>
         <span>Fleet</span>
       </a>
 
-      <a href="#" class="nav-item">
+      <a class="nav-item" onclick="switchTab('analytics')">
+        <span class="nav-icon">📈</span>
+        <span>Analytics</span>
+      </a>
+
+      <a class="nav-item" onclick="switchTab('messages')">
         <span class="nav-icon">💬</span>
         <span>Messages</span>
         <span class="notification-badge">2</span>
       </a>
 
-      <a href="#" class="nav-item">
+      <a class="nav-item" onclick="switchTab('settings')">
         <span class="nav-icon">⚙️</span>
         <span>Settings</span>
       </a>
 
-      <a href="/" class="nav-item">
+      <a href="/" class="nav-item" onclick="setManagerFlag()">
         <span class="nav-icon">🏠</span>
         <span>Main Site</span>
       </a>
 
-      <button class="logout-btn">
+      <button class="logout-btn" onclick="logout()">
         <span>🚪</span>
         <span>Logout</span>
       </button>
@@ -798,149 +1246,1206 @@
     <main class="main-content">
       <!-- Top Bar -->
       <div class="top-bar">
-        <h1 class="page-title">Command Center</h1>
+        <h1 class="page-title" id="pageTitle">Command Center</h1>
         <div class="top-actions">
-          <input type="search" class="search-bar" placeholder="Search bookings...">
-          <button class="btn-modern btn-secondary">
+          <input type="search" class="search-bar" id="searchBar" placeholder="Search bookings, customers...">
+          <button class="btn-modern btn-secondary" onclick="showNotifications()">
             <span>🔔</span>
             <span>Alerts</span>
           </button>
-          <button class="btn-modern">
+          <button class="btn-modern" onclick="refreshData()">
             <span>🔄</span>
             <span>Refresh</span>
           </button>
         </div>
       </div>
 
-      <!-- Real-time Stats -->
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-header">
-            <div>
-              <div class="stat-label">Total Bookings</div>
-              <div class="stat-value">247</div>
-              <div class="stat-change">
-                <span>↗</span>
-                <span>+12% from last month</span>
+      <!-- Alert Box -->
+      <div class="alert" id="alertBox"></div>
+
+      <!-- ==================== DASHBOARD TAB ==================== -->
+      <div class="tab-content active" id="dashboardTab">
+        <!-- Real-time Stats -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-header">
+              <div>
+                <div class="stat-label">Total Bookings</div>
+                <div class="stat-value" id="statTotal">0</div>
+                <div class="stat-change">
+                  <span>↗</span>
+                  <span>+12% from last month</span>
+                </div>
               </div>
+              <div class="stat-icon">📦</div>
             </div>
-            <div class="stat-icon">📦</div>
+          </div>
+
+          <div class="stat-card gold">
+            <div class="stat-header">
+              <div>
+                <div class="stat-label">Pending Action</div>
+                <div class="stat-value" id="statPending">0</div>
+                <div class="stat-change">
+                  <span>⏱</span>
+                  <span>Requires attention</span>
+                </div>
+              </div>
+              <div class="stat-icon">⏳</div>
+            </div>
+          </div>
+
+          <div class="stat-card sky">
+            <div class="stat-header">
+              <div>
+                <div class="stat-label">Revenue (₹)</div>
+                <div class="stat-value" id="statRevenue">0</div>
+                <div class="stat-change">
+                  <span>↗</span>
+                  <span>+18% growth</span>
+                </div>
+              </div>
+              <div class="stat-icon">💰</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-header">
+              <div>
+                <div class="stat-label">Completed</div>
+                <div class="stat-value" id="statCompleted">0</div>
+                <div class="stat-change">
+                  <span>✅</span>
+                  <span>This month</span>
+                </div>
+              </div>
+              <div class="stat-icon">🎉</div>
+            </div>
           </div>
         </div>
 
-        <div class="stat-card gold">
-          <div class="stat-header">
-            <div>
-              <div class="stat-label">Pending Action</div>
-              <div class="stat-value">5</div>
-              <div class="stat-change">
-                <span>⏱</span>
-                <span>Requires attention</span>
-              </div>
-            </div>
-            <div class="stat-icon">⏳</div>
+        <!-- Recent Bookings -->
+        <div class="data-section">
+          <div class="section-header">
+            <h2 class="section-title">Recent Bookings</h2>
+            <button class="btn-modern btn-secondary" onclick="exportBookings()">
+              <span>📥</span>
+              <span>Export</span>
+            </button>
           </div>
-        </div>
 
-        <div class="stat-card sky">
-          <div class="stat-header">
-            <div>
-              <div class="stat-label">Revenue (₹)</div>
-              <div class="stat-value">1.2L</div>
-              <div class="stat-change">
-                <span>↗</span>
-                <span>+18% growth</span>
-              </div>
-            </div>
-            <div class="stat-icon">💰</div>
-          </div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-header">
-            <div>
-              <div class="stat-label">Completed</div>
-              <div class="stat-value">89</div>
-              <div class="stat-change">
-                <span>✅</span>
-                <span>This month</span>
-              </div>
-            </div>
-            <div class="stat-icon">🎉</div>
+          <div class="table-wrapper">
+            <table class="modern-table">
+              <thead>
+                <tr>
+                  <th>Booking ID</th>
+                  <th>Customer</th>
+                  <th>Contact</th>
+                  <th>Package</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="dashboardBookingsTable">
+                <tr>
+                  <td colspan="7" style="text-align: center; padding: 3rem; color: var(--text-muted);">
+                    Loading bookings...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
 
-      <!-- Bookings Table -->
-      <div class="data-section">
-        <div class="section-header">
-          <h2 class="section-title">Recent Bookings</h2>
-          <button class="btn-modern btn-secondary">
-            <span>📥</span>
-            <span>Export</span>
-          </button>
+      <!-- ==================== BOOKINGS TAB ==================== -->
+      <div class="tab-content" id="bookingsTab">
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+          <button class="filter-btn active" onclick="filterBookings('all')">All</button>
+          <button class="filter-btn" onclick="filterBookings('pending')">Pending</button>
+          <button class="filter-btn" onclick="filterBookings('confirmed')">Confirmed</button>
+          <button class="filter-btn" onclick="filterBookings('completed')">Completed</button>
+          <button class="filter-btn" onclick="filterBookings('cancelled')">Cancelled</button>
+          
+          <div class="date-range" style="margin-left: auto;">
+            <input type="date" class="date-input" id="dateFrom">
+            <span style="color: var(--text-secondary);">to</span>
+            <input type="date" class="date-input" id="dateTo">
+          </div>
         </div>
 
-        <div class="table-wrapper">
-          <table class="modern-table">
-            <thead>
-              <tr>
-                <th>Booking ID</th>
-                <th>Customer</th>
-                <th>Contact</th>
-                <th>Package</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><span class="booking-id">#BK8A4F2E</span></td>
-                <td><span class="customer-name">Rahul Sharma</span></td>
-                <td><a href="tel:+919876543210" class="phone-link">📞 +91 9876543210</a></td>
-                <td>4 Hour Cultural Tour</td>
-                <td>Dec 25, 2024</td>
-                <td><span class="status-badge status-pending">Pending</span></td>
-                <td>
-                  <button class="action-btn action-confirm">✓ Confirm</button>
-                </td>
-              </tr>
-              <tr>
-                <td><span class="booking-id">#BK7B3C1D</span></td>
-                <td><span class="customer-name">Priya Patel</span></td>
-                <td><a href="tel:+919123456789" class="phone-link">📞 +91 9123456789</a></td>
-                <td>Sunset Ghat Tour</td>
-                <td>Dec 24, 2024</td>
-                <td><span class="status-badge status-confirmed">Confirmed</span></td>
-                <td>
-                  <button class="action-btn action-complete">✓ Complete</button>
-                </td>
-              </tr>
-              <tr>
-                <td><span class="booking-id">#BK6D2A5F</span></td>
-                <td><span class="customer-name">John Miller</span></td>
-                <td><a href="tel:+919988776655" class="phone-link">📞 +91 9988776655</a></td>
-                <td>Full Day Experience</td>
-                <td>Dec 23, 2024</td>
-                <td><span class="status-badge status-completed">Completed</span></td>
-                <td>
-                  <span style="color: #10B981; font-weight: 700;">✓ Done</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="data-section">
+          <div class="section-header">
+            <h2 class="section-title">All Bookings</h2>
+            <div style="display: flex; gap: 1rem;">
+              <button class="btn-modern btn-secondary" onclick="exportBookings()">
+                <span>📥</span>
+                <span>Export CSV</span>
+              </button>
+              <button class="btn-modern btn-secondary" onclick="exportBookingsPDF()">
+                <span>📄</span>
+                <span>Export PDF</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="table-wrapper">
+            <table class="modern-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Customer</th>
+                  <th>Phone</th>
+                  <th>Email</th>
+                  <th>Package</th>
+                  <th>Date & Time</th>
+                  <th>Payment</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="bookingsTable">
+                <tr>
+                  <td colspan="9" style="text-align: center; padding: 3rem; color: var(--text-muted);">
+                    Loading bookings...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== CUSTOMERS TAB ==================== -->
+      <div class="tab-content" id="customersTab">
+        <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr);">
+          <div class="stat-card">
+            <div class="stat-label">Total Customers</div>
+            <div class="stat-value" id="totalCustomers">0</div>
+          </div>
+          <div class="stat-card sky">
+            <div class="stat-label">Repeat Customers</div>
+            <div class="stat-value" id="repeatCustomers">0</div>
+          </div>
+          <div class="stat-card gold">
+            <div class="stat-label">New This Month</div>
+            <div class="stat-value" id="newCustomers">0</div>
+          </div>
+        </div>
+
+        <div class="data-section">
+          <div class="section-header">
+            <h2 class="section-title">Customer Database</h2>
+            <input type="search" class="search-bar" placeholder="Search customers..." onkeyup="searchCustomers(this.value)">
+          </div>
+
+          <div style="padding: 2rem;" id="customersList">
+            <p style="text-align: center; color: var(--text-muted); padding: 3rem;">Loading customers...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== WEBSITE EDITOR TAB ==================== -->
+      <div class="tab-content" id="editorTab">
+        <div class="editor-grid">
+          <!-- Tour Package Pricing -->
+          <div class="editor-card">
+            <h3>🏷️ Tour Package Pricing</h3>
+            
+            <div class="form-group">
+              <label>Select Package</label>
+              <select id="packageSelect" onchange="loadPackageData()">
+                <option value="2-hour-morning">2 Hour Morning Tour</option>
+                <option value="4-hour-cultural">4 Hour Cultural Tour</option>
+                <option value="full-day">Full Day Experience</option>
+                <option value="sunset-ghat">Sunset Ghat Tour</option>
+              </select>
+            </div>
+
+            <div class="form-group price-input">
+              <label>Price (₹)</label>
+              <input type="number" id="packagePrice" placeholder="1500" min="0">
+            </div>
+
+            <div class="form-group">
+              <label>Description</label>
+              <textarea id="packageDesc" placeholder="Tour description..."></textarea>
+            </div>
+
+            <button class="btn-modern" style="width: 100%;" onclick="updatePackage()">
+              💾 Update Package
+            </button>
+          </div>
+
+          <!-- Website Images -->
+          <div class="editor-card">
+            <h3>🖼️ Website Images</h3>
+            
+            <div class="form-group">
+              <label>Select Section</label>
+              <select id="imageSection">
+                <option value="hero">Hero Banner</option>
+                <option value="tour-1">Tour Gallery 1</option>
+                <option value="tour-2">Tour Gallery 2</option>
+                <option value="tour-3">Tour Gallery 3</option>
+                <option value="testimonial-bg">Testimonial Background</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Image URL</label>
+              <input type="url" id="imageUrl" placeholder="https://example.com/image.jpg" onchange="previewImage()">
+            </div>
+
+            <img id="imagePreview" class="image-preview" src="https://via.placeholder.com/400x200?text=Image+Preview" alt="Preview">
+
+            <button class="btn-modern" style="width: 100%;" onclick="updateImage()">
+              🖼️ Update Image
+            </button>
+          </div>
+
+          <!-- Contact Information -->
+          <div class="editor-card">
+            <h3>📞 Contact Information</h3>
+            
+            <div class="form-group">
+              <label>Phone Number</label>
+              <input type="tel" id="contactPhone" placeholder="+91 9876543210">
+            </div>
+
+            <div class="form-group">
+              <label>Email Address</label>
+              <input type="email" id="contactEmail" placeholder="info@scootdarshan.com">
+            </div>
+
+            <div class="form-group">
+              <label>WhatsApp Number</label>
+              <input type="tel" id="whatsappNumber" placeholder="+91 9876543210">
+            </div>
+
+            <div class="form-group">
+              <label>Address</label>
+              <textarea id="contactAddress" placeholder="Varanasi, Uttar Pradesh, India"></textarea>
+            </div>
+
+            <button class="btn-modern" style="width: 100%;" onclick="updateContact()">
+              📝 Update Contact
+            </button>
+          </div>
+
+          <!-- Availability Settings -->
+          <div class="editor-card">
+            <h3>⚙️ Availability Settings</h3>
+            
+            <div class="form-group">
+              <label>Max Bookings Per Day</label>
+              <input type="number" id="maxBookings" placeholder="10" min="1">
+            </div>
+
+            <div class="form-group">
+              <label>Booking Lead Time (Days)</label>
+              <input type="number" id="leadTime" placeholder="2" min="0">
+            </div>
+
+            <div class="form-group">
+              <label>Operating Hours</label>
+              <input type="text" id="operatingHours" placeholder="6:00 AM - 8:00 PM">
+            </div>
+
+            <div class="form-group">
+              <label>Booking Status</label>
+              <select id="bookingStatus">
+                <option value="open">Open for Bookings</option>
+                <option value="limited">Limited Availability</option>
+                <option value="closed">Closed</option>
+              </select>
+            </div>
+
+            <button class="btn-modern" style="width: 100%;" onclick="updateAvailability()">
+              ⚙️ Update Settings
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== FLEET MANAGEMENT TAB ==================== -->
+      <div class="tab-content" id="fleetTab">
+        <div class="stats-grid" style="grid-template-columns: repeat(4, 1fr);">
+          <div class="stat-card">
+            <div class="stat-label">Total Scooters</div>
+            <div class="stat-value" id="totalScooters">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Available</div>
+            <div class="stat-value" id="availableScooters" style="color: var(--success);">0</div>
+          </div>
+          <div class="stat-card gold">
+            <div class="stat-label">In Use</div>
+            <div class="stat-value" id="inUseScooters">0</div>
+          </div>
+          <div class="stat-card danger">
+            <div class="stat-label">Maintenance</div>
+            <div class="stat-value" id="maintenanceScooters">0</div>
+          </div>
+        </div>
+
+        <div class="data-section">
+          <div class="section-header">
+            <h2 class="section-title">Scooter Fleet</h2>
+            <button class="btn-modern" onclick="addScooter()">
+              <span>➕</span>
+              <span>Add Scooter</span>
+            </button>
+          </div>
+
+          <div class="editor-grid" style="padding: 2rem;" id="fleetList">
+            <p style="text-align: center; color: var(--text-muted); padding: 3rem;">Loading fleet...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== ANALYTICS TAB ==================== -->
+      <div class="tab-content" id="analyticsTab">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total Revenue</div>
+            <div class="stat-value">₹2.4L</div>
+            <div class="stat-change">
+              <span>↗</span>
+              <span>+24% from last month</span>
+            </div>
+          </div>
+          <div class="stat-card sky">
+            <div class="stat-label">Avg. Booking Value</div>
+            <div class="stat-value">₹2,850</div>
+          </div>
+          <div class="stat-card gold">
+            <div class="stat-label">Conversion Rate</div>
+            <div class="stat-value">68%</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Customer Satisfaction</div>
+            <div class="stat-value">4.8★</div>
+          </div>
+        </div>
+
+        <div class="editor-grid">
+          <div class="chart-container">
+            📈 Revenue Chart (Integration Required)
+          </div>
+          <div class="chart-container">
+            📊 Bookings Trend (Integration Required)
+          </div>
+        </div>
+
+        <div class="data-section" style="margin-top: 2rem;">
+          <div class="section-header">
+            <h2 class="section-title">Popular Packages</h2>
+          </div>
+          <div class="table-wrapper">
+            <table class="modern-table">
+              <thead>
+                <tr>
+                  <th>Package</th>
+                  <th>Bookings</th>
+                  <th>Revenue</th>
+                  <th>Avg. Rating</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>4 Hour Cultural Tour</td>
+                  <td>89</td>
+                  <td>₹2,53,500</td>
+                  <td>4.9★</td>
+                </tr>
+                <tr>
+                  <td>Full Day Experience</td>
+                  <td>45</td>
+                  <td>₹2,25,000</td>
+                  <td>4.8★</td>
+                </tr>
+                <tr>
+                  <td>Sunset Ghat Tour</td>
+                  <td>67</td>
+                  <td>₹1,34,000</td>
+                  <td>4.7★</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== MESSAGES TAB ==================== -->
+      <div class="tab-content" id="messagesTab">
+        <div class="data-section">
+          <div class="section-header">
+            <h2 class="section-title">Customer Messages</h2>
+            <button class="btn-modern btn-secondary">
+              <span>✓</span>
+              <span>Mark All Read</span>
+            </button>
+          </div>
+
+          <div style="padding: 2rem;">
+            <div class="customer-card">
+              <div class="customer-header">
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                  <div class="customer-avatar">👤</div>
+                  <div>
+                    <h4>Rahul Sharma</h4>
+                    <p>2 hours ago</p>
+                  </div>
+                </div>
+                <span class="status-badge status-pending">Unread</span>
+              </div>
+              <p style="color: var(--text-secondary); margin-top: 1rem;">
+                Hi, I want to reschedule my booking for tomorrow. Is that possible?
+              </p>
+              <button class="btn-modern" style="margin-top: 1rem;" onclick="replyMessage()">
+                <span>↩️</span>
+                <span>Reply</span>
+              </button>
+            </div>
+
+            <div class="customer-card">
+              <div class="customer-header">
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                  <div class="customer-avatar">👤</div>
+                  <div>
+                    <h4>Priya Patel</h4>
+                    <p>1 day ago</p>
+                  </div>
+                </div>
+                <span class="status-badge status-completed">Read</span>
+              </div>
+              <p style="color: var(--text-secondary); margin-top: 1rem;">
+                Thank you for the amazing tour! Loved every moment.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== SETTINGS TAB ==================== -->
+      <div class="tab-content" id="settingsTab">
+        <div class="editor-grid">
+          <div class="editor-card">
+            <h3>👤 Profile Settings</h3>
+            
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" id="managerName" placeholder="Your Name">
+            </div>
+
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" id="managerEmail" placeholder="manager@example.com" disabled>
+            </div>
+
+            <div class="form-group">
+              <label>Phone</label>
+              <input type="tel" id="managerPhone" placeholder="+91 9876543210">
+            </div>
+
+            <button class="btn-modern" style="width: 100%;">
+              💾 Save Profile
+            </button>
+          </div>
+
+          <div class="editor-card">
+            <h3>🔐 Security</h3>
+            
+            <div class="form-group">
+              <label>Current Password</label>
+              <input type="password" placeholder="••••••••">
+            </div>
+
+            <div class="form-group">
+              <label>New Password</label>
+              <input type="password" placeholder="••••••••">
+            </div>
+
+            <div class="form-group">
+              <label>Confirm Password</label>
+              <input type="password" placeholder="••••••••">
+            </div>
+
+            <button class="btn-modern" style="width: 100%;">
+              🔒 Change Password
+            </button>
+          </div>
+
+          <div class="editor-card">
+            <h3>🔔 Notifications</h3>
+            
+            <div class="form-group" style="display: flex; justify-content: space-between; align-items: center;">
+              <label style="margin: 0;">Email Notifications</label>
+              <input type="checkbox" checked>
+            </div>
+
+            <div class="form-group" style="display: flex; justify-content: space-between; align-items: center;">
+              <label style="margin: 0;">SMS Alerts</label>
+              <input type="checkbox" checked>
+            </div>
+
+            <div class="form-group" style="display: flex; justify-content: space-between; align-items: center;">
+              <label style="margin: 0;">WhatsApp Updates</label>
+              <input type="checkbox">
+            </div>
+
+            <button class="btn-modern" style="width: 100%;">
+              💾 Save Preferences
+            </button>
+          </div>
         </div>
       </div>
     </main>
   </div>
 
-  <script>
-    // Simulate loading
-    setTimeout(() => {
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+    import { getFirestore, collection, getDocs, query, doc, updateDoc, getDoc, setDoc, where, orderBy } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCtyR68dG9TEI_C89PvsdrGmpkE6vCtV0s",
+      authDomain: "varanasi-scoot-darshan.firebaseapp.com",
+      projectId: "varanasi-scoot-darshan",
+      storageBucket: "varanasi-scoot-darshan.firebasestorage.app",
+      messagingSenderId: "437910870938",
+      appId: "1:437910870938:web:cb7b3043bcc39216143823"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    let currentUser = null;
+    let allBookings = [];
+    let allCustomers = [];
+    let currentFilter = 'all';
+
+    // Tab Switching
+    window.switchTab = function(tabName) {
+      // Remove active from all nav items
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+      });
+
+      // Add active to clicked item
+      event.currentTarget.classList.add('active');
+
+      // Hide all tabs
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+
+      // Show selected tab
+      const tabId = tabName + 'Tab';
+      const selectedTab = document.getElementById(tabId);
+      if (selectedTab) {
+        selectedTab.classList.add('active');
+        
+        // Update page title
+        const titles = {
+          'dashboard': 'Command Center',
+          'bookings': 'Booking Management',
+          'customers': 'Customer Database',
+          'editor': 'Website Editor',
+          'fleet': 'Fleet Management',
+          'analytics': 'Analytics & Reports',
+          'messages': 'Customer Messages',
+          'settings': 'Settings'
+        };
+        document.getElementById('pageTitle').textContent = titles[tabName] || 'Command Center';
+        
+        // Load data for specific tabs
+        if (tabName === 'customers') loadCustomers();
+        if (tabName === 'fleet') loadFleet();
+        if (tabName === 'editor') loadEditorData();
+      }
+    };
+
+    // Set manager flag for main site return
+    window.setManagerFlag = function() {
+      localStorage.setItem('isManager', 'true');
+      localStorage.setItem('managerEmail', currentUser.email);
+    };
+
+    // Logout
+    window.logout = async function() {
+      if (confirm('Are you sure you want to logout?')) {
+        try {
+          localStorage.removeItem('isManager');
+          localStorage.removeItem('managerEmail');
+          await signOut(auth);
+          window.location.href = '/login.html';
+        } catch (error) {
+          showAlert('Error logging out: ' + error.message, 'error');
+        }
+      }
+    };
+
+    // Show Alert
+    function showAlert(message, type = 'success') {
+      const alertBox = document.getElementById('alertBox');
+      alertBox.textContent = message;
+      alertBox.className = `alert ${type}`;
+      alertBox.style.display = 'block';
+      setTimeout(() => {
+        alertBox.style.display = 'none';
+      }, 5000);
+    }
+
+    // Refresh Data
+    window.refreshData = async function() {
+      showAlert('Refreshing data...', 'info');
+      await loadBookings();
+      await loadCustomers();
+      await loadFleet();
+      showAlert('Data refreshed successfully!', 'success');
+    };
+
+    // Load Bookings
+    async function loadBookings() {
+      try {
+        const q = query(
+          collection(db, 'bookings'),
+          where('managerId', '==', currentUser.uid)
+        );
+        
+        const snapshot = await getDocs(q);
+        allBookings = [];
+        
+        snapshot.forEach(doc => {
+          allBookings.push({ id: doc.id, ...doc.data() });
+        });
+
+        // Sort by date
+        allBookings.sort((a, b) => {
+          const dateA = a.createdAt?.toDate?.() || new Date(0);
+          const dateB = b.createdAt?.toDate?.() || new Date(0);
+          return dateB - dateA;
+        });
+
+        updateStats();
+        renderBookings();
+        renderDashboardBookings();
+      } catch (error) {
+        console.error('Error loading bookings:', error);
+        showAlert('Error loading bookings: ' + error.message, 'error');
+      }
+    }
+
+    // Update Stats
+    function updateStats() {
+      const total = allBookings.length;
+      const pending = allBookings.filter(b => b.status === 'pending').length;
+      const confirmed = allBookings.filter(b => b.status === 'confirmed').length;
+      const completed = allBookings.filter(b => b.status === 'completed').length;
+      
+      // Calculate revenue (example calculation)
+      const revenue = (total * 2500).toLocaleString('en-IN');
+
+      document.getElementById('statTotal').textContent = total;
+      document.getElementById('statPending').textContent = pending;
+      document.getElementById('statCompleted').textContent = completed;
+      document.getElementById('statRevenue').textContent = revenue;
+      document.getElementById('pendingCount').textContent = pending;
+    }
+
+    // Render Dashboard Bookings (Recent 5)
+    function renderDashboardBookings() {
+      const tbody = document.getElementById('dashboardBookingsTable');
+      const recentBookings = allBookings.slice(0, 5);
+      
+      if (recentBookings.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 3rem; color: var(--text-muted);">No bookings yet</td></tr>';
+        return;
+      }
+
+      let html = '';
+      recentBookings.forEach(b => {
+        html += generateBookingRow(b);
+      });
+      tbody.innerHTML = html;
+    }
+
+    // Render All Bookings
+    function renderBookings() {
+      const tbody = document.getElementById('bookingsTable');
+      let filteredBookings = allBookings;
+
+      // Apply filter
+      if (currentFilter !== 'all') {
+        filteredBookings = allBookings.filter(b => b.status === currentFilter);
+      }
+
+      if (filteredBookings.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; padding: 3rem; color: var(--text-muted);">No bookings found</td></tr>';
+        return;
+      }
+
+      let html = '';
+      filteredBookings.forEach(b => {
+        html += `
+          <tr>
+            <td><span class="booking-id">#${b.id.substring(0, 8)}</span></td>
+            <td><span class="customer-name">${b.name || 'N/A'}</span></td>
+            <td><a href="tel:${b.phone}" class="phone-link">📞 ${b.phone}</a></td>
+            <td>${b.email || 'N/A'}</td>
+            <td>${b.tourPackage || 'N/A'}</td>
+            <td>${b.date || 'Not set'} ${b.time || ''}</td>
+            <td>${b.paymentStatus || 'Pending'}</td>
+            <td><span class="status-badge status-${b.status || 'pending'}">${b.status || 'pending'}</span></td>
+            <td>${generateActions(b)}</td>
+          </tr>
+        `;
+      });
+      tbody.innerHTML = html;
+    }
+
+    function generateBookingRow(b) {
+      return `
+        <tr>
+          <td><span class="booking-id">#${b.id.substring(0, 8)}</span></td>
+          <td><span class="customer-name">${b.name || 'N/A'}</span></td>
+          <td><a href="tel:${b.phone}" class="phone-link">📞 ${b.phone}</a></td>
+          <td>${b.tourPackage || 'N/A'}</td>
+          <td>${b.date || 'Not set'} ${b.time || ''}</td>
+          <td><span class="status-badge status-${b.status || 'pending'}">${b.status || 'pending'}</span></td>
+          <td>${generateActions(b)}</td>
+        </tr>
+      `;
+    }
+
+    function generateActions(booking) {
+      if (booking.status === 'pending') {
+        return `<button class="action-btn action-confirm" onclick="updateStatus('${booking.id}', 'confirmed')">✓ Confirm</button>
+                <button class="action-btn action-cancel" onclick="updateStatus('${booking.id}', 'cancelled')">✗ Cancel</button>`;
+      } else if (booking.status === 'confirmed') {
+        return `<button class="action-btn action-complete" onclick="updateStatus('${booking.id}', 'completed')">✓ Complete</button>`;
+      } else if (booking.status === 'completed') {
+        return `<span style="color: var(--success); font-weight: 700;">✓ Done</span>`;
+      } else {
+        return `<span style="color: var(--danger); font-weight: 700;">✗ Cancelled</span>`;
+      }
+    }
+
+    // Update Booking Status
+    window.updateStatus = async function(bookingId, newStatus) {
+      if (!confirm(`Mark this booking as ${newStatus}?`)) return;
+
+      try {
+        await updateDoc(doc(db, 'bookings', bookingId), {
+          status: newStatus,
+          updatedAt: new Date(),
+          updatedBy: currentUser.uid
+        });
+
+        const booking = allBookings.find(b => b.id === bookingId);
+        if (booking) booking.status = newStatus;
+
+        updateStats();
+        renderBookings();
+        renderDashboardBookings();
+        showAlert(`✅ Booking marked as ${newStatus}!`, 'success');
+      } catch (error) {
+        showAlert('❌ Error: ' + error.message, 'error');
+      }
+    };
+
+    // Filter Bookings
+    window.filterBookings = function(filter) {
+      currentFilter = filter;
+      
+      // Update filter buttons
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.currentTarget.classList.add('active');
+      
+      renderBookings();
+    };
+
+    // Export Bookings
+    window.exportBookings = function() {
+      let csv = 'Booking ID,Customer,Phone,Email,Package,Date,Time,Status,Payment\n';
+      allBookings.forEach(b => {
+        csv += `${b.id},${b.name},${b.phone},${b.email || ''},${b.tourPackage},${b.date},${b.time || ''},${b.status},${b.paymentStatus || 'Pending'}\n`;
+      });
+      
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `bookings_${new Date().toISOString().split('T')[0]}.csv`;
+      a.click();
+      
+      showAlert('✅ Bookings exported successfully!', 'success');
+    };
+
+    window.exportBookingsPDF = function() {
+      showAlert('📄 PDF export feature coming soon!', 'info');
+    };
+
+    // Load Customers
+    async function loadCustomers() {
+      try {
+        // Get unique customers from bookings
+        const customerMap = new Map();
+        
+        allBookings.forEach(booking => {
+          if (!customerMap.has(booking.email || booking.phone)) {
+            customerMap.set(booking.email || booking.phone, {
+              name: booking.name,
+              email: booking.email,
+              phone: booking.phone,
+              bookings: 1,
+              totalSpent: 2500 // Example
+            });
+          } else {
+            const customer = customerMap.get(booking.email || booking.phone);
+            customer.bookings++;
+            customer.totalSpent += 2500;
+          }
+        });
+
+        allCustomers = Array.from(customerMap.values());
+        
+        document.getElementById('totalCustomers').textContent = allCustomers.length;
+        document.getElementById('repeatCustomers').textContent = allCustomers.filter(c => c.bookings > 1).length;
+        document.getElementById('newCustomers').textContent = allCustomers.filter(c => c.bookings === 1).length;
+
+        renderCustomers();
+      } catch (error) {
+        console.error('Error loading customers:', error);
+      }
+    }
+
+    function renderCustomers() {
+      const container = document.getElementById('customersList');
+      
+      if (allCustomers.length === 0) {
+        container.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 3rem;">No customers yet</p>';
+        return;
+      }
+
+      let html = '';
+      allCustomers.forEach(c => {
+        html += `
+          <div class="customer-card">
+            <div class="customer-header">
+              <div style="display: flex; gap: 1rem; align-items: center;">
+                <div class="customer-avatar">👤</div>
+                <div class="customer-info">
+                  <h4>${c.name}</h4>
+                  <p>${c.email || c.phone}</p>
+                </div>
+              </div>
+              ${c.bookings > 1 ? '<span class="status-badge status-confirmed">Repeat</span>' : ''}
+            </div>
+            <div class="customer-stats">
+              <div class="customer-stat">
+                <div class="customer-stat-value">${c.bookings}</div>
+                <div class="customer-stat-label">Bookings</div>
+              </div>
+              <div class="customer-stat">
+                <div class="customer-stat-value">₹${c.totalSpent.toLocaleString()}</div>
+                <div class="customer-stat-label">Total Spent</div>
+              </div>
+            </div>
+            <a href="tel:${c.phone}" class="phone-link" style="margin-top: 1rem; display: inline-flex;">
+              📞 Call Customer
+            </a>
+          </div>
+        `;
+      });
+      container.innerHTML = html;
+    }
+
+    window.searchCustomers = function(query) {
+      const filtered = allCustomers.filter(c => 
+        c.name.toLowerCase().includes(query.toLowerCase()) ||
+        c.email?.toLowerCase().includes(query.toLowerCase()) ||
+        c.phone.includes(query)
+      );
+      
+      const container = document.getElementById('customersList');
+      let html = '';
+      filtered.forEach(c => {
+        html += `
+          <div class="customer-card">
+            <div class="customer-header">
+              <div style="display: flex; gap: 1rem; align-items: center;">
+                <div class="customer-avatar">👤</div>
+                <div class="customer-info">
+                  <h4>${c.name}</h4>
+                  <p>${c.email || c.phone}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      container.innerHTML = html || '<p style="text-align: center; color: var(--text-muted); padding: 3rem;">No results found</p>';
+    };
+
+    // Load Fleet
+    async function loadFleet() {
+      try {
+        const fleetDoc = await getDoc(doc(db, 'settings', 'fleet'));
+        const fleet = fleetDoc.exists() ? fleetDoc.data().scooters || [] : [];
+
+        document.getElementById('totalScooters').textContent = fleet.length;
+        document.getElementById('availableScooters').textContent = fleet.filter(s => s.status === 'available').length;
+        document.getElementById('inUseScooters').textContent = fleet.filter(s => s.status === 'in-use').length;
+        document.getElementById('maintenanceScooters').textContent = fleet.filter(s => s.status === 'maintenance').length;
+
+        renderFleet(fleet);
+      } catch (error) {
+        console.error('Error loading fleet:', error);
+      }
+    }
+
+    function renderFleet(fleet) {
+      const container = document.getElementById('fleetList');
+      
+      if (fleet.length === 0) {
+        container.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 3rem;">No scooters added yet</p>';
+        return;
+      }
+
+      let html = '';
+      fleet.forEach((scooter, index) => {
+        html += `
+          <div class="scooter-card">
+            <div class="scooter-header">
+              <div>
+                <div class="scooter-id">Scooter ${index + 1}</div>
+                <div style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.25rem;">
+                  ${scooter.model || 'Honda Activa'}
+                </div>
+              </div>
+              <span class="scooter-status scooter-${scooter.status || 'available'}">
+                ${scooter.status || 'available'}
+              </span>
+            </div>
+            <div class="fuel-bar">
+              <div class="fuel-level" style="width: ${scooter.fuel || 80}%"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 1rem; font-size: 0.85rem; color: var(--text-secondary);">
+              <span>Fuel: ${scooter.fuel || 80}%</span>
+              <span>Last Service: ${scooter.lastService || 'N/A'}</span>
+            </div>
+          </div>
+        `;
+      });
+      container.innerHTML = html;
+    }
+
+    window.addScooter = async function() {
+      showAlert('🛵 Add scooter feature coming soon!', 'info');
+    };
+
+    // Website Editor Functions
+    async function loadEditorData() {
+      try {
+        const settingsDoc = await getDoc(doc(db, 'settings', 'website'));
+        if (settingsDoc.exists()) {
+          const data = settingsDoc.data();
+          
+          if (data.contact) {
+            document.getElementById('contactPhone').value = data.contact.phone || '';
+            document.getElementById('contactEmail').value = data.contact.email || '';
+            document.getElementById('whatsappNumber').value = data.contact.whatsapp || '';
+            document.getElementById('contactAddress').value = data.contact.address || '';
+          }
+          
+          if (data.availability) {
+            document.getElementById('maxBookings').value = data.availability.maxBookings || '';
+            document.getElementById('leadTime').value = data.availability.leadTime || '';
+            document.getElementById('operatingHours').value = data.availability.hours || '';
+            document.getElementById('bookingStatus').value = data.availability.status || 'open';
+          }
+        }
+      } catch (error) {
+        console.error('Error loading editor data:', error);
+      }
+    }
+
+    window.loadPackageData = async function() {
+      const packageId = document.getElementById('packageSelect').value;
+      try {
+        const packageDoc = await getDoc(doc(db, 'packages', packageId));
+        if (packageDoc.exists()) {
+          const data = packageDoc.data();
+          document.getElementById('packagePrice').value = data.price || '';
+          document.getElementById('packageDesc').value = data.description || '';
+        }
+      } catch (error) {
+        console.error('Error loading package:', error);
+      }
+    };
+
+    window.updatePackage = async function() {
+      const packageId = document.getElementById('packageSelect').value;
+      const price = document.getElementById('packagePrice').value;
+      const description = document.getElementById('packageDesc').value;
+
+      if (!price) {
+        showAlert('❌ Please enter a price', 'error');
+        return;
+      }
+
+      try {
+        await setDoc(doc(db, 'packages', packageId), {
+          price: parseInt(price),
+          description: description,
+          updatedAt: new Date(),
+          updatedBy: currentUser.uid
+        }, { merge: true });
+
+        showAlert('✅ Package updated successfully!', 'success');
+      } catch (error) {
+        showAlert('❌ Error: ' + error.message, 'error');
+      }
+    };
+
+    window.previewImage = function() {
+      const url = document.getElementById('imageUrl').value;
+      if (url) {
+        document.getElementById('imagePreview').src = url;
+      }
+    };
+
+    window.updateImage = async function() {
+      const section = document.getElementById('imageSection').value;
+      const imageUrl = document.getElementById('imageUrl').value;
+
+      if (!imageUrl) {
+        showAlert('❌ Please enter an image URL', 'error');
+        return;
+      }
+
+      try {
+        await setDoc(doc(db, 'settings', 'website'), {
+          images: {
+            [section]: imageUrl
+          },
+          updatedAt: new Date(),
+          updatedBy: currentUser.uid
+        }, { merge: true });
+
+        showAlert('✅ Image updated successfully!', 'success');
+      } catch (error) {
+        showAlert('❌ Error: ' + error.message, 'error');
+      }
+    };
+
+    window.updateContact = async function() {
+      const phone = document.getElementById('contactPhone').value;
+      const email = document.getElementById('contactEmail').value;
+      const whatsapp = document.getElementById('whatsappNumber').value;
+      const address = document.getElementById('contactAddress').value;
+
+      try {
+        await setDoc(doc(db, 'settings', 'website'), {
+          contact: {
+            phone: phone,
+            email: email,
+            whatsapp: whatsapp,
+            address: address
+          },
+          updatedAt: new Date(),
+          updatedBy: currentUser.uid
+        }, { merge: true });
+
+        showAlert('✅ Contact information updated!', 'success');
+      } catch (error) {
+        showAlert('❌ Error: ' + error.message, 'error');
+      }
+    };
+
+    window.updateAvailability = async function() {
+      const maxBookings = document.getElementById('maxBookings').value;
+      const leadTime = document.getElementById('leadTime').value;
+      const hours = document.getElementById('operatingHours').value;
+      const status = document.getElementById('bookingStatus').value;
+
+      try {
+        await setDoc(doc(db, 'settings', 'website'), {
+          availability: {
+            maxBookings: parseInt(maxBookings) || 10,
+            leadTime: parseInt(leadTime) || 2,
+            hours: hours,
+            status: status
+          },
+          updatedAt: new Date(),
+          updatedBy: currentUser.uid
+        }, { merge: true });
+
+        showAlert('✅ Availability settings updated!', 'success');
+      } catch (error) {
+        showAlert('❌ Error: ' + error.message, 'error');
+      }
+    };
+
+    // Notifications
+    window.showNotifications = function() {
+      showAlert('🔔 Notifications feature coming soon!', 'info');
+    };
+
+    window.replyMessage = function() {
+      showAlert('↩️ Message reply feature coming soon!', 'info');
+    };
+
+    // Get user role
+    async function getUserRole(uid) {
+      try {
+        const userDoc = await getDoc(doc(db, 'users', uid));
+        if (userDoc.exists()) {
+          return userDoc.data().role;
+        }
+      } catch (error) {
+        console.error('Error getting role:', error);
+      }
+      return null;
+    }
+
+    // Auth state
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        window.location.href = '/login.html';
+        return;
+      }
+
+      const role = await getUserRole(user.uid);
+
+      if (role !== 'manager' && role !== 'admin' && role !== 'super_admin') {
+        alert('⛔ Unauthorized access');
+        window.location.href = '/dashboard/index.html';
+        return;
+      }
+
+      currentUser = user;
+      document.getElementById('userEmail').textContent = user.email;
+      document.getElementById('managerEmail').value = user.email;
+      
+      // Hide loader
       document.getElementById('loader').classList.add('hidden');
       document.getElementById('managerPanel').classList.remove('hidden');
-    }, 2000);
+      
+      // Load initial data
+      await loadBookings();
+      await loadCustomers();
+    });
+
+    console.log('🚀 Manager panel loaded with all features');
   </script>
 </body>
 </html>
