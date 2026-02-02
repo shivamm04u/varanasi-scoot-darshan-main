@@ -9,6 +9,7 @@ import LocationsPage from "./pages/LocationsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
+import AuthButtons from "./components/AuthButtons";
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -16,6 +17,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <AuthButtons />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/book" element={<BookTour />} />
