@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Manager Panel - Baba Banarasi</title>
+  <title>Manager Panel - Varanasi Scoot Darshan</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -89,6 +89,10 @@
       text-align: center;
       background: rgba(239, 68, 68, 0.1);
       cursor: pointer;
+      transition: all 0.3s;
+    }
+    .sidebar-footer a:hover {
+      background: rgba(239, 68, 68, 0.2);
     }
     
     .main-content {
@@ -100,13 +104,25 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
     }
     .page-header h1 { color: #1e293b; }
+    .header-info {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
     .manager-badge {
       background: linear-gradient(135deg, #22c55e, #16a34a);
       color: white;
       padding: 0.5rem 1rem;
       border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+    .user-email {
+      color: #64748b;
       font-size: 0.85rem;
     }
     
@@ -121,6 +137,10 @@
       border-radius: 15px;
       padding: 1.5rem;
       box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      transition: transform 0.3s;
+    }
+    .stat-card:hover {
+      transform: translateY(-5px);
     }
     .stat-card h3 {
       color: #64748b;
@@ -135,6 +155,7 @@
     }
     .stat-card.primary .value { color: #22c55e; }
     .stat-card.warning .value { color: #f59e0b; }
+    .stat-card.info .value { color: #3b82f6; }
     
     .data-table {
       background: white;
@@ -145,8 +166,24 @@
     .table-header {
       padding: 1.5rem;
       border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
     .table-header h2 { color: #1e293b; }
+    .refresh-btn {
+      padding: 0.5rem 1rem;
+      background: #22c55e;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.3s;
+    }
+    .refresh-btn:hover {
+      background: #16a34a;
+    }
     
     .table-wrapper { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; min-width: 700px; }
@@ -168,6 +205,7 @@
       border-radius: 20px;
       font-size: 0.75rem;
       font-weight: 500;
+      text-transform: capitalize;
     }
     .status-pending { background: #fef3c7; color: #92400e; }
     .status-confirmed { background: #d1fae5; color: #065f46; }
@@ -182,10 +220,16 @@
       font-size: 0.8rem;
       margin-right: 0.3rem;
       transition: all 0.3s;
+      font-weight: 500;
     }
     .action-btn.confirm { background: #d1fae5; color: #065f46; }
     .action-btn.complete { background: #dbeafe; color: #1e40af; }
-    .action-btn:hover { opacity: 0.8; }
+    .action-btn.view { background: #f3f4f6; color: #374151; }
+    .action-btn:hover { opacity: 0.8; transform: scale(1.05); }
+    .action-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
     
     .no-data {
       text-align: center;
@@ -198,11 +242,47 @@
       font-weight: 500;
       text-decoration: none;
     }
+    .phone-link:hover {
+      text-decoration: underline;
+    }
+
+    .alert {
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+      display: none;
+    }
+    .alert.success {
+      background: #d1fae5;
+      color: #065f46;
+      border: 1px solid #10b981;
+    }
+    .alert.error {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #ef4444;
+    }
     
     @media (max-width: 768px) {
-      .sidebar { width: 70px; padding: 1rem 0.5rem; }
-      .sidebar-logo h2, .sidebar-nav span { display: none; }
-      .main-content { margin-left: 70px; padding: 1rem; }
+      .sidebar { 
+        width: 70px; 
+        padding: 1rem 0.5rem; 
+      }
+      .sidebar-logo h2, 
+      .sidebar-nav span:not(.sidebar-logo span) { 
+        display: none; 
+      }
+      .main-content { 
+        margin-left: 70px; 
+        padding: 1rem; 
+      }
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
     }
   </style>
 </head>
@@ -222,24 +302,35 @@
         <a href="/"><span>🏠</span> <span>Main Site</span></a>
       </div>
       <div class="sidebar-footer">
-        <a onclick="logout()">Logout</a>
+        <a onclick="logout()">🚪 <span>Logout</span></a>
       </div>
     </nav>
 
     <main class="main-content">
       <div class="page-header">
-        <h1>My Assigned Bookings</h1>
-        <span class="manager-badge">Manager</span>
+        <div>
+          <h1>My Assigned Bookings</h1>
+          <p class="user-email" id="userEmail"></p>
+        </div>
+        <div class="header-info">
+          <span class="manager-badge">Manager</span>
+        </div>
       </div>
+
+      <div class="alert" id="alertBox"></div>
 
       <div class="stats-grid">
         <div class="stat-card primary">
-          <h3>Assigned to Me</h3>
+          <h3>Total Assigned</h3>
           <div class="value" id="statAssigned">0</div>
         </div>
         <div class="stat-card warning">
           <h3>Pending Action</h3>
           <div class="value" id="statPending">0</div>
+        </div>
+        <div class="stat-card info">
+          <h3>Confirmed</h3>
+          <div class="value" id="statConfirmed">0</div>
         </div>
         <div class="stat-card">
           <h3>Completed</h3>
@@ -250,12 +341,13 @@
       <div class="data-table">
         <div class="table-header">
           <h2>Assigned Bookings</h2>
+          <button class="refresh-btn" onclick="loadMyBookings()">🔄 Refresh</button>
         </div>
         <div class="table-wrapper">
           <table>
             <thead>
               <tr>
-                <th>ID</th>
+                <th>Booking ID</th>
                 <th>Customer</th>
                 <th>Phone</th>
                 <th>Package</th>
@@ -265,7 +357,7 @@
               </tr>
             </thead>
             <tbody id="bookingsTable">
-              <tr><td colspan="7" class="no-data">Loading...</td></tr>
+              <tr><td colspan="7" class="no-data">Loading bookings...</td></tr>
             </tbody>
           </table>
         </div>
@@ -274,9 +366,9 @@
   </div>
 
   <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-    import { getFirestore, collection, getDocs, query, orderBy, doc, updateDoc, getDoc, where } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+    import { getFirestore, collection, getDocs, query, orderBy, doc, updateDoc, getDoc, where } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
 
     const firebaseConfig = {
       apiKey: "AIzaSyCtyR68dG9TEI_C89PvsdrGmpkE6vCtV0s",
@@ -294,61 +386,113 @@
     let currentUser = null;
     let myBookings = [];
 
+    // Logout function
     window.logout = async function() {
-      await signOut(auth);
-      window.location.href = 'login.html';
-    };
-
-    window.updateStatus = async function(bookingId, newStatus) {
-      try {
-        await updateDoc(doc(db, 'bookings', bookingId), { status: newStatus });
-        const booking = myBookings.find(b => b.id === bookingId);
-        if (booking) booking.status = newStatus;
-        renderBookings();
-        updateStats();
-      } catch (error) {
-        alert('Error: ' + error.message);
+      if (confirm('Are you sure you want to logout?')) {
+        try {
+          await signOut(auth);
+          window.location.href = '/login.html';
+        } catch (error) {
+          showAlert('Error logging out: ' + error.message, 'error');
+        }
       }
     };
 
-    async function loadMyBookings() {
+    // Update booking status
+    window.updateStatus = async function(bookingId, newStatus) {
+      if (!confirm(`Are you sure you want to mark this booking as ${newStatus}?`)) {
+        return;
+      }
+
       try {
+        const btn = event.target;
+        btn.disabled = true;
+        btn.textContent = 'Updating...';
+
+        await updateDoc(doc(db, 'bookings', bookingId), { 
+          status: newStatus,
+          updatedAt: new Date(),
+          updatedBy: currentUser.uid
+        });
+        
+        const booking = myBookings.find(b => b.id === bookingId);
+        if (booking) booking.status = newStatus;
+        
+        renderBookings();
+        updateStats();
+        showAlert(`Booking status updated to ${newStatus}`, 'success');
+      } catch (error) {
+        console.error('Error updating status:', error);
+        showAlert('Error updating status: ' + error.message, 'error');
+        btn.disabled = false;
+        btn.textContent = newStatus === 'confirmed' ? 'Confirm' : 'Complete';
+      }
+    };
+
+    // Load manager's assigned bookings
+    window.loadMyBookings = async function() {
+      try {
+        const tbody = document.getElementById('bookingsTable');
+        tbody.innerHTML = '<tr><td colspan="7" class="no-data">Loading...</td></tr>';
+
         const q = query(
           collection(db, 'bookings'),
           where('managerId', '==', currentUser.uid),
           orderBy('createdAt', 'desc')
         );
+        
         const snapshot = await getDocs(q);
         myBookings = [];
-        snapshot.forEach(doc => myBookings.push({ id: doc.id, ...doc.data() }));
+        
+        snapshot.forEach(doc => {
+          myBookings.push({ id: doc.id, ...doc.data() });
+        });
+        
+        console.log('Loaded bookings:', myBookings.length);
         renderBookings();
         updateStats();
+        
+        if (myBookings.length > 0) {
+          showAlert(`Loaded ${myBookings.length} booking(s)`, 'success');
+          setTimeout(() => hideAlert(), 3000);
+        }
       } catch (error) {
-        document.getElementById('bookingsTable').innerHTML = '<tr><td colspan="7" class="no-data">No bookings assigned yet.</td></tr>';
+        console.error('Error loading bookings:', error);
+        document.getElementById('bookingsTable').innerHTML = 
+          '<tr><td colspan="7" class="no-data">Error loading bookings. Please refresh.</td></tr>';
+        showAlert('Error loading bookings: ' + error.message, 'error');
       }
-    }
+    };
 
+    // Render bookings table
     function renderBookings() {
       const tbody = document.getElementById('bookingsTable');
       
       if (myBookings.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" class="no-data">No bookings assigned to you.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" class="no-data">No bookings assigned to you yet.</td></tr>';
         return;
       }
       
       let html = '';
       myBookings.forEach(b => {
+        const bookingDate = b.date || 'Not set';
+        const bookingTime = b.time || '';
+        
         html += `
           <tr>
-            <td style="font-family:monospace;font-size:0.8rem;">${b.id.substring(0,8)}...</td>
-            <td>${b.name}</td>
-            <td><a href="tel:${b.phone}" class="phone-link">${b.phone}</a></td>
-            <td>${b.tourPackage}</td>
-            <td>${b.date}</td>
-            <td><span class="status-badge status-${b.status}">${b.status}</span></td>
+            <td style="font-family:monospace;font-size:0.8rem;">#${b.id.substring(0,8)}</td>
+            <td><strong>${b.name || 'N/A'}</strong></td>
+            <td><a href="tel:${b.phone}" class="phone-link">📞 ${b.phone}</a></td>
+            <td>${b.tourPackage || 'N/A'}</td>
+            <td>${bookingDate} ${bookingTime}</td>
+            <td><span class="status-badge status-${b.status || 'pending'}">${b.status || 'pending'}</span></td>
             <td>
-              ${b.status === 'pending' ? `<button class="action-btn confirm" onclick="updateStatus('${b.id}','confirmed')">Confirm</button>` : ''}
-              ${b.status === 'confirmed' ? `<button class="action-btn complete" onclick="updateStatus('${b.id}','completed')">Complete</button>` : ''}
+              ${b.status === 'pending' ? 
+                `<button class="action-btn confirm" onclick="updateStatus('${b.id}','confirmed')">✓ Confirm</button>` : ''}
+              ${b.status === 'confirmed' ? 
+                `<button class="action-btn complete" onclick="updateStatus('${b.id}','completed')">✓ Complete</button>` : ''}
+              ${b.status === 'completed' ? 
+                `<span style="color:#10b981;">✓ Done</span>` : ''}
             </td>
           </tr>
         `;
@@ -356,38 +500,83 @@
       tbody.innerHTML = html;
     }
 
+    // Update statistics
     function updateStats() {
       document.getElementById('statAssigned').textContent = myBookings.length;
-      document.getElementById('statPending').textContent = myBookings.filter(b => b.status === 'pending' || b.status === 'confirmed').length;
-      document.getElementById('statCompleted').textContent = myBookings.filter(b => b.status === 'completed').length;
+      document.getElementById('statPending').textContent = 
+        myBookings.filter(b => b.status === 'pending').length;
+      document.getElementById('statConfirmed').textContent = 
+        myBookings.filter(b => b.status === 'confirmed').length;
+      document.getElementById('statCompleted').textContent = 
+        myBookings.filter(b => b.status === 'completed').length;
     }
 
+    // Get user role from Firestore
     async function getUserRole(uid) {
       try {
         const userDoc = await getDoc(doc(db, 'users', uid));
-        if (userDoc.exists()) return userDoc.data().role;
-      } catch (e) {}
+        if (userDoc.exists()) {
+          return userDoc.data().role;
+        }
+      } catch (error) {
+        console.error('Error getting user role:', error);
+      }
       return null;
     }
 
+    // Show alert message
+    function showAlert(message, type = 'success') {
+      const alertBox = document.getElementById('alertBox');
+      alertBox.textContent = message;
+      alertBox.className = `alert ${type}`;
+      alertBox.style.display = 'block';
+    }
+
+    // Hide alert message
+    function hideAlert() {
+      const alertBox = document.getElementById('alertBox');
+      alertBox.style.display = 'none';
+    }
+
+    // Format date for display
+    function formatDate(timestamp) {
+      if (!timestamp) return 'N/A';
+      try {
+        const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+        return date.toLocaleDateString('en-IN');
+      } catch (e) {
+        return 'N/A';
+      }
+    }
+
+    // Auth state observer
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
-        window.location.href = 'login.html';
+        console.log('No user logged in, redirecting to login');
+        window.location.href = '/login.html';
         return;
       }
 
+      console.log('User logged in:', user.email);
       const role = await getUserRole(user.uid);
+      console.log('User role:', role);
 
       if (role !== 'manager' && role !== 'admin' && role !== 'super_admin') {
-        window.location.href = 'login.html';
+        console.log('Unauthorized role, redirecting');
+        alert('You do not have permission to access this page');
+        window.location.href = '/dashboard/index.html';
         return;
       }
 
       currentUser = user;
+      document.getElementById('userEmail').textContent = user.email;
       document.getElementById('loader').classList.add('hidden');
       document.getElementById('managerPanel').classList.remove('hidden');
+      
       await loadMyBookings();
     });
+
+    console.log('Manager panel loaded');
   </script>
 </body>
 </html>
