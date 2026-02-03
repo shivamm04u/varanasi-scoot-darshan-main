@@ -3,1512 +3,809 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Manager Command Center - Varanasi Scoot Darshan</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>Manager Dashboard | Varanasi Scoot Darshan</title>
+  <!-- Google Fonts: Inter for UI -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
     :root {
-      /* Main Website Colors - Matching varanasi-scoot-darshan */
-      --primary: #FF6B35;
-      --primary-dark: #E85A2A;
-      --primary-light: #FF8C61;
-      --secondary: #004E89;
-      --secondary-dark: #003D6B;
-      --accent: #FFC947;
-      --success: #10B981;
-      --warning: #F59E0B;
-      --danger: #EF4444;
+      /* Brand Colors */
+      --primary: #FF6B35; /* Varanasi Orange */
+      --primary-hover: #E85A2A;
+      --secondary: #2E3A59; /* Deep River Blue */
       
-      /* Dark Mode First */
-      --bg-dark: #0A0E27;
-      --bg-darker: #050714;
-      --surface: #1A1F3A;
-      --surface-light: #252B4A;
+      /* UI Colors - Optimized for reduced eye strain */
+      --bg-body: #F3F4F6;
+      --bg-sidebar: #1E293B;
+      --surface: #FFFFFF;
+      --border: #E2E8F0;
       
-      /* Glassmorphism */
-      --glass-bg: rgba(26, 31, 58, 0.7);
-      --glass-border: rgba(255, 107, 53, 0.2);
-      
-      /* Text */
-      --text-primary: #F8FAFC;
-      --text-secondary: #94A3B8;
+      /* Text Colors */
+      --text-main: #1F2937;
       --text-muted: #64748B;
+      --text-light: #F8FAFC;
       
-      /* Gradients */
-      --gradient-primary: linear-gradient(135deg, #FF6B35 0%, #FFC947 100%);
-      --gradient-secondary: linear-gradient(135deg, #004E89 0%, #FF6B35 100%);
-      
-      /* Shadows & Glows */
-      --glow-primary: 0 0 40px rgba(255, 107, 53, 0.3);
-      --shadow-elevated: 0 20px 60px rgba(0, 0, 0, 0.5);
+      /* Status Colors */
+      --success-bg: #DCFCE7;
+      --success-text: #166534;
+      --warning-bg: #FEF3C7;
+      --warning-text: #92400E;
+      --danger-bg: #FEE2E2;
+      --danger-text: #991B1B;
+      --info-bg: #E0F2FE;
+      --info-text: #075985;
+
+      /* Shadows */
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     }
 
+    * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+    
     body {
-      font-family: 'Poppins', sans-serif;
-      background: var(--bg-darker);
-      color: var(--text-primary);
-      overflow-x: hidden;
-      position: relative;
-    }
-
-    /* Animated Background */
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: 
-        radial-gradient(circle at 20% 50%, rgba(255, 107, 53, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(0, 78, 137, 0.08) 0%, transparent 50%);
-      z-index: -1;
-      animation: gradientShift 15s ease infinite;
-    }
-
-    @keyframes gradientShift {
-      0%, 100% { opacity: 0.4; }
-      50% { opacity: 0.6; }
-    }
-
-    /* Sidebar */
-    .sidebar {
-      position: fixed;
-      left: 0;
-      top: 0;
-      width: 280px;
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-body);
+      color: var(--text-main);
       height: 100vh;
-      background: var(--glass-bg);
-      backdrop-filter: blur(20px) saturate(180%);
-      border-right: 1px solid var(--glass-border);
-      padding: 2rem 1.5rem;
-      z-index: 100;
+      overflow: hidden;
+      display: flex;
+    }
+
+    /* --- SIDEBAR --- */
+    .sidebar {
+      width: 260px;
+      background-color: var(--bg-sidebar);
+      color: var(--text-light);
+      display: flex;
+      flex-direction: column;
+      transition: width 0.3s ease;
+      z-index: 50;
+      box-shadow: 4px 0 24px rgba(0,0,0,0.1);
+    }
+
+    .brand {
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .brand i {
+      font-size: 1.5rem;
+      color: var(--primary);
+      background: rgba(255, 107, 53, 0.1);
+      padding: 8px;
+      border-radius: 8px;
+    }
+
+    .brand span {
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: -0.5px;
+    }
+
+    .user-mini-profile {
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(0,0,0,0.2);
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: white;
+    }
+
+    .user-info h4 { font-size: 0.9rem; font-weight: 600; }
+    .user-info p { font-size: 0.75rem; color: #94A3B8; }
+
+    .nav-menu {
+      padding: 1rem;
+      flex: 1;
       overflow-y: auto;
     }
 
-    .sidebar::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    .sidebar::-webkit-scrollbar-thumb {
-      background: var(--primary);
-      border-radius: 10px;
-    }
-
-    /* Logo */
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      margin-bottom: 2rem;
-      padding-bottom: 1.5rem;
-      border-bottom: 1px solid var(--glass-border);
-    }
-
-    .logo-icon {
-      width: 50px;
-      height: 50px;
-      background: var(--gradient-primary);
-      border-radius: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-      box-shadow: var(--glow-primary);
-      animation: pulse 3s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-    }
-
-    .logo-text {
-      font-size: 1.3rem;
-      font-weight: 700;
-      background: var(--gradient-primary);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    /* User Card */
-    .user-card {
-      background: var(--glass-bg);
-      backdrop-filter: blur(10px);
-      border: 1px solid var(--glass-border);
-      border-radius: 20px;
-      padding: 1.5rem;
-      margin-bottom: 2rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .user-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      background: var(--gradient-primary);
-    }
-
-    .user-role {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      color: var(--primary);
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-
-    .user-name {
-      font-size: 1.1rem;
-      color: var(--text-primary);
-      font-weight: 700;
-      margin-bottom: 0.25rem;
-    }
-
-    .user-email {
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-      word-break: break-all;
-    }
-
-    /* Navigation */
     .nav-item {
       display: flex;
       align-items: center;
-      gap: 15px;
-      padding: 1rem 1.25rem;
-      margin-bottom: 0.5rem;
-      color: var(--text-secondary);
+      gap: 12px;
+      padding: 0.85rem 1rem;
+      color: #CBD5E1;
       text-decoration: none;
-      border-radius: 15px;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      overflow: hidden;
-      font-weight: 500;
+      border-radius: 8px;
+      margin-bottom: 4px;
+      transition: all 0.2s;
       cursor: pointer;
-    }
-
-    .nav-item::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 3px;
-      height: 100%;
-      background: var(--primary);
-      transform: scaleY(0);
-      transition: transform 0.3s ease;
+      font-weight: 500;
+      font-size: 0.95rem;
     }
 
     .nav-item:hover {
-      background: rgba(255, 107, 53, 0.1);
-      color: var(--text-primary);
-      transform: translateX(5px);
-    }
-
-    .nav-item:hover::before {
-      transform: scaleY(1);
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
     }
 
     .nav-item.active {
-      background: var(--gradient-primary);
+      background: var(--primary);
       color: white;
-      box-shadow: var(--glow-primary);
+      box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
     }
 
-    .nav-icon {
-      font-size: 1.3rem;
-    }
-
-    .notification-badge {
-      position: absolute;
-      top: 8px;
-      right: 15px;
-      min-width: 20px;
-      height: 20px;
-      background: var(--danger);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .nav-item .badge {
+      margin-left: auto;
+      background: var(--danger-text);
+      color: white;
       font-size: 0.7rem;
-      font-weight: 700;
-      padding: 0 6px;
-      box-shadow: 0 0 15px var(--danger);
-      animation: pulse 2s ease infinite;
+      padding: 2px 6px;
+      border-radius: 10px;
     }
 
-    /* Logout Button */
-    .logout-btn {
-      margin-top: 2rem;
+    .bottom-actions {
       padding: 1rem;
-      background: rgba(239, 68, 68, 0.1);
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .logout-btn {
+      width: 100%;
+      padding: 0.75rem;
+      background: transparent;
       border: 1px solid rgba(239, 68, 68, 0.3);
       color: #FCA5A5;
-      border-radius: 15px;
+      border-radius: 8px;
       cursor: pointer;
-      transition: all 0.3s ease;
-      font-weight: 600;
+      transition: all 0.2s;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      width: 100%;
+      gap: 8px;
     }
 
     .logout-btn:hover {
-      background: var(--danger);
-      color: white;
-      transform: translateY(-2px);
-      box-shadow: 0 10px 30px rgba(239, 68, 68, 0.3);
+      background: rgba(239, 68, 68, 0.1);
+      color: #EF4444;
+      border-color: #EF4444;
     }
 
-    /* Main Content */
-    .main-content {
-      margin-left: 280px;
-      padding: 2.5rem;
-      min-height: 100vh;
+    /* --- MAIN CONTENT --- */
+    .main-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     }
 
-    /* Top Bar */
-    .top-bar {
-      background: var(--glass-bg);
-      backdrop-filter: blur(20px) saturate(180%);
-      border: 1px solid var(--glass-border);
-      border-radius: 25px;
-      padding: 1.5rem 2.5rem;
-      margin-bottom: 2.5rem;
+    .top-header {
+      background: var(--surface);
+      padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: var(--shadow-elevated);
+      border-bottom: 1px solid var(--border);
+      height: 70px;
     }
 
-    .page-title {
-      font-size: 2.2rem;
-      font-weight: 800;
-      background: var(--gradient-primary);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+    .page-title h2 {
+      font-size: 1.25rem;
+      color: var(--text-main);
+      font-weight: 700;
     }
 
-    .top-actions {
+    .header-actions {
       display: flex;
       gap: 1rem;
-      align-items: center;
     }
 
-    /* Search Bar */
-    .search-bar {
-      background: var(--surface);
-      border: 1px solid var(--glass-border);
-      border-radius: 15px;
-      padding: 0.8rem 1.5rem;
-      color: var(--text-primary);
-      font-size: 0.95rem;
-      width: 300px;
-      transition: all 0.3s ease;
-    }
-
-    .search-bar:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 20px rgba(255, 107, 53, 0.3);
-    }
-
-    .search-bar::placeholder {
+    .btn-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: white;
       color: var(--text-muted);
-    }
-
-    /* Modern Button */
-    .btn-modern {
-      padding: 0.9rem 1.8rem;
-      background: var(--gradient-primary);
-      border: none;
-      border-radius: 15px;
-      color: white;
-      font-weight: 700;
       cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      box-shadow: var(--glow-primary);
-      font-size: 0.95rem;
+      transition: all 0.2s;
     }
 
-    .btn-modern:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 15px 40px rgba(255, 107, 53, 0.5);
+    .btn-icon:hover {
+      border-color: var(--primary);
+      color: var(--primary);
     }
 
-    .btn-modern:active {
-      transform: scale(0.98);
+    .content-area {
+      flex: 1;
+      padding: 2rem;
+      overflow-y: auto;
     }
 
-    .btn-secondary {
-      background: var(--surface);
-      border: 1px solid var(--glass-border);
-      box-shadow: none;
-    }
-
-    .btn-secondary:hover {
-      background: var(--surface-light);
-      box-shadow: 0 0 20px rgba(255, 107, 53, 0.2);
-    }
-
-    .btn-download {
-      background: var(--gradient-secondary);
-      padding: 0.6rem 1rem;
-      font-size: 0.85rem;
-    }
-
-    /* Tab System */
-    .tab-content {
-      display: none;
-    }
-
-    .tab-content.active {
-      display: block;
-      animation: fadeIn 0.5s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Stats Grid */
+    /* --- DASHBOARD CARDS --- */
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 1.5rem;
-      margin-bottom: 2.5rem;
+      margin-bottom: 2rem;
     }
 
     .stat-card {
-      background: var(--glass-bg);
-      backdrop-filter: blur(20px) saturate(180%);
-      border: 1px solid var(--glass-border);
-      border-radius: 25px;
-      padding: 2rem;
-      position: relative;
-      overflow: hidden;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      cursor: pointer;
+      background: var(--surface);
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      transition: transform 0.2s;
     }
 
-    .stat-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 4px;
-      background: var(--gradient-primary);
-    }
+    .stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
 
-    .stat-card:hover {
-      transform: translateY(-10px) scale(1.02);
-      box-shadow: var(--glow-primary), var(--shadow-elevated);
-    }
-
-    .stat-label {
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: var(--text-secondary);
-      font-weight: 700;
-      margin-bottom: 1rem;
-    }
-
-    .stat-icon {
+    .stat-icon-box {
       width: 50px;
       height: 50px;
-      background: var(--gradient-primary);
-      border-radius: 15px;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 1.5rem;
-      box-shadow: var(--glow-primary);
-      position: absolute;
-      top: 2rem;
-      right: 2rem;
     }
 
-    .stat-value {
-      font-size: 3rem;
-      font-weight: 800;
-      line-height: 1;
-      background: var(--gradient-primary);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
+    .bg-orange { background: #FFF7ED; color: var(--primary); }
+    .bg-blue { background: #EFF6FF; color: #3B82F6; }
+    .bg-green { background: #F0FDF4; color: #22C55E; }
+    .bg-purple { background: #FAF5FF; color: #A855F7; }
 
-    /* Data Section */
-    .data-section {
-      background: var(--glass-bg);
-      backdrop-filter: blur(20px) saturate(180%);
-      border: 1px solid var(--glass-border);
-      border-radius: 25px;
+    .stat-details h3 { font-size: 1.8rem; font-weight: 700; color: var(--text-main); line-height: 1.2; }
+    .stat-details p { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
+
+    /* --- TABLES --- */
+    .card {
+      background: var(--surface);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
       overflow: hidden;
-      box-shadow: var(--shadow-elevated);
       margin-bottom: 2rem;
     }
 
-    .section-header {
-      padding: 2rem 2.5rem;
-      border-bottom: 1px solid var(--glass-border);
+    .card-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
-    .section-title {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--text-primary);
-    }
+    .card-header h3 { font-size: 1.1rem; font-weight: 600; }
 
-    .table-wrapper {
-      overflow-x: auto;
-    }
-
-    .modern-table {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 0;
-    }
-
-    .modern-table thead {
-      background: rgba(255, 107, 53, 0.05);
-    }
-
-    .modern-table th {
-      padding: 1.5rem 2rem;
+    .table-container { overflow-x: auto; }
+    
+    table { width: 100%; border-collapse: collapse; }
+    
+    th {
+      background: #F8FAFC;
+      padding: 1rem 1.5rem;
       text-align: left;
       font-size: 0.75rem;
       text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: var(--primary);
-      font-weight: 700;
-      border-bottom: 1px solid var(--glass-border);
+      color: var(--text-muted);
+      font-weight: 600;
+      letter-spacing: 0.05em;
     }
 
-    .modern-table td {
-      padding: 1.5rem 2rem;
-      color: var(--text-secondary);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      font-weight: 500;
-    }
-
-    .modern-table tbody tr {
-      transition: all 0.3s ease;
-    }
-
-    .modern-table tbody tr:hover {
-      background: rgba(255, 107, 53, 0.05);
-      transform: scale(1.01);
-    }
-
-    .booking-id {
-      font-family: 'Courier New', monospace;
-      color: var(--accent);
-      font-weight: 700;
+    td {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
       font-size: 0.9rem;
+      color: var(--text-main);
     }
 
-    .customer-name {
-      color: var(--text-primary);
-      font-weight: 600;
-      font-size: 1rem;
-    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #F8FAFC; }
 
-    .phone-link {
-      color: var(--secondary);
-      text-decoration: none;
-      font-weight: 600;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.3s ease;
-    }
-
-    .phone-link:hover {
-      color: var(--primary);
-      text-shadow: 0 0 10px var(--primary);
-    }
-
-    /* Status Badge */
+    /* --- BADGES & BUTTONS --- */
     .status-badge {
-      padding: 0.5rem 1.2rem;
+      padding: 4px 10px;
       border-radius: 20px;
       font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+      font-weight: 600;
     }
+    .status-pending { background: var(--warning-bg); color: var(--warning-text); }
+    .status-confirmed { background: var(--success-bg); color: var(--success-text); }
+    .status-completed { background: var(--info-bg); color: var(--info-text); }
+    .status-cancelled { background: var(--danger-bg); color: var(--danger-text); }
 
-    .status-badge::before {
-      content: '';
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: currentColor;
-      box-shadow: 0 0 10px currentColor;
-      animation: pulse 2s ease infinite;
-    }
-
-    .status-pending {
-      background: rgba(251, 191, 36, 0.15);
-      color: #FBBF24;
-      border: 1px solid rgba(251, 191, 36, 0.3);
-    }
-
-    .status-confirmed {
-      background: rgba(16, 185, 129, 0.15);
-      color: #10B981;
-      border: 1px solid rgba(16, 185, 129, 0.3);
-    }
-
-    .status-completed {
-      background: rgba(56, 189, 248, 0.15);
-      color: #38BDF8;
-      border: 1px solid rgba(56, 189, 248, 0.3);
-    }
-
-    .status-cancelled {
-      background: rgba(239, 68, 68, 0.15);
-      color: #EF4444;
-      border: 1px solid rgba(239, 68, 68, 0.3);
-    }
-
-    /* Action Buttons */
-    .action-btn {
-      padding: 0.6rem 1.2rem;
+    .btn-primary {
+      background: var(--primary);
+      color: white;
       border: none;
-      border-radius: 12px;
-      font-size: 0.85rem;
-      font-weight: 700;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
       cursor: pointer;
-      transition: all 0.3s ease;
-      display: inline-flex;
+      display: flex;
       align-items: center;
       gap: 8px;
-      margin-right: 0.5rem;
+      transition: background 0.2s;
     }
+    .btn-primary:hover { background: var(--primary-hover); }
 
-    .action-confirm {
-      background: rgba(16, 185, 129, 0.15);
-      color: #10B981;
-      border: 1px solid rgba(16, 185, 129, 0.3);
-    }
+    .btn-sm { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
+    .btn-outline { border: 1px solid var(--border); background: white; color: var(--text-main); }
+    .btn-outline:hover { background: #F8FAFC; border-color: #CBD5E1; }
 
-    .action-confirm:hover {
-      background: #10B981;
-      color: white;
-      box-shadow: 0 5px 20px rgba(16, 185, 129, 0.4);
-      transform: translateY(-2px);
-    }
-
-    .action-complete {
-      background: rgba(56, 189, 248, 0.15);
-      color: #38BDF8;
-      border: 1px solid rgba(56, 189, 248, 0.3);
-    }
-
-    .action-complete:hover {
-      background: #38BDF8;
-      color: white;
-      box-shadow: 0 5px 20px rgba(56, 189, 248, 0.4);
-      transform: translateY(-2px);
-    }
-
-    .action-cancel {
-      background: rgba(239, 68, 68, 0.15);
-      color: #EF4444;
-      border: 1px solid rgba(239, 68, 68, 0.3);
-    }
-
-    .action-cancel:hover {
-      background: #EF4444;
-      color: white;
-      box-shadow: 0 5px 20px rgba(239, 68, 68, 0.4);
-      transform: translateY(-2px);
-    }
-
-    /* Editor Grid */
-    .editor-grid {
+    /* --- EDITOR GRID --- */
+    .editor-layout {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      grid-template-columns: 1fr 350px;
       gap: 2rem;
     }
 
-    .editor-card {
-      background: var(--glass-bg);
-      backdrop-filter: blur(20px) saturate(180%);
-      border: 1px solid var(--glass-border);
-      border-radius: 25px;
-      padding: 2rem;
-      box-shadow: var(--shadow-elevated);
-      transition: all 0.3s ease;
-    }
-
-    .editor-card:hover {
-      transform: translateY(-5px);
-      box-shadow: var(--glow-primary), var(--shadow-elevated);
-    }
-
-    .editor-card h3 {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: 1.5rem;
+    /* --- PACKAGES --- */
+    .package-card {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 10px;
+      padding: 1.2rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      background: white;
+      transition: all 0.2s;
     }
+    
+    .package-card:hover { border-color: var(--primary); box-shadow: var(--shadow-sm); }
 
-    .form-group {
-      margin-bottom: 1.5rem;
-    }
+    .pkg-info h4 { font-weight: 600; margin-bottom: 4px; }
+    .pkg-info p { font-size: 0.85rem; color: var(--text-muted); }
+    .pkg-price { font-weight: 700; color: var(--primary); font-size: 1.1rem; }
 
-    .form-group label {
-      display: block;
-      font-weight: 600;
-      color: var(--text-secondary);
-      margin-bottom: 0.5rem;
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .form-group input,
-    .form-group textarea,
-    .form-group select {
-      width: 100%;
-      padding: 0.9rem 1.2rem;
-      background: var(--surface);
-      border: 1px solid var(--glass-border);
-      border-radius: 12px;
-      color: var(--text-primary);
-      font-size: 1rem;
-      transition: all 0.3s;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    .form-group input:focus,
-    .form-group textarea:focus,
-    .form-group select:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 20px rgba(255, 107, 53, 0.3);
-    }
-
-    .form-group textarea {
-      resize: vertical;
-      min-height: 120px;
-    }
-
-    /* Image Gallery */
-    .image-gallery {
+    /* --- IMAGES --- */
+    .image-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
       gap: 1rem;
       margin-top: 1rem;
     }
 
-    .image-item {
+    .img-tile {
       position: relative;
-      border-radius: 15px;
+      border-radius: 8px;
       overflow: hidden;
-      border: 2px solid var(--glass-border);
-      transition: all 0.3s ease;
-      cursor: pointer;
+      aspect-ratio: 4/3;
+      border: 1px solid var(--border);
+      group:hover;
     }
 
-    .image-item:hover {
-      border-color: var(--primary);
-      box-shadow: var(--glow-primary);
-      transform: scale(1.05);
+    .img-tile img { width: 100%; height: 100%; object-fit: cover; }
+    
+    .img-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s;
     }
-
-    .image-item img {
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
-      display: block;
-    }
-
-    .image-label {
+    
+    .img-tile:hover .img-overlay { opacity: 1; }
+    
+    .img-label {
       position: absolute;
       bottom: 0;
       left: 0;
       right: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+      background: rgba(0,0,0,0.7);
       color: white;
-      padding: 0.5rem;
       font-size: 0.75rem;
-      font-weight: 600;
+      padding: 4px 8px;
       text-align: center;
     }
 
-    .image-actions {
-      position: absolute;
-      top: 0.5rem;
-      right: 0.5rem;
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    .image-btn {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-      transition: all 0.3s ease;
-    }
-
-    .image-btn.download {
-      background: rgba(16, 185, 129, 0.9);
-      color: white;
-    }
-
-    .image-btn.replace {
-      background: rgba(255, 107, 53, 0.9);
-      color: white;
-    }
-
-    .image-btn:hover {
-      transform: scale(1.1);
-    }
-
-    .image-preview {
+    /* --- FORMS --- */
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-main); }
+    .form-control {
       width: 100%;
-      height: 200px;
-      border-radius: 15px;
-      object-fit: cover;
-      margin-top: 1rem;
-      border: 2px solid var(--glass-border);
-      transition: all 0.3s ease;
-    }
-
-    .image-preview:hover {
-      border-color: var(--primary);
-      box-shadow: var(--glow-primary);
-    }
-
-    .price-input {
-      position: relative;
-    }
-
-    .price-input::before {
-      content: '₹';
-      position: absolute;
-      left: 1.2rem;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--primary);
-      font-weight: 700;
-      font-size: 1.1rem;
-    }
-
-    .price-input input {
-      padding-left: 2.5rem;
-    }
-
-    /* Tour Package List */
-    .package-list {
-      margin-bottom: 1.5rem;
-    }
-
-    .package-item {
-      background: var(--surface);
-      border: 1px solid var(--glass-border);
-      border-radius: 12px;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: all 0.3s ease;
-    }
-
-    .package-item:hover {
-      border-color: var(--primary);
-      transform: translateX(5px);
-    }
-
-    .package-info h4 {
-      color: var(--text-primary);
-      font-weight: 600;
-      margin-bottom: 0.25rem;
-    }
-
-    .package-info p {
-      color: var(--text-secondary);
-      font-size: 0.85rem;
-    }
-
-    .package-price {
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: var(--primary);
-    }
-
-    .package-actions {
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    .edit-icon-btn {
-      width: 36px;
-      height: 36px;
+      padding: 0.75rem;
+      border: 1px solid var(--border);
       border-radius: 8px;
-      border: none;
-      background: rgba(255, 107, 53, 0.15);
-      color: var(--primary);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.3s ease;
+      font-size: 0.95rem;
+      font-family: inherit;
+      transition: border-color 0.2s;
     }
+    .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1); }
+    textarea.form-control { min-height: 100px; resize: vertical; }
 
-    .edit-icon-btn:hover {
-      background: var(--primary);
-      color: white;
-      transform: scale(1.1);
-    }
+    /* --- UTILS --- */
+    .hidden { display: none !important; }
+    .fade-in { animation: fadeIn 0.3s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Alert Message */
-    .alert {
-      padding: 1.25rem 2rem;
-      border-radius: 20px;
-      margin-bottom: 2rem;
-      display: none;
-      font-weight: 600;
-      animation: slideIn 0.3s ease;
-      border: 1px solid;
-    }
-
-    @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .alert.success {
-      background: rgba(16, 185, 129, 0.15);
-      color: #10B981;
-      border-color: rgba(16, 185, 129, 0.3);
-    }
-
-    .alert.error {
-      background: rgba(239, 68, 68, 0.15);
-      color: #EF4444;
-      border-color: rgba(239, 68, 68, 0.3);
-    }
-
-    .alert.info {
-      background: rgba(56, 189, 248, 0.15);
-      color: #38BDF8;
-      border-color: rgba(56, 189, 248, 0.3);
-    }
-
-    /* Filter Bar */
-    .filter-bar {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-      flex-wrap: wrap;
-    }
-
-    .filter-btn {
-      padding: 0.7rem 1.5rem;
-      background: var(--surface);
-      border: 1px solid var(--glass-border);
-      border-radius: 15px;
-      color: var(--text-secondary);
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-weight: 600;
-    }
-
-    .filter-btn:hover {
-      background: var(--surface-light);
-      border-color: var(--primary);
-      color: var(--text-primary);
-    }
-
-    .filter-btn.active {
-      background: var(--gradient-primary);
-      border-color: transparent;
-      color: white;
-      box-shadow: var(--glow-primary);
-    }
-
-    /* Loading State */
-    .loader-overlay {
+    /* --- LOADING --- */
+    .loader-container {
       position: fixed;
       inset: 0;
-      background: rgba(5, 7, 20, 0.95);
-      backdrop-filter: blur(10px);
+      background: white;
+      z-index: 1000;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      z-index: 9999;
+      justify-content: center;
     }
-
-    .loader {
-      width: 70px;
-      height: 70px;
-      border: 4px solid rgba(255, 107, 53, 0.2);
+    .spinner {
+      width: 40px; height: 40px;
+      border: 4px solid #f3f3f3;
       border-top: 4px solid var(--primary);
       border-radius: 50%;
       animation: spin 1s linear infinite;
-      box-shadow: var(--glow-primary);
     }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    .loader-text {
-      margin-top: 1.5rem;
-      color: var(--text-secondary);
-      font-weight: 600;
-      font-size: 1.1rem;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    /* Modal */
-    .modal-overlay {
+    /* --- MODAL --- */
+    .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(10px);
-      display: none;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(2px);
+      display: flex;
+      align-items: center;
       justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      animation: fadeIn 0.3s ease;
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
     }
-
-    .modal-overlay.active {
-      display: flex;
-    }
-
-    .modal {
-      background: var(--surface);
-      border: 1px solid var(--glass-border);
-      border-radius: 25px;
-      padding: 2rem;
-      max-width: 500px;
+    .modal-backdrop.active { opacity: 1; pointer-events: auto; }
+    .modal-content {
+      background: white;
       width: 90%;
-      box-shadow: var(--shadow-elevated);
-      animation: scaleIn 0.3s ease;
+      max-width: 500px;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: var(--shadow-lg);
+      transform: scale(0.95);
+      transition: transform 0.2s;
     }
-
-    @keyframes scaleIn {
-      from {
-        transform: scale(0.9);
-        opacity: 0;
-      }
-      to {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
-    }
-
-    .modal-title {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--text-primary);
-    }
-
-    .modal-close {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
-      border: none;
-      background: rgba(239, 68, 68, 0.15);
-      color: var(--danger);
-      cursor: pointer;
-      font-size: 1.2rem;
-      transition: all 0.3s ease;
-    }
-
-    .modal-close:hover {
-      background: var(--danger);
-      color: white;
-    }
-
+    .modal-backdrop.active .modal-content { transform: scale(1); }
+    
     /* Responsive */
     @media (max-width: 768px) {
-      .sidebar {
-        width: 80px;
-        padding: 1.5rem 0.75rem;
-      }
-
-      .logo-text,
-      .nav-item span:not(.nav-icon),
-      .user-email,
-      .user-name {
-        display: none;
-      }
-
-      .user-role {
-        text-align: center;
-      }
-
-      .main-content {
-        margin-left: 80px;
-        padding: 1.5rem;
-      }
-
-      .top-bar {
-        flex-direction: column;
-        gap: 1rem;
-        padding: 1.5rem;
-      }
-
-      .page-title {
-        font-size: 1.5rem;
-      }
-
-      .search-bar {
-        width: 100%;
-      }
-
-      .stats-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .editor-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .image-gallery {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      }
+      .sidebar { position: fixed; left: -260px; height: 100%; }
+      .sidebar.open { left: 0; }
+      .editor-layout { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-  <!-- Loader -->
-  <div class="loader-overlay" id="loader">
-    <div class="loader"></div>
-    <p class="loader-text">Verifying Manager Access...</p>
+
+  <!-- LOADING SCREEN -->
+  <div id="loader" class="loader-container">
+    <div class="spinner"></div>
+    <p style="margin-top: 1rem; color: var(--text-muted); font-weight: 500;">Accessing Command Center...</p>
   </div>
 
-  <!-- Image Replace Modal -->
-  <div class="modal-overlay" id="imageModal">
-    <div class="modal">
-      <div class="modal-header">
-        <h3 class="modal-title">Replace Image</h3>
-        <button class="modal-close" onclick="closeImageModal()">✕</button>
+  <!-- TOAST NOTIFICATION (Replaces Alert) -->
+  <div id="toast" style="position: fixed; top: 20px; right: 20px; padding: 1rem 1.5rem; background: var(--bg-sidebar); color: white; border-radius: 8px; box-shadow: var(--shadow-lg); transform: translateX(150%); transition: transform 0.3s; z-index: 1000; display: flex; align-items: center; gap: 10px;">
+    <i id="toastIcon" class="fas fa-check-circle"></i>
+    <span id="toastMsg">Operation Successful</span>
+  </div>
+
+  <div class="hidden" id="mainApp" style="width: 100%; display: flex;">
+    
+    <!-- SIDEBAR -->
+    <nav class="sidebar" id="sidebar">
+      <div class="brand">
+        <i class="fas fa-motorcycle"></i>
+        <span>Scoot Darshan</span>
       </div>
-      <div class="form-group">
-        <label>Image Section</label>
-        <input type="text" id="modalImageSection" disabled>
+
+      <div class="user-mini-profile">
+        <div class="avatar">M</div>
+        <div class="user-info">
+          <h4 id="userNameDisplay">Manager</h4>
+          <p id="userEmailDisplay">Loading...</p>
+        </div>
       </div>
-      <div class="form-group">
-        <label>New Image URL</label>
-        <input type="url" id="modalImageUrl" placeholder="https://example.com/image.jpg" onchange="previewModalImage()">
+
+      <div class="nav-menu">
+        <div class="nav-item active" onclick="switchTab('dashboard')">
+          <i class="fas fa-chart-pie" style="width: 20px;"></i> <span>Dashboard</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('bookings')">
+          <i class="fas fa-clipboard-list" style="width: 20px;"></i> <span>Bookings</span>
+          <span class="badge hidden" id="pendingCountBadge">0</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('editor')">
+          <i class="fas fa-pen-nib" style="width: 20px;"></i> <span>Website Editor</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('settings')">
+          <i class="fas fa-cog" style="width: 20px;"></i> <span>Settings</span>
+        </div>
+        <div class="nav-item" onclick="goToSite()">
+          <i class="fas fa-external-link-alt" style="width: 20px;"></i> <span>View Live Site</span>
+        </div>
       </div>
-      <img id="modalImagePreview" class="image-preview" src="" alt="Preview">
-      <button class="btn-modern" style="width: 100%; margin-top: 1rem;" onclick="saveImageReplace()">
-        💾 Save Image
-      </button>
+
+      <div class="bottom-actions">
+        <button class="logout-btn" onclick="logout()">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-wrapper">
+      <header class="top-header">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <button class="btn-icon" id="menuToggle" style="display: none;"><i class="fas fa-bars"></i></button>
+          <div class="page-title">
+            <h2 id="pageTitle">Overview</h2>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="btn-icon" onclick="refreshData()" title="Refresh Data"><i class="fas fa-sync-alt"></i></button>
+        </div>
+      </header>
+
+      <main class="content-area">
+        
+        <!-- DASHBOARD TAB -->
+        <div id="dashboardTab" class="tab-content fade-in">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon-box bg-orange"><i class="fas fa-box"></i></div>
+              <div class="stat-details">
+                <h3 id="statTotal">0</h3>
+                <p>Total Bookings</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon-box bg-blue"><i class="fas fa-clock"></i></div>
+              <div class="stat-details">
+                <h3 id="statPending">0</h3>
+                <p>Pending Action</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon-box bg-green"><i class="fas fa-check-circle"></i></div>
+              <div class="stat-details">
+                <h3 id="statConfirmed">0</h3>
+                <p>Confirmed</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon-box bg-purple"><i class="fas fa-rupee-sign"></i></div>
+              <div class="stat-details">
+                <h3 id="statRevenue">₹0</h3>
+                <p>Est. Revenue</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3>Recent Bookings</h3>
+              <button class="btn-primary btn-sm btn-outline" onclick="switchTab('bookings')">View All</button>
+            </div>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Customer</th>
+                    <th>Package</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="dashboardTableBody">
+                  <tr><td colspan="5" style="text-align: center;">Loading...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- BOOKINGS TAB -->
+        <div id="bookingsTab" class="tab-content hidden fade-in">
+          <div class="card">
+            <div class="card-header">
+              <div style="display: flex; gap: 10px;">
+                <button class="btn-primary btn-sm" onclick="filterBookings('all')">All</button>
+                <button class="btn-primary btn-sm btn-outline" onclick="filterBookings('pending')">Pending</button>
+                <button class="btn-primary btn-sm btn-outline" onclick="filterBookings('confirmed')">Confirmed</button>
+              </div>
+              <button class="btn-primary btn-sm btn-outline" onclick="exportCSV()"><i class="fas fa-download"></i> Export</button>
+            </div>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Details</th>
+                    <th>Contact</th>
+                    <th>Package Info</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="bookingsTableBody">
+                  <!-- JS Populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- EDITOR TAB -->
+        <div id="editorTab" class="tab-content hidden fade-in">
+          
+          <!-- Auto Fix Button (Shows only if no packages) -->
+          <div id="seedDataAlert" style="background: var(--warning-bg); color: var(--warning-text); padding: 1rem; border-radius: 8px; margin-bottom: 2rem; display: none; align-items: center; justify-content: space-between;">
+            <span><i class="fas fa-exclamation-triangle"></i> No packages found. Initialize Varanasi Default Data?</span>
+            <button class="btn-primary btn-sm" onclick="seedDefaultPackages()">Initialize Data</button>
+          </div>
+
+          <div class="editor-layout">
+            <!-- Left Col: Packages & Images -->
+            <div>
+              <div class="card">
+                <div class="card-header">
+                  <h3><i class="fas fa-tag"></i> Tour Packages</h3>
+                  <button class="btn-primary btn-sm" onclick="openPackageModal()">+ Add New</button>
+                </div>
+                <div style="padding: 1.5rem;" id="packagesList">
+                  <p style="text-align:center; color: var(--text-muted);">Loading packages...</p>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-header">
+                  <h3><i class="fas fa-images"></i> Website Gallery</h3>
+                  <small style="color: var(--text-muted);">Click image to replace</small>
+                </div>
+                <div style="padding: 1.5rem;">
+                  <div class="image-grid" id="imageGallery">
+                    <!-- Images loaded here -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Col: Settings -->
+            <div>
+              <div class="card">
+                <div class="card-header"><h3><i class="fas fa-address-card"></i> Contact Info</h3></div>
+                <div style="padding: 1.5rem;">
+                  <div class="form-group">
+                    <label>Phone</label>
+                    <input type="text" id="editPhone" class="form-control" placeholder="+91...">
+                  </div>
+                  <div class="form-group">
+                    <label>WhatsApp</label>
+                    <input type="text" id="editWhatsapp" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="editEmail" class="form-control">
+                  </div>
+                  <button class="btn-primary" style="width: 100%;" onclick="saveContactInfo()">Update Contact</button>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-header"><h3><i class="fas fa-sliders-h"></i> Availability</h3></div>
+                <div style="padding: 1.5rem;">
+                  <div class="form-group">
+                    <label>Booking Status</label>
+                    <select id="editStatus" class="form-control">
+                      <option value="open">Open</option>
+                      <option value="busy">High Demand</option>
+                      <option value="closed">Closed</option>
+                    </select>
+                  </div>
+                  <button class="btn-primary btn-outline" style="width: 100%;" onclick="saveAvailability()">Update Status</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SETTINGS TAB -->
+        <div id="settingsTab" class="tab-content hidden fade-in">
+          <div class="card" style="max-width: 600px; margin: 0 auto;">
+            <div class="card-header"><h3>Profile & Security</h3></div>
+            <div style="padding: 2rem;">
+              <div class="form-group">
+                <label>Manager Name</label>
+                <input type="text" id="profileName" class="form-control">
+              </div>
+              <button class="btn-primary" onclick="updateProfile()">Save Profile</button>
+              
+              <hr style="margin: 2rem 0; border: 0; border-top: 1px solid var(--border);">
+              
+              <h4 style="margin-bottom: 1rem; color: var(--danger-text);">Change Password</h4>
+              <div class="form-group">
+                <label>New Password</label>
+                <input type="password" id="newPass" class="form-control">
+              </div>
+              <button class="btn-primary" style="background: var(--danger-text);" onclick="changePassword()">Update Password</button>
+            </div>
+          </div>
+        </div>
+
+      </main>
     </div>
   </div>
 
-  <!-- Add Package Modal -->
-  <div class="modal-overlay" id="packageModal">
-    <div class="modal">
-      <div class="modal-header">
-        <h3 class="modal-title" id="packageModalTitle">Add New Package</h3>
-        <button class="modal-close" onclick="closePackageModal()">✕</button>
-      </div>
+  <!-- MODALS -->
+  
+  <!-- Package Modal -->
+  <div class="modal-backdrop" id="packageModal">
+    <div class="modal-content">
+      <h3 style="margin-bottom: 1.5rem;" id="pkgModalTitle">Add Package</h3>
+      <input type="hidden" id="pkgId">
       <div class="form-group">
         <label>Package Name</label>
-        <input type="text" id="modalPackageName" placeholder="e.g., 3 Hour Heritage Tour">
+        <input type="text" id="pkgName" class="form-control" placeholder="e.g. Subah-e-Banaras">
+      </div>
+      <div class="form-group">
+        <label>Price (₹)</label>
+        <input type="number" id="pkgPrice" class="form-control" placeholder="1500">
       </div>
       <div class="form-group">
         <label>Duration</label>
-        <input type="text" id="modalPackageDuration" placeholder="e.g., 3 hours">
-      </div>
-      <div class="form-group price-input">
-        <label>Price (₹)</label>
-        <input type="number" id="modalPackagePrice" placeholder="2500" min="0">
+        <input type="text" id="pkgDuration" class="form-control" placeholder="e.g. 3 Hours">
       </div>
       <div class="form-group">
         <label>Description</label>
-        <textarea id="modalPackageDesc" placeholder="Package description..."></textarea>
+        <textarea id="pkgDesc" class="form-control"></textarea>
       </div>
-      <button class="btn-modern" style="width: 100%; margin-top: 1rem;" onclick="savePackage()">
-        💾 Save Package
-      </button>
+      <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <button class="btn-primary btn-outline" onclick="closeModal('packageModal')">Cancel</button>
+        <button class="btn-primary" onclick="savePackage()">Save Package</button>
+      </div>
     </div>
   </div>
 
-  <!-- Main Panel -->
-  <div class="hidden" id="managerPanel">
-    <!-- Sidebar -->
-    <nav class="sidebar">
-      <div class="logo">
-        <div class="logo-icon">🛵</div>
-        <div class="logo-text">Scoot Darshan</div>
+  <!-- Image Modal -->
+  <div class="modal-backdrop" id="imageModal">
+    <div class="modal-content">
+      <h3 style="margin-bottom: 1rem;">Replace Image</h3>
+      <p style="margin-bottom: 1rem; color: var(--text-muted);" id="imgModalLabel"></p>
+      <input type="hidden" id="imgKey">
+      <div class="form-group">
+        <label>New Image URL</label>
+        <input type="text" id="newImgUrl" class="form-control" placeholder="https://..." onchange="document.getElementById('imgPreview').src = this.value">
       </div>
-
-      <div class="user-card">
-        <div class="user-role">Manager</div>
-        <div class="user-name" id="userName">Loading...</div>
-        <div class="user-email" id="userEmail">Loading...</div>
+      <div style="margin-bottom: 1rem; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; height: 150px;">
+        <img id="imgPreview" src="" style="width: 100%; height: 100%; object-fit: cover;">
       </div>
-
-      <a class="nav-item active" onclick="switchTab('dashboard')">
-        <span class="nav-icon">📊</span>
-        <span>Dashboard</span>
-      </a>
-
-      <a class="nav-item" onclick="switchTab('bookings')">
-        <span class="nav-icon">📋</span>
-        <span>Bookings</span>
-        <span class="notification-badge hidden" id="pendingCount">0</span>
-      </a>
-
-      <a class="nav-item" onclick="switchTab('editor')">
-        <span class="nav-icon">✏️</span>
-        <span>Edit Website</span>
-      </a>
-
-      <a class="nav-item" onclick="switchTab('profile')">
-        <span class="nav-icon">👤</span>
-        <span>My Profile</span>
-      </a>
-
-      <a href="/" class="nav-item" onclick="setManagerFlag()">
-        <span class="nav-icon">🏠</span>
-        <span>Main Site</span>
-      </a>
-
-      <button class="logout-btn" onclick="logout()">
-        <span>🚪</span>
-        <span>Logout</span>
-      </button>
-    </nav>
-
-    <!-- Main Content -->
-    <main class="main-content">
-      <!-- Top Bar -->
-      <div class="top-bar">
-        <h1 class="page-title" id="pageTitle">Command Center</h1>
-        <div class="top-actions">
-          <input type="search" class="search-bar" id="searchBar" placeholder="Search bookings...">
-          <button class="btn-modern" onclick="refreshData()">
-            <span>🔄</span>
-            <span>Refresh</span>
-          </button>
-        </div>
+      <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <button class="btn-primary btn-outline" onclick="closeModal('imageModal')">Cancel</button>
+        <button class="btn-primary" onclick="saveImage()">Update Image</button>
       </div>
-
-      <!-- Alert Box -->
-      <div class="alert" id="alertBox"></div>
-
-      <!-- ==================== DASHBOARD TAB ==================== -->
-      <div class="tab-content active" id="dashboardTab">
-        <!-- Real-time Stats -->
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-icon">📦</div>
-            <div class="stat-label">Total Bookings</div>
-            <div class="stat-value" id="statTotal">0</div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-icon">⏳</div>
-            <div class="stat-label">Pending Action</div>
-            <div class="stat-value" id="statPending">0</div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-icon">✅</div>
-            <div class="stat-label">Confirmed</div>
-            <div class="stat-value" id="statConfirmed">0</div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-icon">🎉</div>
-            <div class="stat-label">Completed</div>
-            <div class="stat-value" id="statCompleted">0</div>
-          </div>
-        </div>
-
-        <!-- Recent Bookings -->
-        <div class="data-section">
-          <div class="section-header">
-            <h2 class="section-title">Recent Bookings</h2>
-          </div>
-
-          <div class="table-wrapper">
-            <table class="modern-table">
-              <thead>
-                <tr>
-                  <th>Booking ID</th>
-                  <th>Customer</th>
-                  <th>Contact</th>
-                  <th>Package</th>
-                  <th>Date</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="dashboardBookingsTable">
-                <tr>
-                  <td colspan="7" style="text-align: center; padding: 3rem; color: var(--text-muted);">
-                    Loading bookings...
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- ==================== BOOKINGS TAB ==================== -->
-      <div class="tab-content" id="bookingsTab">
-        <!-- Filter Bar -->
-        <div class="filter-bar">
-          <button class="filter-btn active" onclick="filterBookings('all')">All</button>
-          <button class="filter-btn" onclick="filterBookings('pending')">Pending</button>
-          <button class="filter-btn" onclick="filterBookings('confirmed')">Confirmed</button>
-          <button class="filter-btn" onclick="filterBookings('completed')">Completed</button>
-          <button class="filter-btn" onclick="filterBookings('cancelled')">Cancelled</button>
-        </div>
-
-        <div class="data-section">
-          <div class="section-header">
-            <h2 class="section-title">All Bookings</h2>
-            <button class="btn-modern btn-secondary" onclick="exportBookings()">
-              <span>📥</span>
-              <span>Export CSV</span>
-            </button>
-          </div>
-
-          <div class="table-wrapper">
-            <table class="modern-table">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Customer</th>
-                  <th>Phone</th>
-                  <th>Email</th>
-                  <th>Package</th>
-                  <th>Date & Time</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="bookingsTable">
-                <tr>
-                  <td colspan="8" style="text-align: center; padding: 3rem; color: var(--text-muted);">
-                    Loading bookings...
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- ==================== WEBSITE EDITOR TAB ==================== -->
-      <div class="tab-content" id="editorTab">
-        <div class="editor-grid">
-          <!-- Tour Packages -->
-          <div class="editor-card" style="grid-column: 1 / -1;">
-            <h3>🏷️ Tour Packages</h3>
-            
-            <div class="package-list" id="packageList">
-              <p style="text-align: center; color: var(--text-muted); padding: 2rem;">Loading packages...</p>
-            </div>
-
-            <button class="btn-modern" style="width: 100%;" onclick="openAddPackageModal()">
-              ➕ Add New Package
-            </button>
-          </div>
-
-          <!-- Website Images Gallery -->
-          <div class="editor-card" style="grid-column: 1 / -1;">
-            <h3>🖼️ Website Images</h3>
-            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem;">
-              Click on any image to replace it. You can also download current images.
-            </p>
-            
-            <div class="image-gallery" id="imageGallery">
-              <p style="text-align: center; color: var(--text-muted); padding: 2rem;">Loading images...</p>
-            </div>
-          </div>
-
-          <!-- Contact Information -->
-          <div class="editor-card">
-            <h3>📞 Contact Information</h3>
-            
-            <div class="form-group">
-              <label>Phone Number</label>
-              <input type="tel" id="contactPhone" placeholder="+91 9876543210">
-            </div>
-
-            <div class="form-group">
-              <label>Email Address</label>
-              <input type="email" id="contactEmail" placeholder="info@scootdarshan.com">
-            </div>
-
-            <div class="form-group">
-              <label>WhatsApp Number</label>
-              <input type="tel" id="whatsappNumber" placeholder="+91 9876543210">
-            </div>
-
-            <div class="form-group">
-              <label>Address</label>
-              <textarea id="contactAddress" placeholder="Varanasi, Uttar Pradesh, India"></textarea>
-            </div>
-
-            <button class="btn-modern" style="width: 100%;" onclick="updateContact()">
-              📝 Update Contact
-            </button>
-          </div>
-
-          <!-- Availability Settings -->
-          <div class="editor-card">
-            <h3>⚙️ Availability Settings</h3>
-            
-            <div class="form-group">
-              <label>Max Bookings Per Day</label>
-              <input type="number" id="maxBookings" placeholder="10" min="1">
-            </div>
-
-            <div class="form-group">
-              <label>Booking Lead Time (Days)</label>
-              <input type="number" id="leadTime" placeholder="2" min="0">
-            </div>
-
-            <div class="form-group">
-              <label>Operating Hours</label>
-              <input type="text" id="operatingHours" placeholder="6:00 AM - 8:00 PM">
-            </div>
-
-            <div class="form-group">
-              <label>Booking Status</label>
-              <select id="bookingStatus">
-                <option value="open">Open for Bookings</option>
-                <option value="limited">Limited Availability</option>
-                <option value="closed">Closed</option>
-              </select>
-            </div>
-
-            <button class="btn-modern" style="width: 100%;" onclick="updateAvailability()">
-              ⚙️ Update Settings
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- ==================== PROFILE TAB ==================== -->
-      <div class="tab-content" id="profileTab">
-        <div class="editor-grid">
-          <div class="editor-card">
-            <h3>👤 Profile Information</h3>
-            
-            <div class="form-group">
-              <label>Full Name</label>
-              <input type="text" id="profileName" placeholder="Your Name">
-            </div>
-
-            <div class="form-group">
-              <label>Email (Cannot be changed)</label>
-              <input type="email" id="profileEmail" disabled>
-            </div>
-
-            <div class="form-group">
-              <label>Phone Number</label>
-              <input type="tel" id="profilePhone" placeholder="+91 9876543210">
-            </div>
-
-            <button class="btn-modern" style="width: 100%;" onclick="updateProfile()">
-              💾 Save Profile
-            </button>
-          </div>
-
-          <div class="editor-card">
-            <h3>🔐 Change Password</h3>
-            
-            <div class="form-group">
-              <label>Current Password</label>
-              <input type="password" id="currentPassword" placeholder="••••••••">
-            </div>
-
-            <div class="form-group">
-              <label>New Password</label>
-              <input type="password" id="newPassword" placeholder="••••••••">
-            </div>
-
-            <div class="form-group">
-              <label>Confirm New Password</label>
-              <input type="password" id="confirmPassword" placeholder="••••••••">
-            </div>
-
-            <button class="btn-modern" style="width: 100%;" onclick="changePassword()">
-              🔒 Change Password
-            </button>
-          </div>
-        </div>
-      </div>
-    </main>
+    </div>
   </div>
 
+  <!-- FIREBASE LOGIC -->
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
-    import { getAuth, onAuthStateChanged, signOut, updatePassword, reauthenticateWithCredential, EmailAuthProvider } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+    import { getAuth, onAuthStateChanged, signOut, updatePassword, updateProfile as authUpdateProfile } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
     import { getFirestore, collection, getDocs, query, doc, updateDoc, getDoc, setDoc, deleteDoc, where } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
 
     const firebaseConfig = {
@@ -1525,709 +822,378 @@
     const db = getFirestore(app);
 
     let currentUser = null;
-    let userProfile = null;
-    let allBookings = [];
-    let allPackages = [];
-    let websiteImages = {};
-    let currentFilter = 'all';
-    let editingPackageId = null;
-    let currentImageSection = null;
+    let bookingsData = [];
+    let websiteSettings = {};
 
-    // Tab Switching
-    window.switchTab = function(tabName) {
-      document.querySelectorAll('.nav-item').forEach(item => {
-        item.classList.remove('active');
-      });
-
-      event.currentTarget.classList.add('active');
-
-      document.querySelectorAll('.tab-content').forEach(tab => {
-        tab.classList.remove('active');
-      });
-
-      const tabId = tabName + 'Tab';
-      const selectedTab = document.getElementById(tabId);
-      if (selectedTab) {
-        selectedTab.classList.add('active');
-        
-        const titles = {
-          'dashboard': 'Command Center',
-          'bookings': 'Booking Management',
-          'editor': 'Website Editor',
-          'profile': 'My Profile'
-        };
-        document.getElementById('pageTitle').textContent = titles[tabName] || 'Command Center';
-        
-        if (tabName === 'editor') loadEditorData();
-        if (tabName === 'profile') loadProfileData();
-      }
+    // --- UI HELPERS ---
+    window.showToast = (msg, type = 'success') => {
+      const toast = document.getElementById('toast');
+      const icon = document.getElementById('toastIcon');
+      const text = document.getElementById('toastMsg');
+      
+      toast.style.background = type === 'success' ? '#1E293B' : '#EF4444';
+      icon.className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+      text.textContent = msg;
+      
+      toast.style.transform = 'translateX(0)';
+      setTimeout(() => toast.style.transform = 'translateX(150%)', 3000);
     };
 
-    // Set manager flag
-    window.setManagerFlag = function() {
-      localStorage.setItem('isManager', 'true');
-      localStorage.setItem('managerEmail', currentUser.email);
+    window.switchTab = (tabId) => {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.getElementById(tabId + 'Tab').classList.remove('hidden');
+      
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+      event.currentTarget.classList.add('active'); // Needs event passed or find by logic
+      
+      const titles = { 'dashboard': 'Overview', 'bookings': 'Booking Management', 'editor': 'Website Content', 'settings': 'System Settings' };
+      document.getElementById('pageTitle').innerText = titles[tabId];
     };
 
-    // Logout
-    window.logout = async function() {
-      if (confirm('Are you sure you want to logout?')) {
-        try {
-          localStorage.removeItem('isManager');
-          localStorage.removeItem('managerEmail');
-          await signOut(auth);
-          window.location.href = '/login.html';
-        } catch (error) {
-          showAlert('Error logging out: ' + error.message, 'error');
-        }
-      }
+    window.closeModal = (id) => document.getElementById(id).classList.remove('active');
+    
+    window.goToSite = () => {
+      localStorage.setItem('isManager', 'true'); // Allow editing on frontend
+      window.location.href = '/';
     };
 
-    // Show Alert
-    function showAlert(message, type = 'success') {
-      const alertBox = document.getElementById('alertBox');
-      alertBox.textContent = message;
-      alertBox.className = `alert ${type}`;
-      alertBox.style.display = 'block';
-      setTimeout(() => {
-        alertBox.style.display = 'none';
-      }, 5000);
+    // --- DATA LOADING ---
+    async function loadData() {
+      await Promise.all([loadBookings(), loadPackages(), loadSettings()]);
     }
 
-    // Refresh Data
-    window.refreshData = async function() {
-      showAlert('Refreshing data...', 'info');
-      await loadBookings();
-      await loadEditorData();
-      showAlert('Data refreshed successfully!', 'success');
-    };
-
-    // Load Bookings
     async function loadBookings() {
       try {
-        const q = query(
-          collection(db, 'bookings'),
-          where('managerId', '==', currentUser.uid)
-        );
-        
+        const q = query(collection(db, 'bookings')); // Load all for manager
         const snapshot = await getDocs(q);
-        allBookings = [];
+        bookingsData = [];
+        let revenue = 0;
         
         snapshot.forEach(doc => {
-          allBookings.push({ id: doc.id, ...doc.data() });
+            const data = doc.data();
+            bookingsData.push({ id: doc.id, ...data });
+            if(data.status === 'confirmed' || data.status === 'completed') {
+                // Approximate revenue if price exists, else estimate
+                revenue += (parseInt(data.price) || 1500); 
+            }
         });
 
-        allBookings.sort((a, b) => {
-          const dateA = a.createdAt?.toDate?.() || new Date(0);
-          const dateB = b.createdAt?.toDate?.() || new Date(0);
-          return dateB - dateA;
-        });
+        // Sort by date (newest first)
+        bookingsData.sort((a, b) => new Date(b.createdAt?.toDate?.() || 0) - new Date(a.createdAt?.toDate?.() || 0));
 
-        updateStats();
-        renderBookings();
-        renderDashboardBookings();
-      } catch (error) {
-        console.error('Error loading bookings:', error);
-        showAlert('Error loading bookings: ' + error.message, 'error');
+        updateDashboard();
+        renderBookingsTable(bookingsData);
+      } catch (e) {
+        console.error(e);
+        showToast("Error loading bookings", 'error');
       }
     }
 
-    // Update Stats
-    function updateStats() {
-      const total = allBookings.length;
-      const pending = allBookings.filter(b => b.status === 'pending').length;
-      const confirmed = allBookings.filter(b => b.status === 'confirmed').length;
-      const completed = allBookings.filter(b => b.status === 'completed').length;
+    function updateDashboard() {
+      const total = bookingsData.length;
+      const pending = bookingsData.filter(b => b.status === 'pending').length;
+      const confirmed = bookingsData.filter(b => b.status === 'confirmed').length;
 
-      document.getElementById('statTotal').textContent = total;
-      document.getElementById('statPending').textContent = pending;
-      document.getElementById('statConfirmed').textContent = confirmed;
-      document.getElementById('statCompleted').textContent = completed;
-      
-      const badge = document.getElementById('pendingCount');
+      document.getElementById('statTotal').innerText = total;
+      document.getElementById('statPending').innerText = pending;
+      document.getElementById('statConfirmed').innerText = confirmed;
+      document.getElementById('statRevenue').innerText = '₹' + confirmed * 1500; // rough estimate logic
+
+      const badge = document.getElementById('pendingCountBadge');
       if (pending > 0) {
-        badge.textContent = pending;
+        badge.innerText = pending;
         badge.classList.remove('hidden');
       } else {
         badge.classList.add('hidden');
       }
-    }
 
-    // Render Dashboard Bookings
-    function renderDashboardBookings() {
-      const tbody = document.getElementById('dashboardBookingsTable');
-      const recentBookings = allBookings.slice(0, 10);
-      
-      if (recentBookings.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 3rem; color: var(--text-muted);">No bookings assigned yet</td></tr>';
-        return;
-      }
-
-      let html = '';
-      recentBookings.forEach(b => {
-        html += generateBookingRow(b);
-      });
-      tbody.innerHTML = html;
-    }
-
-    // Render All Bookings
-    function renderBookings() {
-      const tbody = document.getElementById('bookingsTable');
-      let filteredBookings = allBookings;
-
-      if (currentFilter !== 'all') {
-        filteredBookings = allBookings.filter(b => b.status === currentFilter);
-      }
-
-      if (filteredBookings.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 3rem; color: var(--text-muted);">No bookings found</td></tr>';
-        return;
-      }
-
-      let html = '';
-      filteredBookings.forEach(b => {
-        html += `
+      // Render Recent Table
+      const tbody = document.getElementById('dashboardTableBody');
+      tbody.innerHTML = '';
+      bookingsData.slice(0, 5).forEach(b => {
+        tbody.innerHTML += `
           <tr>
-            <td><span class="booking-id">#${b.id.substring(0, 8)}</span></td>
-            <td><span class="customer-name">${b.name || 'N/A'}</span></td>
-            <td><a href="tel:${b.phone}" class="phone-link">📞 ${b.phone}</a></td>
-            <td>${b.email || 'N/A'}</td>
-            <td>${b.tourPackage || 'N/A'}</td>
-            <td>${b.date || 'Not set'} ${b.time || ''}</td>
+            <td>
+                <div style="font-weight:600">${b.name}</div>
+                <div style="font-size:0.75rem; color:#64748B">${b.phone}</div>
+            </td>
+            <td>${b.tourPackage}</td>
+            <td>${b.date}</td>
             <td><span class="status-badge status-${b.status || 'pending'}">${b.status || 'pending'}</span></td>
-            <td>${generateActions(b)}</td>
+            <td><button class="btn-primary btn-sm btn-outline" onclick="switchTab('bookings')">Manage</button></td>
           </tr>
         `;
       });
-      tbody.innerHTML = html;
     }
 
-    function generateBookingRow(b) {
-      return `
-        <tr>
-          <td><span class="booking-id">#${b.id.substring(0, 8)}</span></td>
-          <td><span class="customer-name">${b.name || 'N/A'}</span></td>
-          <td><a href="tel:${b.phone}" class="phone-link">📞 ${b.phone}</a></td>
-          <td>${b.tourPackage || 'N/A'}</td>
-          <td>${b.date || 'Not set'} ${b.time || ''}</td>
-          <td><span class="status-badge status-${b.status || 'pending'}">${b.status || 'pending'}</span></td>
-          <td>${generateActions(b)}</td>
-        </tr>
-      `;
-    }
-
-    function generateActions(booking) {
-      if (booking.status === 'pending') {
-        return `<button class="action-btn action-confirm" onclick="updateStatus('${booking.id}', 'confirmed')">✓ Confirm</button>
-                <button class="action-btn action-cancel" onclick="updateStatus('${booking.id}', 'cancelled')">✗ Cancel</button>`;
-      } else if (booking.status === 'confirmed') {
-        return `<button class="action-btn action-complete" onclick="updateStatus('${booking.id}', 'completed')">✓ Complete</button>`;
-      } else if (booking.status === 'completed') {
-        return `<span style="color: var(--success); font-weight: 700;">✓ Done</span>`;
-      } else {
-        return `<span style="color: var(--danger); font-weight: 700;">✗ Cancelled</span>`;
-      }
-    }
-
-    // Update Booking Status
-    window.updateStatus = async function(bookingId, newStatus) {
-      if (!confirm(`Mark this booking as ${newStatus}?`)) return;
-
-      try {
-        await updateDoc(doc(db, 'bookings', bookingId), {
-          status: newStatus,
-          updatedAt: new Date(),
-          updatedBy: currentUser.uid
-        });
-
-        const booking = allBookings.find(b => b.id === bookingId);
-        if (booking) booking.status = newStatus;
-
-        updateStats();
-        renderBookings();
-        renderDashboardBookings();
-        showAlert(`✅ Booking marked as ${newStatus}!`, 'success');
-      } catch (error) {
-        showAlert('❌ Error: ' + error.message, 'error');
-      }
+    window.filterBookings = (status) => {
+        let filtered = bookingsData;
+        if(status !== 'all') filtered = bookingsData.filter(b => b.status === status);
+        renderBookingsTable(filtered);
     };
 
-    // Filter Bookings
-    window.filterBookings = function(filter) {
-      currentFilter = filter;
-      
-      document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.classList.remove('active');
-      });
-      event.currentTarget.classList.add('active');
-      
-      renderBookings();
-    };
-
-    // Export Bookings
-    window.exportBookings = function() {
-      let csv = 'Booking ID,Customer,Phone,Email,Package,Date,Time,Status\n';
-      allBookings.forEach(b => {
-        csv += `${b.id},${b.name},${b.phone},${b.email || ''},${b.tourPackage},${b.date},${b.time || ''},${b.status}\n`;
-      });
-      
-      const blob = new Blob([csv], { type: 'text/csv' });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `bookings_${new Date().toISOString().split('T')[0]}.csv`;
-      a.click();
-      
-      showAlert('✅ Bookings exported successfully!', 'success');
-    };
-
-    // Website Editor Functions
-    async function loadEditorData() {
-      await Promise.all([
-        loadPackages(),
-        loadImages(),
-        loadSettings()
-      ]);
+    function renderBookingsTable(data) {
+        const tbody = document.getElementById('bookingsTableBody');
+        if(data.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 2rem;">No bookings found</td></tr>';
+            return;
+        }
+        tbody.innerHTML = data.map(b => `
+          <tr>
+            <td>#${b.id.substr(0,6)}</td>
+            <td>
+                <b>${b.name}</b><br>
+                <small>${b.email || ''}</small>
+            </td>
+            <td><a href="tel:${b.phone}" style="color:var(--primary); text-decoration:none;">${b.phone}</a></td>
+            <td>${b.tourPackage}<br><small>₹${b.price || ' - '}</small></td>
+            <td><span class="status-badge status-${b.status || 'pending'}">${b.status || 'pending'}</span></td>
+            <td>
+                ${b.status === 'pending' ? 
+                  `<button class="btn-primary btn-sm" onclick="updateStatus('${b.id}', 'confirmed')">Confirm</button>
+                   <button class="btn-primary btn-sm btn-outline" style="color:red; border-color:red" onclick="updateStatus('${b.id}', 'cancelled')">Cancel</button>` 
+                  : ''}
+                ${b.status === 'confirmed' ? 
+                  `<button class="btn-primary btn-sm" style="background:var(--info-text)" onclick="updateStatus('${b.id}', 'completed')">Complete</button>` 
+                  : ''}
+            </td>
+          </tr>
+        `).join('');
     }
 
-    // Load Packages from Firestore
+    window.updateStatus = async (id, status) => {
+        if(!confirm(`Mark booking as ${status}?`)) return;
+        await updateDoc(doc(db, 'bookings', id), { status: status });
+        showToast(`Booking marked as ${status}`);
+        loadBookings();
+    };
+
+    // --- EDITOR LOGIC ---
     async function loadPackages() {
-      try {
-        const packagesSnapshot = await getDocs(collection(db, 'packages'));
-        allPackages = [];
-        
-        packagesSnapshot.forEach(doc => {
-          allPackages.push({ id: doc.id, ...doc.data() });
-        });
+        try {
+            const snap = await getDocs(collection(db, 'packages'));
+            const container = document.getElementById('packagesList');
+            container.innerHTML = '';
+            
+            if(snap.empty) {
+                document.getElementById('seedDataAlert').style.display = 'flex';
+                container.innerHTML = '<p style="text-align:center">No packages yet.</p>';
+                return;
+            }
 
-        renderPackages();
-      } catch (error) {
-        console.error('Error loading packages:', error);
-        document.getElementById('packageList').innerHTML = '<p style="text-align: center; color: var(--danger); padding: 2rem;">Error loading packages</p>';
-      }
+            document.getElementById('seedDataAlert').style.display = 'none';
+            snap.forEach(d => {
+                const p = d.data();
+                container.innerHTML += `
+                    <div class="package-card">
+                        <div class="pkg-info">
+                            <h4>${p.name}</h4>
+                            <p>${p.duration} • ${p.description ? p.description.substr(0,40)+'...' : ''}</p>
+                        </div>
+                        <div style="text-align:right">
+                            <div class="pkg-price">₹${p.price}</div>
+                            <div style="margin-top:5px">
+                                <button class="btn-primary btn-sm btn-outline" onclick="editPackage('${d.id}')">Edit</button>
+                                <button style="border:none; background:none; color:red; cursor:pointer;" onclick="deletePackage('${d.id}')"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        } catch(e) { console.log(e); }
     }
 
-    // Render Packages
-    function renderPackages() {
-      const container = document.getElementById('packageList');
-      
-      if (allPackages.length === 0) {
-        container.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 2rem;">No packages found. Add your first package!</p>';
-        return;
-      }
+    // Default Varanasi Data Seeding
+    window.seedDefaultPackages = async () => {
+        const defaults = [
+            { name: "Morning Boat Ride (Subah-e-Banaras)", price: 1500, duration: "3 Hours", description: "Experience the magical sunrise on the Ganges with a guided boat tour covering main Ghats." },
+            { name: "Kashi Vishwanath & Temple Tour", price: 1200, duration: "4 Hours", description: "Priority darshan assistance and guided tour of the Golden Temple and surrounding ancient alleys." },
+            { name: "Sarnath Excursion", price: 2500, duration: "5 Hours", description: "Visit the Dhamek Stupa, Museum, and Deer Park where Buddha gave his first sermon. Scooter included." },
+            { name: "Evening Aarti & Street Food", price: 1800, duration: "4 Hours", description: "Watch the spectacular Ganga Aarti at Dashashwamedh Ghat followed by a famous local food trail." }
+        ];
 
-      let html = '';
-      allPackages.forEach(pkg => {
-        html += `
-          <div class="package-item">
-            <div class="package-info">
-              <h4>${pkg.name || pkg.id}</h4>
-              <p>${pkg.duration || 'N/A'} • ${pkg.description || 'No description'}</p>
-            </div>
-            <div style="display: flex; align-items: center; gap: 1rem;">
-              <div class="package-price">₹${pkg.price || 0}</div>
-              <div class="package-actions">
-                <button class="edit-icon-btn" onclick="openEditPackageModal('${pkg.id}')">✏️</button>
-                <button class="edit-icon-btn" onclick="deletePackage('${pkg.id}')" style="background: rgba(239, 68, 68, 0.15); color: var(--danger);">🗑️</button>
-              </div>
-            </div>
-          </div>
-        `;
-      });
-      container.innerHTML = html;
-    }
-
-    // Load Images from Firestore
-    async function loadImages() {
-      try {
-        const settingsDoc = await getDoc(doc(db, 'settings', 'website'));
-        if (settingsDoc.exists() && settingsDoc.data().images) {
-          websiteImages = settingsDoc.data().images;
-        } else {
-          // Default images structure
-          websiteImages = {
-            'hero': 'https://via.placeholder.com/1920x1080?text=Hero+Banner',
-            'tour-1': 'https://via.placeholder.com/800x600?text=Tour+Gallery+1',
-            'tour-2': 'https://via.placeholder.com/800x600?text=Tour+Gallery+2',
-            'tour-3': 'https://via.placeholder.com/800x600?text=Tour+Gallery+3',
-            'testimonial-bg': 'https://via.placeholder.com/1920x600?text=Testimonial+Background',
-            'about-us': 'https://via.placeholder.com/800x600?text=About+Us',
-            'scooter-1': 'https://via.placeholder.com/600x400?text=Scooter+1',
-            'scooter-2': 'https://via.placeholder.com/600x400?text=Scooter+2'
-          };
-        }
-
-        renderImages();
-      } catch (error) {
-        console.error('Error loading images:', error);
-      }
-    }
-
-    // Render Images Gallery
-    function renderImages() {
-      const container = document.getElementById('imageGallery');
-      
-      let html = '';
-      Object.keys(websiteImages).forEach(key => {
-        const label = key.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-        html += `
-          <div class="image-item">
-            <img src="${websiteImages[key]}" alt="${label}" onerror="this.src='https://via.placeholder.com/400x300?text=Image+Not+Found'">
-            <div class="image-label">${label}</div>
-            <div class="image-actions">
-              <button class="image-btn download" onclick="downloadImage('${websiteImages[key]}', '${key}')" title="Download">⬇️</button>
-              <button class="image-btn replace" onclick="openImageModal('${key}')" title="Replace">🖼️</button>
-            </div>
-          </div>
-        `;
-      });
-      container.innerHTML = html;
-    }
-
-    // Load Settings
-    async function loadSettings() {
-      try {
-        const settingsDoc = await getDoc(doc(db, 'settings', 'website'));
-        if (settingsDoc.exists()) {
-          const data = settingsDoc.data();
-          
-          if (data.contact) {
-            document.getElementById('contactPhone').value = data.contact.phone || '';
-            document.getElementById('contactEmail').value = data.contact.email || '';
-            document.getElementById('whatsappNumber').value = data.contact.whatsapp || '';
-            document.getElementById('contactAddress').value = data.contact.address || '';
-          }
-          
-          if (data.availability) {
-            document.getElementById('maxBookings').value = data.availability.maxBookings || '';
-            document.getElementById('leadTime').value = data.availability.leadTime || '';
-            document.getElementById('operatingHours').value = data.availability.hours || '';
-            document.getElementById('bookingStatus').value = data.availability.status || 'open';
-          }
-        }
-      } catch (error) {
-        console.error('Error loading settings:', error);
-      }
-    }
-
-    // Package Modal Functions
-    window.openAddPackageModal = function() {
-      editingPackageId = null;
-      document.getElementById('packageModalTitle').textContent = 'Add New Package';
-      document.getElementById('modalPackageName').value = '';
-      document.getElementById('modalPackageDuration').value = '';
-      document.getElementById('modalPackagePrice').value = '';
-      document.getElementById('modalPackageDesc').value = '';
-      document.getElementById('packageModal').classList.add('active');
+        try {
+            for(let p of defaults) {
+                await setDoc(doc(collection(db, 'packages')), p);
+            }
+            showToast("Default Varanasi packages added!");
+            loadPackages();
+        } catch(e) { showToast("Error seeding data", "error"); }
     };
 
-    window.openEditPackageModal = function(packageId) {
-      editingPackageId = packageId;
-      const pkg = allPackages.find(p => p.id === packageId);
-      if (pkg) {
-        document.getElementById('packageModalTitle').textContent = 'Edit Package';
-        document.getElementById('modalPackageName').value = pkg.name || '';
-        document.getElementById('modalPackageDuration').value = pkg.duration || '';
-        document.getElementById('modalPackagePrice').value = pkg.price || '';
-        document.getElementById('modalPackageDesc').value = pkg.description || '';
+    window.openPackageModal = () => {
+        document.getElementById('pkgModalTitle').innerText = 'Add New Package';
+        document.getElementById('pkgId').value = '';
+        document.getElementById('pkgName').value = '';
+        document.getElementById('pkgPrice').value = '';
+        document.getElementById('pkgDuration').value = '';
+        document.getElementById('pkgDesc').value = '';
         document.getElementById('packageModal').classList.add('active');
-      }
     };
 
-    window.closePackageModal = function() {
-      document.getElementById('packageModal').classList.remove('active');
+    window.editPackage = async (id) => {
+        const d = await getDoc(doc(db, 'packages', id));
+        const p = d.data();
+        document.getElementById('pkgModalTitle').innerText = 'Edit Package';
+        document.getElementById('pkgId').value = id;
+        document.getElementById('pkgName').value = p.name;
+        document.getElementById('pkgPrice').value = p.price;
+        document.getElementById('pkgDuration').value = p.duration;
+        document.getElementById('pkgDesc').value = p.description;
+        document.getElementById('packageModal').classList.add('active');
     };
 
-    window.savePackage = async function() {
-      const name = document.getElementById('modalPackageName').value.trim();
-      const duration = document.getElementById('modalPackageDuration').value.trim();
-      const price = document.getElementById('modalPackagePrice').value;
-      const description = document.getElementById('modalPackageDesc').value.trim();
-
-      if (!name || !price) {
-        showAlert('❌ Please fill in package name and price', 'error');
-        return;
-      }
-
-      try {
-        const packageData = {
-          name: name,
-          duration: duration,
-          price: parseInt(price),
-          description: description,
-          updatedAt: new Date(),
-          updatedBy: currentUser.uid
+    window.savePackage = async () => {
+        const id = document.getElementById('pkgId').value;
+        const data = {
+            name: document.getElementById('pkgName').value,
+            price: Number(document.getElementById('pkgPrice').value),
+            duration: document.getElementById('pkgDuration').value,
+            description: document.getElementById('pkgDesc').value
         };
 
-        if (editingPackageId) {
-          // Update existing
-          await updateDoc(doc(db, 'packages', editingPackageId), packageData);
-          showAlert('✅ Package updated successfully!', 'success');
+        if(id) {
+            await updateDoc(doc(db, 'packages', id), data);
         } else {
-          // Create new
-          const packageId = name.toLowerCase().replace(/\s+/g, '-');
-          await setDoc(doc(db, 'packages', packageId), packageData);
-          showAlert('✅ Package added successfully!', 'success');
+            await setDoc(doc(collection(db, 'packages')), data);
         }
-
-        await loadPackages();
-        closePackageModal();
-      } catch (error) {
-        showAlert('❌ Error: ' + error.message, 'error');
-      }
+        closeModal('packageModal');
+        loadPackages();
+        showToast("Package saved!");
     };
 
-    window.deletePackage = async function(packageId) {
-      if (!confirm('Are you sure you want to delete this package?')) return;
-
-      try {
-        await deleteDoc(doc(db, 'packages', packageId));
-        showAlert('✅ Package deleted successfully!', 'success');
-        await loadPackages();
-      } catch (error) {
-        showAlert('❌ Error: ' + error.message, 'error');
-      }
+    window.deletePackage = async(id) => {
+        if(confirm("Delete this package?")) {
+            await deleteDoc(doc(db, 'packages', id));
+            loadPackages();
+        }
     };
 
-    // Image Modal Functions
-    window.openImageModal = function(section) {
-      currentImageSection = section;
-      const label = section.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-      document.getElementById('modalImageSection').value = label;
-      document.getElementById('modalImageUrl').value = '';
-      document.getElementById('modalImagePreview').src = websiteImages[section] || '';
-      document.getElementById('imageModal').classList.add('active');
-    };
+    // Images
+    async function loadSettings() {
+        const docRef = doc(db, 'settings', 'website');
+        const snap = await getDoc(docRef);
+        
+        if(snap.exists()) {
+            websiteSettings = snap.data();
+            
+            // Render Images
+            const imgContainer = document.getElementById('imageGallery');
+            imgContainer.innerHTML = '';
+            const images = websiteSettings.images || {
+                hero: 'https://images.unsplash.com/photo-1561361513-2d000a50f0dc?w=800', // Varanasi boat
+                about: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?w=800', // Ghats
+                scooter: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=800' // Bike
+            };
 
-    window.closeImageModal = function() {
-      document.getElementById('imageModal').classList.remove('active');
-    };
+            Object.keys(images).forEach(key => {
+                imgContainer.innerHTML += `
+                    <div class="img-tile" onclick="openImageModal('${key}', '${images[key]}')">
+                        <img src="${images[key]}" alt="${key}">
+                        <div class="img-overlay"><i class="fas fa-camera" style="color:white; font-size:1.5rem"></i></div>
+                        <div class="img-label">${key.toUpperCase()}</div>
+                    </div>
+                `;
+            });
 
-    window.previewModalImage = function() {
-      const url = document.getElementById('modalImageUrl').value;
-      if (url) {
-        document.getElementById('modalImagePreview').src = url;
-      }
-    };
-
-    window.saveImageReplace = async function() {
-      const imageUrl = document.getElementById('modalImageUrl').value.trim();
-
-      if (!imageUrl) {
-        showAlert('❌ Please enter an image URL', 'error');
-        return;
-      }
-
-      try {
-        websiteImages[currentImageSection] = imageUrl;
-
-        await setDoc(doc(db, 'settings', 'website'), {
-          images: websiteImages
-        }, { merge: true });
-
-        showAlert('✅ Image updated successfully!', 'success');
-        renderImages();
-        closeImageModal();
-      } catch (error) {
-        showAlert('❌ Error: ' + error.message, 'error');
-      }
-    };
-
-    window.downloadImage = function(imageUrl, imageName) {
-      fetch(imageUrl)
-        .then(response => response.blob())
-        .then(blob => {
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = `${imageName}.jpg`;
-          a.click();
-          window.URL.revokeObjectURL(url);
-          showAlert('✅ Image download started!', 'success');
-        })
-        .catch(error => {
-          showAlert('❌ Error downloading image. Try right-click > Save Image', 'error');
-        });
-    };
-
-    window.updateContact = async function() {
-      const phone = document.getElementById('contactPhone').value;
-      const email = document.getElementById('contactEmail').value;
-      const whatsapp = document.getElementById('whatsappNumber').value;
-      const address = document.getElementById('contactAddress').value;
-
-      try {
-        await setDoc(doc(db, 'settings', 'website'), {
-          contact: {
-            phone: phone,
-            email: email,
-            whatsapp: whatsapp,
-            address: address
-          },
-          updatedAt: new Date(),
-          updatedBy: currentUser.uid
-        }, { merge: true });
-
-        showAlert('✅ Contact information updated!', 'success');
-      } catch (error) {
-        showAlert('❌ Error: ' + error.message, 'error');
-      }
-    };
-
-    window.updateAvailability = async function() {
-      const maxBookings = document.getElementById('maxBookings').value;
-      const leadTime = document.getElementById('leadTime').value;
-      const hours = document.getElementById('operatingHours').value;
-      const status = document.getElementById('bookingStatus').value;
-
-      try {
-        await setDoc(doc(db, 'settings', 'website'), {
-          availability: {
-            maxBookings: parseInt(maxBookings) || 10,
-            leadTime: parseInt(leadTime) || 2,
-            hours: hours,
-            status: status
-          },
-          updatedAt: new Date(),
-          updatedBy: currentUser.uid
-        }, { merge: true });
-
-        showAlert('✅ Availability settings updated!', 'success');
-      } catch (error) {
-        showAlert('❌ Error: ' + error.message, 'error');
-      }
-    };
-
-    // Profile Functions
-    function loadProfileData() {
-      if (userProfile) {
-        document.getElementById('profileName').value = userProfile.name || '';
-        document.getElementById('profileEmail').value = currentUser.email;
-        document.getElementById('profilePhone').value = userProfile.phone || '';
-      }
+            // Form Fill
+            if(websiteSettings.contact) {
+                document.getElementById('editPhone').value = websiteSettings.contact.phone || '';
+                document.getElementById('editWhatsapp').value = websiteSettings.contact.whatsapp || '';
+                document.getElementById('editEmail').value = websiteSettings.contact.email || '';
+            }
+        } else {
+            // Create default settings if missing
+             await setDoc(docRef, {
+                 images: { hero: '', about: '' },
+                 contact: { phone: '', email: '' }
+             });
+             loadSettings();
+        }
     }
 
-    window.updateProfile = async function() {
-      const name = document.getElementById('profileName').value;
-      const phone = document.getElementById('profilePhone').value;
-
-      if (!name) {
-        showAlert('❌ Please enter your name', 'error');
-        return;
-      }
-
-      try {
-        await updateDoc(doc(db, 'users', currentUser.uid), {
-          name: name,
-          phone: phone,
-          updatedAt: new Date()
-        });
-
-        userProfile.name = name;
-        userProfile.phone = phone;
-        document.getElementById('userName').textContent = name;
-
-        showAlert('✅ Profile updated successfully!', 'success');
-      } catch (error) {
-        showAlert('❌ Error: ' + error.message, 'error');
-      }
+    window.openImageModal = (key, currentUrl) => {
+        document.getElementById('imgModalLabel').innerText = `Editing section: ${key}`;
+        document.getElementById('imgKey').value = key;
+        document.getElementById('newImgUrl').value = currentUrl;
+        document.getElementById('imgPreview').src = currentUrl;
+        document.getElementById('imageModal').classList.add('active');
     };
 
-    window.changePassword = async function() {
-      const currentPass = document.getElementById('currentPassword').value;
-      const newPass = document.getElementById('newPassword').value;
-      const confirmPass = document.getElementById('confirmPassword').value;
+    window.saveImage = async () => {
+        const key = document.getElementById('imgKey').value;
+        const url = document.getElementById('newImgUrl').value;
+        
+        const settingsRef = doc(db, 'settings', 'website');
+        const snap = await getDoc(settingsRef);
+        let currentImages = snap.data().images || {};
+        currentImages[key] = url;
 
-      if (!currentPass || !newPass || !confirmPass) {
-        showAlert('❌ Please fill all password fields', 'error');
-        return;
-      }
-
-      if (newPass !== confirmPass) {
-        showAlert('❌ New passwords do not match', 'error');
-        return;
-      }
-
-      if (newPass.length < 6) {
-        showAlert('❌ Password must be at least 6 characters', 'error');
-        return;
-      }
-
-      try {
-        const credential = EmailAuthProvider.credential(currentUser.email, currentPass);
-        await reauthenticateWithCredential(currentUser, credential);
-        await updatePassword(currentUser, newPass);
-
-        document.getElementById('currentPassword').value = '';
-        document.getElementById('newPassword').value = '';
-        document.getElementById('confirmPassword').value = '';
-
-        showAlert('✅ Password changed successfully!', 'success');
-      } catch (error) {
-        if (error.code === 'auth/wrong-password') {
-          showAlert('❌ Current password is incorrect', 'error');
-        } else {
-          showAlert('❌ Error: ' + error.message, 'error');
-        }
-      }
+        await updateDoc(settingsRef, { images: currentImages });
+        closeModal('imageModal');
+        showToast("Image updated!");
+        loadSettings();
     };
 
-    // Get user data
-    async function getUserData(uid) {
-      try {
-        const userDoc = await getDoc(doc(db, 'users', uid));
-        if (userDoc.exists()) {
-          return userDoc.data();
-        }
-      } catch (error) {
-        console.error('Error getting user data:', error);
-      }
-      return null;
-    }
+    window.saveContactInfo = async () => {
+        const data = {
+            contact: {
+                phone: document.getElementById('editPhone').value,
+                whatsapp: document.getElementById('editWhatsapp').value,
+                email: document.getElementById('editEmail').value
+            }
+        };
+        await updateDoc(doc(db, 'settings', 'website'), data);
+        showToast("Contact info updated");
+    };
 
-    // Auth state - STRICT MANAGER CHECK
+    // --- AUTH ---
     onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        console.log('No user logged in');
+      if (user) {
+        // Strict Manager Check
+        const userDoc = await getDoc(doc(db, 'users', user.uid));
+        if (userDoc.exists() && userDoc.data().role === 'manager') {
+            currentUser = user;
+            document.getElementById('loader').classList.add('hidden');
+            document.getElementById('mainApp').classList.remove('hidden');
+            document.getElementById('userNameDisplay').innerText = userDoc.data().name || 'Manager';
+            document.getElementById('userEmailDisplay').innerText = user.email;
+            document.getElementById('profileName').value = userDoc.data().name || '';
+            
+            // Setup mobile nav listener
+            document.querySelectorAll('.nav-item').forEach(el => {
+                el.addEventListener('click', () => {
+                    document.getElementById('sidebar').classList.remove('open'); // close on mobile
+                });
+            });
+
+            loadData();
+        } else {
+            alert("Access Denied: Manager privileges required.");
+            signOut(auth);
+            window.location.href = '/login.html';
+        }
+      } else {
         window.location.href = '/login.html';
-        return;
       }
-
-      console.log('User logged in:', user.email);
-
-      const userData = await getUserData(user.uid);
-      
-      if (!userData) {
-        console.log('No user data found');
-        alert('⛔ User profile not found');
-        await signOut(auth);
-        window.location.href = '/login.html';
-        return;
-      }
-
-      console.log('User role:', userData.role);
-
-      if (userData.role !== 'manager') {
-        console.log('Access denied - not a manager');
-        alert('⛔ Access Denied: This panel is only for managers');
-        await signOut(auth);
-        window.location.href = '/login.html';
-        return;
-      }
-
-      currentUser = user;
-      userProfile = userData;
-      
-      document.getElementById('userEmail').textContent = user.email;
-      document.getElementById('userName').textContent = userData.name || 'Manager';
-      
-      document.getElementById('loader').classList.add('hidden');
-      document.getElementById('managerPanel').classList.remove('hidden');
-      
-      await loadBookings();
     });
 
-    console.log('🚀 Manager panel loaded');
+    window.logout = () => signOut(auth);
+    
+    window.refreshData = () => {
+        showToast("Refreshing data...");
+        loadData();
+    }
+
+    // Mobile Toggle
+    document.addEventListener('DOMContentLoaded', () => {
+        const toggle = document.getElementById('menuToggle');
+        if(window.innerWidth <= 768) toggle.style.display = 'block';
+        toggle.addEventListener('click', () => {
+            document.getElementById('sidebar').classList.toggle('open');
+        });
+    });
+
   </script>
 </body>
 </html>
