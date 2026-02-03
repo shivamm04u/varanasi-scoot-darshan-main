@@ -77,7 +77,7 @@ const Hero = ({ title, subtitle, description, price }: HeroProps) => {
           <div className="flex flex-wrap justify-center gap-6 md:gap-10 text-primary-foreground/80 animate-fade-in" style={{ animationDelay: '0.5s' }}>
             <div className="flex items-center gap-2">
               <Clock className="w-5 h-5 text-gold" />
-              <span className="text-sm font-medium">2-8 Hour Tours</span>
+              <span className="text-sm font-medium">6-10 Hour Tours</span>
             </div>
             <div className="flex items-center gap-2">
               <MapPin className="w-5 h-5 text-gold" />
