@@ -1,15 +1,22 @@
-import { MapPin, Navigation } from "lucide-react"; // Added Navigation Icon
+import { MapPin, Navigation } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
-// Image Imports
+// Correct Image Imports
 import kashiImg from "@/assets/locations/kashi-vishwanath.jpg";
 import gangaImg from "@/assets/locations/dashashwamedh.jpg";
-import bhuImg from "@/assets/locations/bhu.jpg";
+import manikarnikaImg from "@/assets/locations/manikarnika.jpg";
 import assiImg from "@/assets/locations/assi-ghat.jpg";
+import tulsiImg from "@/assets/locations/tulsi-ghat.jpg";
+import durgaImg from "@/assets/locations/durga-mandir.jpg";
+import tulsiManasImg from "@/assets/locations/tulsi-manas.jpg";
+import tridevImg from "@/assets/locations/tridev-mandir.jpg";
+import maniImg from "@/assets/locations/mani-mandir.jpg";
+import sankatImg from "@/assets/locations/sankat-mochan.jpg";
+import bhuImg from "@/assets/locations/bhu.jpg";
+import kabirImg from "@/assets/locations/kabir-math.jpg";
+import ganeshImg from "@/assets/locations/bada-ganesh.jpg";
 import sarnathImg from "@/assets/locations/sarnath.jpg";
-// Fallback if local image missing
-const sarnathImg = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Dhamekh_Stupa_Sarnath.jpg/800px-Dhamekh_Stupa_Sarnath.jpg";
 
 const locations = [
   {
@@ -30,11 +37,11 @@ const locations = [
   },
   {
     id: 3,
-    name: "Sarnath Temple",
-    description: "The holy site where Lord Buddha gave his first sermon. Witness the Dhamek Stupa.",
-    image: sarnathImg,
-    tag: "Buddhist Heritage",
-    mapLink: "https://goo.gl/maps/Sarnath"
+    name: "Manikarnika Ghat",
+    description: "The Mahashmashana where life meets death. A powerful place for spiritual realization.",
+    image: manikarnikaImg,
+    tag: "Moksha",
+    mapLink: "https://goo.gl/maps/Manikarnika"
   },
   {
     id: 4,
@@ -46,11 +53,83 @@ const locations = [
   },
   {
     id: 5,
-    name: "BHU & New Vishwanath",
-    description: "Asia's largest residential university campus with the magnificent New Vishwanath Temple.",
+    name: "Tulsi Ghat",
+    description: "Associated with poet Tulsidas who wrote Ramcharitmanas here.",
+    image: tulsiImg,
+    tag: "History",
+    mapLink: "https://goo.gl/maps/TulsiGhat"
+  },
+  {
+    id: 6,
+    name: "Durga Mandir",
+    description: "Ancient temple dedicated to Goddess Durga, known for its red color and monkey inhabitants.",
+    image: durgaImg,
+    tag: "Shakti Peeth",
+    mapLink: "https://goo.gl/maps/DurgaMandir"
+  },
+  {
+    id: 7,
+    name: "Tulsi Manas Mandir",
+    description: "Modern marble temple with verses of Ramcharitmanas inscribed on walls.",
+    image: tulsiManasImg,
+    tag: "Ramayana",
+    mapLink: "https://goo.gl/maps/TulsiManas"
+  },
+  {
+    id: 8,
+    name: "Tridev Mandir",
+    description: "Beautiful temple dedicated to Brahma, Vishnu, and Mahesh.",
+    image: tridevImg,
+    tag: "Divinity",
+    mapLink: "https://goo.gl/maps/TridevMandir"
+  },
+  {
+    id: 9,
+    name: "Mani Mandir",
+    description: "Located near BHU, a serene temple dedicated to Lord Shiva.",
+    image: maniImg,
+    tag: "Peace",
+    mapLink: "https://goo.gl/maps/ManiMandir"
+  },
+  {
+    id: 10,
+    name: "Sankat Mochan",
+    description: "Famous Hanuman temple established by Tulsidas. Known for fulfilling wishes.",
+    image: sankatImg,
+    tag: "Devotion",
+    mapLink: "https://goo.gl/maps/SankatMochan"
+  },
+  {
+    id: 11,
+    name: "BHU Vishwanath",
+    description: "Located inside BHU campus, it has the tallest temple tower in the world.",
     image: bhuImg,
     tag: "Architecture",
     mapLink: "https://goo.gl/maps/BHU"
+  },
+  {
+    id: 12,
+    name: "Kabir Math",
+    description: "Place of Saint Kabir Das, a symbol of peace and harmony.",
+    image: kabirImg,
+    tag: "Harmony",
+    mapLink: "https://goo.gl/maps/KabirMath"
+  },
+  {
+    id: 13,
+    name: "Bada Ganesh",
+    description: "Ancient Ganesha temple with a huge idol of Lord Ganesha.",
+    image: ganeshImg,
+    tag: "Beginnings",
+    mapLink: "https://goo.gl/maps/BadaGanesh"
+  },
+  {
+    id: 14,
+    name: "Sarnath Temple",
+    description: "The holy site where Lord Buddha gave his first sermon. Witness the Dhamek Stupa.",
+    image: sarnathImg,
+    tag: "Buddhist Heritage",
+    mapLink: "https://goo.gl/maps/Sarnath"
   }
 ];
 
@@ -67,7 +146,6 @@ const Locations = () => {
           <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
             Explore Holy <span className="text-primary">Varanasi</span>
           </h2>
-          {/* UPDATED TEXT: 13 -> 14 */}
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Visit all 14 sacred sites in Kashi with our guided solo scooter tours. Each location is rich with spiritual significance and ancient history.
           </p>
@@ -83,7 +161,7 @@ const Locations = () => {
                   {location.tag}
                 </div>
                 
-                {/* NEW: GOOGLE MAPS ICON (Bottom Right of Image) */}
+                {/* GOOGLE MAPS ICON */}
                 <a 
                   href={location.mapLink} 
                   target="_blank" 
