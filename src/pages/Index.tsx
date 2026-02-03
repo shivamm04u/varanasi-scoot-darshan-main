@@ -7,7 +7,6 @@ import Services from "@/components/Services";
 import RouteItinerary from "@/components/RouteItinerary";
 import Locations from "@/components/Locations";
 import Testimonials from "@/components/Testimonials";
-import ContactSection from "@/components/ContactSection"; // ✅ Added Contact Section
 import Footer from "@/components/Footer";
 import FloatingCTA from "@/components/FloatingCTA";
 
@@ -43,7 +42,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background relative">
       
-      {/* ✅ PREMIUM NOISE TEXTURE (Adds expensive feel) */}
+      {/* Noise Texture */}
       <div 
         className="fixed inset-0 pointer-events-none opacity-[0.03] z-[9999] mix-blend-overlay"
         style={{ 
@@ -54,7 +53,6 @@ const Index = () => {
 
       <Header />
       
-      {/* Dynamic Hero */}
       <Hero 
         title={content?.heroTitle} 
         subtitle={content?.heroSubtitle}
@@ -66,7 +64,6 @@ const Index = () => {
       <About />
       <WhyChoose />
       
-      {/* Dynamic Services */}
       <Services 
         scooterPrice={content?.pkg1Price} 
         boatPrice={content?.pkg2Price} 
@@ -76,8 +73,8 @@ const Index = () => {
       <Locations />
       <Testimonials />
       
-      {/* ✅ ADDED CONTACT SECTION */}
-      <ContactSection />
+      {/* Removed ContactSection to fix build error. 
+          Use the 'Contact' button in Header to open the Drawer instead. */}
       
       <Footer />
       
