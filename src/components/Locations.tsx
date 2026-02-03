@@ -3,31 +3,29 @@ import { MapPin, Navigation, X, Clock, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
-// ONLINE IMAGES (Safe from build errors)
-const images = {
-  kashi: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Kashi_Vishwanath_Temple_Varanasi.jpg/800px-Kashi_Vishwanath_Temple_Varanasi.jpg",
-  ganga: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Ganga_Aarti_at_Dashashwamedh_Ghat.jpg/800px-Ganga_Aarti_at_Dashashwamedh_Ghat.jpg",
-  manikarnika: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Manikarnika_Ghat_2013.jpg/800px-Manikarnika_Ghat_2013.jpg",
-  assi: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Assi_Ghat_Varanasi.jpg/800px-Assi_Ghat_Varanasi.jpg",
-  tulsi: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Tulsi_Ghat_Varanasi.jpg/800px-Tulsi_Ghat_Varanasi.jpg",
-  durga: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Durga_Mandir_Ramnagar.jpg/800px-Durga_Mandir_Ramnagar.jpg",
-  tulsiManas: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Tulsi_Manas_Mandir.jpg/800px-Tulsi_Manas_Mandir.jpg",
-  tridev: "https://lh5.googleusercontent.com/p/AF1QipN-7-7-7-7-7-7-7-7-7-7-7-7-7-7-7-7-7/w408-h306-k-no", // Placeholder
-  mani: "https://lh5.googleusercontent.com/p/AF1QipN-7-7-7-7-7-7-7-7-7-7-7-7-7-7-7-7-7/w408-h306-k-no", // Placeholder
-  sankat: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Sankat_Mochan_Hanuman_Temple.jpg/800px-Sankat_Mochan_Hanuman_Temple.jpg",
-  bhu: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/New_Vishwanath_Temple_BHU.jpg/800px-New_Vishwanath_Temple_BHU.jpg",
-  kabir: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Kabir_Chaura_Math.jpg/800px-Kabir_Chaura_Math.jpg",
-  ganesh: "https://lh5.googleusercontent.com/p/AF1QipN-7-7-7-7-7-7-7-7-7-7-7-7-7-7-7-7-7/w408-h306-k-no", // Placeholder
-  sarnath: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Dhamekh_Stupa_Sarnath.jpg/800px-Dhamekh_Stupa_Sarnath.jpg"
-};
+// --- LOCAL IMAGE IMPORTS (Make sure these files exist!) ---
+import kashiImg from "@/assets/locations/kashi-vishwanath.jpg";
+import gangaImg from "@/assets/locations/dashashwamedh.jpg";
+import manikarnikaImg from "@/assets/locations/manikarnika.jpg";
+import assiImg from "@/assets/locations/assi-ghat.jpg";
+import tulsiImg from "@/assets/locations/tulsi-ghat.jpg";
+import durgaImg from "@/assets/locations/durga-mandir.jpg";
+import tulsiManasImg from "@/assets/locations/tulsi-manas.jpg";
+import tridevImg from "@/assets/locations/tridev-mandir.jpg";
+import maniImg from "@/assets/locations/mani-mandir.jpg";
+import sankatImg from "@/assets/locations/sankat-mochan.jpg";
+import bhuImg from "@/assets/locations/bhu.jpg";
+import kabirImg from "@/assets/locations/kabir-math.jpg";
+import ganeshImg from "@/assets/locations/bada-ganesh.jpg";
+import sarnathImg from "@/assets/locations/sarnath.jpg";
 
 const locations = [
   {
     id: 1,
     name: "Kashi Vishwanath Temple",
-    description: "One of the most famous Hindu temples dedicated to Lord Shiva. A must-visit spiritual center.",
+    description: "One of the most famous Hindu temples dedicated to Lord Shiva.",
     fullDesc: "The Kashi Vishwanath Temple is one of the most famous Hindu temples dedicated to Lord Shiva. It is located in Varanasi, Uttar Pradesh, India. The temple stands on the western bank of the holy river Ganga, and is one of the twelve Jyotirlingas, the holiest of Shiva Temples.",
-    image: images.kashi,
+    image: kashiImg,
     tag: "Spiritual Heart",
     mapLink: "https://goo.gl/maps/KashiVishwanath",
     embedMap: "https://maps.google.com/maps?q=Kashi+Vishwanath+Temple&t=&z=15&ie=UTF8&iwloc=&output=embed",
@@ -36,9 +34,9 @@ const locations = [
   {
     id: 2,
     name: "Dashashwamedh Ghat",
-    description: "Experience the world-famous Ganga Aarti every evening. The most vibrant ghat in Varanasi.",
+    description: "Experience the world-famous Ganga Aarti every evening.",
     fullDesc: "Dashashwamedh Ghat is the main ghat in Varanasi on the Ganga River. It is located close to Vishwanath Temple and is probably the most spectacular ghat.",
-    image: images.ganga,
+    image: gangaImg,
     tag: "Ganga Aarti",
     mapLink: "https://goo.gl/maps/Dashashwamedh",
     embedMap: "https://maps.google.com/maps?q=Dashashwamedh+Ghat&t=&z=15&ie=UTF8&iwloc=&output=embed",
@@ -47,9 +45,9 @@ const locations = [
   {
     id: 3,
     name: "Manikarnika Ghat",
-    description: "The Mahashmashana where life meets death. A powerful place for spiritual realization.",
+    description: "The Mahashmashana where life meets death.",
     fullDesc: "Manikarnika Ghat is one of the holiest cremation grounds among the sacred riverfronts (ghats), alongside the river Ganges.",
-    image: images.manikarnika,
+    image: manikarnikaImg,
     tag: "Moksha",
     mapLink: "https://goo.gl/maps/Manikarnika",
     embedMap: "https://maps.google.com/maps?q=Manikarnika+Ghat&t=&z=15&ie=UTF8&iwloc=&output=embed",
@@ -58,9 +56,9 @@ const locations = [
   {
     id: 4,
     name: "Assi Ghat",
-    description: "A peaceful ghat where pilgrims pay homage to Lord Shiva. Famous for Morning Aarti.",
-    fullDesc: "Assi Ghat is the southernmost ghat in Varanasi. To most visitors to Varanasi, it is known for being a place where long-term foreign students, researchers, and tourists live.",
-    image: images.assi,
+    description: "A peaceful ghat where pilgrims pay homage to Lord Shiva.",
+    fullDesc: "Assi Ghat is the southernmost ghat in Varanasi. To most visitors to Varanasi, it is known for being a place where long-term foreign students live.",
+    image: assiImg,
     tag: "Morning Vibes",
     mapLink: "https://goo.gl/maps/AssiGhat",
     embedMap: "https://maps.google.com/maps?q=Assi+Ghat&t=&z=15&ie=UTF8&iwloc=&output=embed",
@@ -70,8 +68,8 @@ const locations = [
     id: 5,
     name: "Tulsi Ghat",
     description: "Associated with poet Tulsidas who wrote Ramcharitmanas here.",
-    fullDesc: "Tulsi Ghat is one of the ghats in Varanasi. It is named after Tulsidas who lived there while he wrote the Ramcharitmanas.",
-    image: images.tulsi,
+    fullDesc: "Tulsi Ghat is named after Tulsidas who lived there while he wrote the Ramcharitmanas.",
+    image: tulsiImg,
     tag: "History",
     mapLink: "https://goo.gl/maps/TulsiGhat",
     embedMap: "https://maps.google.com/maps?q=Tulsi+Ghat&t=&z=15&ie=UTF8&iwloc=&output=embed",
@@ -80,9 +78,9 @@ const locations = [
   {
     id: 6,
     name: "Durga Mandir",
-    description: "Ancient temple dedicated to Goddess Durga, known for its red color and monkey inhabitants.",
-    fullDesc: "Durga Mandir is one of the most famous temples in the holy city of Varanasi. This temple has great religious importance for Hinduism and is dedicated to the Maa Durga.",
-    image: images.durga,
+    description: "Ancient temple dedicated to Goddess Durga.",
+    fullDesc: "Durga Mandir is one of the most famous temples in the holy city of Varanasi. Dedicated to Maa Durga.",
+    image: durgaImg,
     tag: "Shakti Peeth",
     mapLink: "https://goo.gl/maps/DurgaMandir",
     embedMap: "https://maps.google.com/maps?q=Durga+Mandir+Varanasi&t=&z=15&ie=UTF8&iwloc=&output=embed",
@@ -91,20 +89,20 @@ const locations = [
   {
     id: 7,
     name: "Tulsi Manas Mandir",
-    description: "Modern marble temple with verses of Ramcharitmanas inscribed on walls.",
+    description: "Modern marble temple with verses of Ramcharitmanas.",
     fullDesc: "Tulsi Manas Mandir is one of the most famous temples in Varanasi. The temple is dedicated to Lord Rama.",
-    image: images.tulsiManas,
+    image: tulsiManasImg,
     tag: "Ramayana",
     mapLink: "https://goo.gl/maps/TulsiManas",
     embedMap: "https://maps.google.com/maps?q=Tulsi+Manas+Mandir&t=&z=15&ie=UTF8&iwloc=&output=embed",
-    timings: "5:30 AM – 12:00 PM, 3:30 PM – 9:00 PM"
+    timings: "5:30 AM – 12:00 PM"
   },
   {
     id: 8,
     name: "Tridev Mandir",
     description: "Beautiful temple dedicated to Brahma, Vishnu, and Mahesh.",
-    fullDesc: "Tridev Mandir is a beautiful temple located near Tulsi Manas Mandir. It is dedicated to the holy trinity of Hinduism.",
-    image: images.tridev,
+    fullDesc: "Tridev Mandir is a beautiful temple located near Tulsi Manas Mandir. Dedicated to the holy trinity.",
+    image: tridevImg,
     tag: "Divinity",
     mapLink: "https://goo.gl/maps/TridevMandir",
     embedMap: "https://maps.google.com/maps?q=Tridev+Mandir+Varanasi&t=&z=15&ie=UTF8&iwloc=&output=embed",
@@ -115,7 +113,7 @@ const locations = [
     name: "Mani Mandir",
     description: "Located near BHU, a serene temple dedicated to Lord Shiva.",
     fullDesc: "Mani Mandir is a relatively newer but architecturally stunning temple located in the Durgakund area.",
-    image: images.mani,
+    image: maniImg,
     tag: "Peace",
     mapLink: "https://goo.gl/maps/ManiMandir",
     embedMap: "https://maps.google.com/maps?q=Mani+Mandir+Varanasi&t=&z=15&ie=UTF8&iwloc=&output=embed",
@@ -124,9 +122,9 @@ const locations = [
   {
     id: 10,
     name: "Sankat Mochan",
-    description: "Famous Hanuman temple established by Tulsidas. Known for fulfilling wishes.",
-    fullDesc: "Sankat Mochan Hanuman Temple is a Hindu temple in Varanasi, Uttar Pradesh, India and is dedicated to the Hindu God Hanuman.",
-    image: images.sankat,
+    description: "Famous Hanuman temple established by Tulsidas.",
+    fullDesc: "Sankat Mochan Hanuman Temple is a Hindu temple in Varanasi dedicated to the Hindu God Hanuman.",
+    image: sankatImg,
     tag: "Devotion",
     mapLink: "https://goo.gl/maps/SankatMochan",
     embedMap: "https://maps.google.com/maps?q=Sankat+Mochan+Hanuman+Temple&t=&z=15&ie=UTF8&iwloc=&output=embed",
@@ -135,9 +133,9 @@ const locations = [
   {
     id: 11,
     name: "BHU Vishwanath",
-    description: "Located inside BHU campus, it has the tallest temple tower in the world.",
-    fullDesc: "Shri Vishwanath Mandir also known as VT is one of the most famous tourist places in Varanasi.",
-    image: images.bhu,
+    description: "Located inside BHU campus, tallest temple tower.",
+    fullDesc: "Shri Vishwanath Mandir also known as VT is located in the Banaras Hindu University.",
+    image: bhuImg,
     tag: "Architecture",
     mapLink: "https://goo.gl/maps/BHU",
     embedMap: "https://maps.google.com/maps?q=New+Vishwanath+Temple+BHU&t=&z=15&ie=UTF8&iwloc=&output=embed",
@@ -146,9 +144,9 @@ const locations = [
   {
     id: 12,
     name: "Kabir Math",
-    description: "Place of Saint Kabir Das, a symbol of peace and harmony.",
+    description: "Place of Saint Kabir Das, a symbol of peace.",
     fullDesc: "Kabir Math is located at Kabir Chaura, Varanasi. It is the place of residence of the famous saint Kabir Das.",
-    image: images.kabir,
+    image: kabirImg,
     tag: "Harmony",
     mapLink: "https://goo.gl/maps/KabirMath",
     embedMap: "https://maps.google.com/maps?q=Kabir+Chaura+Math&t=&z=15&ie=UTF8&iwloc=&output=embed",
@@ -157,9 +155,9 @@ const locations = [
   {
     id: 13,
     name: "Bada Ganesh",
-    description: "Ancient Ganesha temple with a huge idol of Lord Ganesha.",
-    fullDesc: "The Bada Ganesh Temple is located near the Lohatia area. It houses a gigantic statue of Lord Ganesh.",
-    image: images.ganesh,
+    description: "Ancient Ganesha temple with a huge idol.",
+    fullDesc: "The Bada Ganesh Temple houses a gigantic statue of Lord Ganesh with a silver face.",
+    image: ganeshImg,
     tag: "Beginnings",
     mapLink: "https://goo.gl/maps/BadaGanesh",
     embedMap: "https://maps.google.com/maps?q=Bada+Ganesh+Temple+Varanasi&t=&z=15&ie=UTF8&iwloc=&output=embed",
@@ -168,9 +166,9 @@ const locations = [
   {
     id: 14,
     name: "Sarnath Temple",
-    description: "The holy site where Lord Buddha gave his first sermon. Witness the Dhamek Stupa.",
-    fullDesc: "Sarnath is a place located 10 kilometres north-east of Varanasi. The deer park in Sarnath is where Gautama Buddha first taught the Dharma.",
-    image: images.sarnath,
+    description: "The holy site where Lord Buddha gave his first sermon.",
+    fullDesc: "Sarnath is a place located 10 kilometres north-east of Varanasi near the confluence of the Ganges and the Varuna rivers.",
+    image: sarnathImg,
     tag: "Buddhist Heritage",
     mapLink: "https://goo.gl/maps/Sarnath",
     embedMap: "https://maps.google.com/maps?q=Sarnath&t=&z=15&ie=UTF8&iwloc=&output=embed",
@@ -210,11 +208,8 @@ const Locations = () => {
                   {location.tag}
                 </div>
                 
-                {/* --- THIS IS THE MAP ICON YOU ASKED FOR --- */}
-                <div 
-                  className="absolute bottom-4 right-4 z-20 bg-white/90 p-2 rounded-full shadow-lg text-primary transform translate-y-10 group-hover:translate-y-0 transition-transform duration-300 hover:bg-primary hover:text-white"
-                  title="View Details & Map"
-                >
+                {/* Visual Map Icon Overlay */}
+                <div className="absolute bottom-4 right-4 z-20 bg-white/90 p-2 rounded-full shadow-lg text-primary transform translate-y-10 group-hover:translate-y-0 transition-transform duration-300 hover:bg-primary hover:text-white">
                   <Navigation className="w-5 h-5" />
                 </div>
 
@@ -243,7 +238,7 @@ const Locations = () => {
         </div>
       </div>
 
-      {/* --- SLIDE-OVER DRAWER (Map + Details) --- */}
+      {/* --- SLIDE-OVER DRAWER --- */}
       {selectedLocation && (
         <>
           <div 
@@ -296,7 +291,6 @@ const Locations = () => {
                 </div>
               </div>
 
-              {/* EMBEDDED MAP */}
               <div className="space-y-3">
                 <h3 className="text-lg font-bold flex items-center gap-2 text-primary">
                   <MapPin className="w-5 h-5" /> Location Map
