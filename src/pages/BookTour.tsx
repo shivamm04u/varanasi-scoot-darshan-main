@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Phone, MessageCircle, Mail, MapPin, User, CheckCircle2 } from "lucide-react";
+import { Phone, MessageCircle, MapPin, User, CheckCircle2, Lock, X } from "lucide-react";
 import scooterImage from "@/assets/scooter-varanasi.jpg";
 import { useToast } from "@/hooks/use-toast";
 
@@ -20,7 +20,10 @@ import { getFirestore, collection, addDoc } from 'firebase/firestore';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { initializeApp } from 'firebase/app';
 
-// FIREBASE CONFIG
+// EMAIL SERVICE (You need to install: npm install @emailjs/browser)
+import emailjs from '@emailjs/browser'; 
+
+// CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyCtyR68dG9TEI_C89PvsdrGmpkE6vCtV0s",
   authDomain: "varanasi-scoot-darshan.firebaseapp.com",
@@ -39,16 +42,8 @@ const locations = [
   { value: "dashashwamedh", label: "Dashashwamedh Ghat" },
   { value: "manikarnika", label: "Manikarnika Ghat" },
   { value: "assi-ghat", label: "Assi Ghat" },
-  { value: "tulsiGhat", label: "Tulsi Ghat" },
-  { value: "durgaMandir", label: "Durga Mandir" },
-  { value: "tulsiManasMandir", label: "TulsiManas Mandir" },
-  { value: "tridevMandir", label: "Tridev Mandir" },
-  { value: "maniMandir", label: "Mani Mandir" },
-  { value: "sankatMochan", label: "Sankat Mochan" },
-  { value: "bhuVishwanath", label: "BHU Vishwanath" },
-  { value: "kabirMath", label: "Kabir Math" },
-  { value: "badaGanesh", label: "Bada Ganesh" },
-  { value: "sarnath", label: "Sarnath" },
+  { value: "airport", label: "Lal Bahadur Shastri Airport" },
+  { value: "cantt", label: "Varanasi Cantt Station" },
 ];
 
 const durations = [
@@ -60,6 +55,7 @@ const BookTour = () => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<any>(null);
+  const [showLoginModal, setShowLoginModal] = useState(false); // State for Login Popup
   
   const [formData, setFormData] = useState({
     name: "",
@@ -69,10 +65,10 @@ const BookTour = () => {
     duration: "12",
     date: "",
     specialRequests: "",
-    saveDetails: true // Default checked
+    saveDetails: true
   });
 
-  // Check Auth State
+  // Check Login Status
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
@@ -101,34 +97,50 @@ const BookTour = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    
-    // 1. SEND TO FIREBASE (Manager Panel Connection)
-    try {
-      if (formData.saveDetails) {
-        await addDoc(collection(db, "bookings"), {
-          name: formData.name,
-          phone: formData.phone,
-          email: formData.email,
-          pickupLocation: locations.find(l => l.value === formData.pickupLocation)?.label || 'Not selected',
-          tourPackage: selectedDuration?.label,
-          duration: formData.duration,
-          date: formData.date,
-          specialRequests: formData.specialRequests,
-          totalPrice: totalPrice,
-          userId: user ? user.uid : 'guest',
-          status: 'pending', // Manager sees "Pending"
-          assignedDriver: 'unassigned',
-          createdAt: new Date().toISOString(),
-          source: 'Website Form'
-        });
-      }
-    } catch (error) {
-      console.error("Error saving booking:", error);
+
+    // 1. LOGIN CHECK (Strict Mode)
+    if (!user) {
+      setShowLoginModal(true);
+      return; // STOP HERE if not logged in
     }
 
-    // 2. OPEN WHATSAPP (User Experience)
-    const message = `🛵 *Baba Banarasi Booking*
+    setLoading(true);
+    
+    try {
+      // 2. SAVE TO FIREBASE (Notify Manager/Admin via Dashboard)
+      await addDoc(collection(db, "bookings"), {
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        pickupLocation: locations.find(l => l.value === formData.pickupLocation)?.label || 'Not selected',
+        tourPackage: selectedDuration?.label,
+        totalPrice: totalPrice,
+        date: formData.date,
+        specialRequests: formData.specialRequests,
+        userId: user.uid,
+        status: 'pending', // Manager sees this in Live Queue
+        assignedDriver: 'unassigned',
+        createdAt: new Date().toISOString(),
+        source: 'Website'
+      });
+
+      // 3. SEND EMAIL NOTIFICATION (Optional: Requires EmailJS setup)
+      // Uncomment and add your keys from emailjs.com
+      /*
+      await emailjs.send(
+        'YOUR_SERVICE_ID',
+        'YOUR_TEMPLATE_ID',
+        {
+          to_name: formData.name,
+          to_email: formData.email,
+          message: `Booking Confirmed for ${formData.date}. Amount: ₹${totalPrice}`
+        },
+        'YOUR_PUBLIC_KEY'
+      );
+      */
+
+      // 4. OPEN WHATSAPP (Final Step)
+      const message = `🛵 *Baba Banarasi Booking*
 
 👤 *Name:* ${formData.name}
 📞 *Phone:* ${formData.phone}
@@ -141,15 +153,19 @@ ${formData.specialRequests ? `📝 *Note:* ${formData.specialRequests}` : ''}
 
 🙏 Har Har Mahadev!`;
 
-    const whatsappUrl = `https://wa.me/917991301043?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
+      window.open(`https://wa.me/917991301043?text=${encodeURIComponent(message)}`, '_blank');
 
-    toast({
-      title: "Booking Request Sent!",
-      description: "We'll confirm your booking on WhatsApp shortly.",
-    });
-    
-    setLoading(false);
+      toast({
+        title: "Booking Successful!",
+        description: "Manager notified. Opening WhatsApp...",
+      });
+
+    } catch (error) {
+      console.error("Error:", error);
+      toast({ title: "Error", description: "Something went wrong. Please try again.", variant: "destructive" });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -158,127 +174,69 @@ ${formData.specialRequests ? `📝 *Note:* ${formData.specialRequests}` : ''}
       
       <main className="pt-24 pb-16">
         <div className="container mx-auto px-4">
-          {/* Page Header */}
           <div className="text-center max-w-3xl mx-auto mb-12">
-            <span className="inline-block text-primary font-semibold text-sm uppercase tracking-wider mb-3">
-              Book Your Journey
-            </span>
             <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4">
-              Solo Scooter{" "}
-              <span className="gradient-text">Darshan Booking</span>
+              Solo Scooter <span className="gradient-text">Darshan Booking</span>
             </h1>
             <p className="text-lg text-muted-foreground">
-              Fill in your details and we'll arrange your perfect Varanasi pilgrimage experience.
+              Fill in your details. Login required to ensure secure booking.
             </p>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
             {/* Booking Form */}
-            <div className="bg-card rounded-3xl p-8 shadow-lg border border-border">
+            <div className="bg-card rounded-3xl p-8 shadow-lg border border-border relative">
               <form onSubmit={handleSubmit} className="space-y-6">
                 
                 {/* Personal Details */}
                 <div className="space-y-4">
                   <h3 className="font-serif text-xl font-bold flex items-center gap-2">
-                    <User className="w-5 h-5 text-primary" />
-                    Personal Details
+                    <User className="w-5 h-5 text-primary" /> Personal Details
                   </h3>
-                  
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="name">Full Name *</Label>
-                      <Input
-                        id="name"
-                        name="name"
-                        placeholder="Enter your name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        required
-                      />
+                      <Label>Full Name *</Label>
+                      <Input name="name" placeholder="Enter name" value={formData.name} onChange={handleInputChange} required />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="phone">Phone/WhatsApp *</Label>
-                      <Input
-                        id="phone"
-                        name="phone"
-                        type="tel"
-                        placeholder="+91 XXXXX XXXXX"
-                        value={formData.phone}
-                        onChange={handleInputChange}
-                        required
-                      />
+                      <Label>Phone/WhatsApp *</Label>
+                      <Input name="phone" type="tel" placeholder="+91..." value={formData.phone} onChange={handleInputChange} required />
                     </div>
                   </div>
-
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email (Optional)</Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      placeholder="your@email.com"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                    />
+                    <Label>Email *</Label>
+                    <Input name="email" type="email" placeholder="email@example.com" value={formData.email} onChange={handleInputChange} required />
                   </div>
                 </div>
 
                 {/* Tour Details */}
                 <div className="space-y-4 pt-4 border-t border-border">
                   <h3 className="font-serif text-xl font-bold flex items-center gap-2">
-                    <MapPin className="w-5 h-5 text-primary" />
-                    Tour Details
+                    <MapPin className="w-5 h-5 text-primary" /> Tour Details
                   </h3>
-
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label>Pickup Location *</Label>
-                      <Select
-                        value={formData.pickupLocation}
-                        onValueChange={(value) => handleSelectChange("pickupLocation", value)}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select location" />
-                        </SelectTrigger>
+                      <Select value={formData.pickupLocation} onValueChange={(v) => handleSelectChange("pickupLocation", v)}>
+                        <SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger>
                         <SelectContent>
-                          {locations.map((location) => (
-                            <SelectItem key={location.value} value={location.value}>
-                              {location.label}
-                            </SelectItem>
-                          ))}
+                          {locations.map((l) => <SelectItem key={l.value} value={l.value}>{l.label}</SelectItem>)}
                         </SelectContent>
                       </Select>
                     </div>
-
                     <div className="space-y-2">
-                      <Label htmlFor="date">Date *</Label>
-                      <Input
-                        id="date"
-                        name="date"
-                        type="date"
-                        value={formData.date}
-                        onChange={handleInputChange}
-                        required
-                      />
+                      <Label>Date *</Label>
+                      <Input name="date" type="date" value={formData.date} onChange={handleInputChange} required />
                     </div>
                   </div>
-
                   <div className="space-y-2">
                     <Label>Duration *</Label>
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                      {durations.map((duration) => (
-                        <button
-                          key={duration.value}
-                          type="button"
-                          onClick={() => handleSelectChange("duration", duration.value)}
-                          className={`p-4 rounded-xl border-2 text-center transition-all ${
-                            formData.duration === duration.value
-                              ? "border-primary bg-primary/10"
-                              : "border-border hover:border-primary/50"
-                          }`}
-                        >
-                          <div className="font-semibold">{duration.label}</div>
-                          <div className="text-sm text-muted-foreground">₹{duration.price}</div>
+                    <div className="grid grid-cols-2 gap-3">
+                      {durations.map((d) => (
+                        <button key={d.value} type="button" onClick={() => handleSelectChange("duration", d.value)}
+                          className={`p-4 rounded-xl border-2 text-center transition-all ${formData.duration === d.value ? "border-primary bg-primary/10" : "border-border hover:border-primary/50"}`}>
+                          <div className="font-semibold">{d.label}</div>
+                          <div className="text-sm text-muted-foreground">₹{d.price}</div>
                         </button>
                       ))}
                     </div>
@@ -287,19 +245,12 @@ ${formData.specialRequests ? `📝 *Note:* ${formData.specialRequests}` : ''}
 
                 {/* Special Requests */}
                 <div className="space-y-2 pt-4 border-t border-border">
-                  <Label htmlFor="specialRequests">Special Requests (Optional)</Label>
-                  <textarea
-                    id="specialRequests"
-                    name="specialRequests"
-                    placeholder="Any special requirements? Early morning pickup, specific temples, etc."
-                    value={formData.specialRequests}
-                    onChange={handleInputChange}
-                    className="w-full min-h-[100px] px-4 py-3 rounded-xl border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                  />
+                  <Label>Special Requests</Label>
+                  <textarea name="specialRequests" placeholder="Any specific needs?" value={formData.specialRequests} onChange={handleInputChange} className="w-full min-h-[80px] px-4 py-3 rounded-xl border border-input bg-background focus:ring-2 focus:ring-primary outline-none" />
                 </div>
 
-                {/* --- SAVE DETAILS CHECKBOX (INSERTED HERE) --- */}
-                <div className="bg-primary/5 p-4 rounded-xl border border-primary/20">
+                {/* --- SAVE DETAILS BOX (Inserted Here as Requested) --- */}
+                <div className="bg-primary/5 p-4 rounded-xl border border-primary/20 mt-6">
                   <label className="flex items-start gap-3 cursor-pointer">
                     <div className="relative flex items-center">
                       <input 
@@ -307,14 +258,14 @@ ${formData.specialRequests ? `📝 *Note:* ${formData.specialRequests}` : ''}
                         id="saveInfo"
                         checked={formData.saveDetails}
                         onChange={(e) => setFormData(prev => ({...prev, saveDetails: e.target.checked}))}
-                        className="peer h-5 w-5 cursor-pointer appearance-none rounded-md border border-primary bg-white checked:bg-primary checked:border-primary transition-all"
+                        className="peer h-5 w-5 cursor-pointer appearance-none rounded-md border border-primary bg-white checked:bg-primary transition-all"
                       />
                       <CheckCircle2 className="pointer-events-none absolute h-3.5 w-3.5 left-1 top-1 text-white opacity-0 peer-checked:opacity-100" />
                     </div>
                     <div>
-                      <span className="text-sm font-bold text-foreground">Save details & Create Account</span>
+                      <span className="text-sm font-bold text-foreground">Save my details for next time</span>
                       <p className="text-xs text-muted-foreground mt-1">
-                        Get booking history and <span className="text-primary font-bold">₹100 discount</span> on next ride.
+                        We will send booking confirmation to <b>{formData.email || 'your email'}</b>.
                       </p>
                     </div>
                   </label>
@@ -327,69 +278,27 @@ ${formData.specialRequests ? `📝 *Note:* ${formData.specialRequests}` : ''}
                     <span className="text-3xl font-bold text-primary">₹{totalPrice}</span>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row gap-4">
-                    <Button type="submit" disabled={loading} variant="saffron" size="xl" className="flex-1">
+                  <div className="flex gap-4">
+                    <Button type="submit" disabled={loading} variant="saffron" size="xl" className="w-full">
                       {loading ? 'Processing...' : (
-                        <>
-                          <MessageCircle className="w-5 h-5 mr-2" />
-                          Book via WhatsApp
-                        </>
+                        <><MessageCircle className="w-5 h-5 mr-2" /> Book via WhatsApp</>
                       )}
                     </Button>
-                    <a href="tel:+917991301043" className="flex-1">
-                      <Button type="button" variant="call" size="xl" className="w-full">
-                        <Phone className="w-5 h-5 mr-2" />
-                        Call to Book
-                      </Button>
-                    </a>
                   </div>
                 </div>
               </form>
             </div>
 
-            {/* Info Sidebar (Your original beautiful design) */}
+            {/* Sidebar Info */}
             <div className="space-y-6">
-              <div className="rounded-3xl overflow-hidden shadow-lg">
-                <img
-                  src={scooterImage}
-                  alt="Solo Scooter in Varanasi"
-                  className="w-full h-64 object-cover"
-                />
-              </div>
-
+              <div className="rounded-3xl overflow-hidden shadow-lg"><img src={scooterImage} alt="Scooter" className="w-full h-64 object-cover" /></div>
               <div className="bg-secondary rounded-3xl p-8">
-                <h3 className="font-serif text-xl font-bold mb-6">What's Included</h3>
-                <ul className="space-y-4">
-                  {/* Your items here... */}
-                  <li className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-primary text-sm">✓</span>
-                    </div>
-                    <span>Electric scooter with full charge</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-primary text-sm">✓</span>
-                    </div>
-                    <span>Helmet and storage bag</span>
-                  </li>
-                  {/* ... other items ... */}
+                <h3 className="font-serif text-xl font-bold mb-6">Included</h3>
+                <ul className="space-y-3">
+                  {['Electric Scooter', 'Helmet & Bag', 'GPS Guide', '24/7 Support'].map((item, i) => (
+                    <li key={i} className="flex gap-3"><span className="text-primary">✓</span> {item}</li>
+                  ))}
                 </ul>
-              </div>
-
-              {/* Contact Card */}
-              <div className="bg-card rounded-3xl p-8 border border-border">
-                <h3 className="font-serif text-xl font-bold mb-6">Need Help?</h3>
-                <div className="space-y-4">
-                  <a href="https://wa.me/917991301043" target="_blank" className="flex items-center gap-4 p-4 rounded-xl bg-[hsl(142,70%,45%)]/10 hover:bg-[hsl(142,70%,45%)]/20 transition-colors">
-                    <MessageCircle className="w-6 h-6 text-[hsl(142,70%,45%)]" />
-                    <div>
-                      <div className="font-semibold">WhatsApp</div>
-                      <div className="text-sm text-muted-foreground">Chat with us instantly</div>
-                    </div>
-                  </a>
-                  {/* ... other contact buttons ... */}
-                </div>
               </div>
             </div>
           </div>
@@ -397,6 +306,32 @@ ${formData.specialRequests ? `📝 *Note:* ${formData.specialRequests}` : ''}
       </main>
 
       <Footer />
+
+      {/* --- LOGIN POPUP MODAL --- */}
+      {showLoginModal && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white rounded-3xl p-8 max-w-sm w-full mx-4 shadow-2xl relative border-2 border-orange-100">
+            <button onClick={() => setShowLoginModal(false)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><X size={24} /></button>
+            
+            <div className="text-center">
+              <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Lock className="w-8 h-8 text-orange-600" />
+              </div>
+              <h3 className="text-2xl font-serif font-bold text-gray-900 mb-2">Login Required</h3>
+              <p className="text-gray-600 mb-6">To ensure secure bookings and tracking, please login or create an account first.</p>
+              
+              <a href="/dashboard/login.html" className="block w-full bg-gradient-to-r from-orange-500 to-red-600 text-white font-bold py-3 rounded-xl shadow-lg hover:shadow-orange-200 hover:scale-105 transition-all">
+                Login / Sign Up Now
+              </a>
+              
+              <button onClick={() => setShowLoginModal(false)} className="mt-4 text-sm text-gray-500 hover:text-gray-700 underline">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };
