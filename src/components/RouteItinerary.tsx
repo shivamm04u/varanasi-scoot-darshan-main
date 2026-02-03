@@ -17,8 +17,8 @@ const afternoonStops = [
   "Bada Ganesh Darshan",
   "Kal Bhairav Temple Darshan",
   "Vishwanath Darshan",
-  "Ganga Aarti",
-  "Sarnath Temple" // <--- ADDED SARNATH
+  "Ganga Aarti",  // <--- COMMA ADDED HERE!
+  "Sarnath Temple"
 ];
 
 const RouteItinerary = () => {
