@@ -53,10 +53,10 @@ const Services = ({ scooterPrice, boatPrice }: ServicesProps) => {
           </p>
         </div>
 
-        {/* 13-Point Itinerary (Your Original Design) */}
+        {/* 14-Point Itinerary (Your Original Design) */}
         <div className="bg-background p-8 md:p-12 rounded-3xl shadow-lg border border-border mb-16">
           <h3 className="font-serif text-2xl md:text-3xl font-bold text-foreground mb-8 text-center">
-            Full Day Darshan - <span className="text-primary">13 Sacred Points</span>
+            Full Day Darshan - <span className="text-primary">14 Sacred Points</span>
           </h3>
           <div className="grid md:grid-cols-2 gap-8">
             <div className="bg-secondary/50 rounded-2xl p-6">
