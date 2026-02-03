@@ -8,52 +8,52 @@
 
 @layer base {
   :root {
-    /* Varanasi Spiritual Palette */
-    --background: 35 40% 97%;
-    --foreground: 20 25% 15%;
+    /* Varanasi Spiritual Palette - Fixed to include hsl() wrapper for stability */
+    --background: hsl(35, 40%, 97%);
+    --foreground: hsl(20, 25%, 15%);
 
-    --card: 35 30% 98%;
-    --card-foreground: 20 25% 15%;
+    --card: hsl(35, 30%, 98%);
+    --card-foreground: hsl(20, 25%, 15%);
 
-    --popover: 35 30% 98%;
-    --popover-foreground: 20 25% 15%;
+    --popover: hsl(35, 30%, 98%);
+    --popover-foreground: hsl(20, 25%, 15%);
 
     /* Saffron Orange - Primary */
-    --primary: 25 95% 53%;
-    --primary-foreground: 0 0% 100%;
+    --primary: hsl(25, 95%, 53%);
+    --primary-foreground: hsl(0, 0%, 100%);
 
     /* Warm Cream - Secondary */
-    --secondary: 40 45% 92%;
-    --secondary-foreground: 20 25% 20%;
+    --secondary: hsl(40, 45%, 92%);
+    --secondary-foreground: hsl(20, 25%, 20%);
 
     /* Deep Maroon - Accent */
-    --accent: 0 65% 35%;
-    --accent-foreground: 0 0% 100%;
+    --accent: hsl(0, 65%, 35%);
+    --accent-foreground: hsl(0, 0%, 100%);
 
     /* Muted tones */
-    --muted: 35 20% 90%;
-    --muted-foreground: 20 15% 45%;
+    --muted: hsl(35, 20%, 90%);
+    --muted-foreground: hsl(20, 15%, 45%);
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: hsl(0, 84%, 60%);
+    --destructive-foreground: hsl(0, 0%, 100%);
 
-    --border: 35 25% 85%;
-    --input: 35 25% 85%;
-    --ring: 25 95% 53%;
+    --border: hsl(35, 25%, 85%);
+    --input: hsl(35, 25%, 85%);
+    --ring: hsl(25, 95%, 53%);
 
     --radius: 0.75rem;
 
     /* Custom Varanasi Colors */
-    --gold: 45 90% 55%;
-    --gold-foreground: 20 25% 15%;
-    --saffron: 25 95% 53%;
-    --saffron-light: 30 95% 65%;
-    --maroon: 0 65% 35%;
-    --maroon-dark: 0 70% 25%;
-    --ganga-blue: 200 60% 45%;
-    --temple-gold: 42 85% 60%;
-    --cream: 40 45% 95%;
-    --terracotta: 15 70% 45%;
+    --gold: hsl(45, 90%, 55%);
+    --gold-foreground: hsl(20, 25%, 15%);
+    --saffron: hsl(25, 95%, 53%);
+    --saffron-light: hsl(30, 95%, 65%);
+    --maroon: hsl(0, 65%, 35%);
+    --maroon-dark: hsl(0, 70%, 25%);
+    --ganga-blue: hsl(200, 60%, 45%);
+    --temple-gold: hsl(42, 85%, 60%);
+    --cream: hsl(40, 45%, 95%);
+    --terracotta: hsl(15, 70%, 45%);
 
     /* Gradients */
     --gradient-saffron: linear-gradient(135deg, hsl(25, 95%, 53%) 0%, hsl(35, 90%, 55%) 100%);
@@ -62,58 +62,58 @@
     --gradient-warm: linear-gradient(180deg, hsl(35, 40%, 97%) 0%, hsl(40, 45%, 92%) 100%);
 
     /* Shadows */
-    --shadow-warm: 0 4px 20px -4px hsl(25 95% 53% / 0.25);
-    --shadow-card: 0 8px 30px -8px hsl(20 25% 15% / 0.1);
-    --shadow-elevated: 0 20px 50px -15px hsl(20 25% 15% / 0.15);
+    --shadow-warm: 0 4px 20px -4px hsl(25, 95%, 53%, 0.25);
+    --shadow-card: 0 8px 30px -8px hsl(20, 25%, 15%, 0.1);
+    --shadow-elevated: 0 20px 50px -15px hsl(20, 25%, 15%, 0.15);
 
     /* Sidebar */
-    --sidebar-background: 35 30% 98%;
-    --sidebar-foreground: 20 25% 20%;
-    --sidebar-primary: 25 95% 53%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 40 45% 92%;
-    --sidebar-accent-foreground: 20 25% 20%;
-    --sidebar-border: 35 25% 85%;
-    --sidebar-ring: 25 95% 53%;
+    --sidebar-background: hsl(35, 30%, 98%);
+    --sidebar-foreground: hsl(20, 25%, 20%);
+    --sidebar-primary: hsl(25, 95%, 53%);
+    --sidebar-primary-foreground: hsl(0, 0%, 100%);
+    --sidebar-accent: hsl(40, 45%, 92%);
+    --sidebar-accent-foreground: hsl(20, 25%, 20%);
+    --sidebar-border: hsl(35, 25%, 85%);
+    --sidebar-ring: hsl(25, 95%, 53%);
   }
 
   .dark {
-    --background: 20 25% 10%;
-    --foreground: 35 30% 95%;
+    --background: hsl(20, 25%, 10%);
+    --foreground: hsl(35, 30%, 95%);
 
-    --card: 20 25% 12%;
-    --card-foreground: 35 30% 95%;
+    --card: hsl(20, 25%, 12%);
+    --card-foreground: hsl(35, 30%, 95%);
 
-    --popover: 20 25% 12%;
-    --popover-foreground: 35 30% 95%;
+    --popover: hsl(20, 25%, 12%);
+    --popover-foreground: hsl(35, 30%, 95%);
 
-    --primary: 25 95% 58%;
-    --primary-foreground: 20 25% 10%;
+    --primary: hsl(25, 95%, 58%);
+    --primary-foreground: hsl(20, 25%, 10%);
 
-    --secondary: 20 20% 18%;
-    --secondary-foreground: 35 30% 95%;
+    --secondary: hsl(20, 20%, 18%);
+    --secondary-foreground: hsl(35, 30%, 95%);
 
-    --accent: 0 55% 45%;
-    --accent-foreground: 0 0% 100%;
+    --accent: hsl(0, 55%, 45%);
+    --accent-foreground: hsl(0, 0%, 100%);
 
-    --muted: 20 20% 18%;
-    --muted-foreground: 35 20% 60%;
+    --muted: hsl(20, 20%, 18%);
+    --muted-foreground: hsl(35, 20%, 60%);
 
-    --destructive: 0 62% 50%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: hsl(0, 62%, 50%);
+    --destructive-foreground: hsl(0, 0%, 100%);
 
-    --border: 20 20% 20%;
-    --input: 20 20% 20%;
-    --ring: 25 95% 58%;
+    --border: hsl(20, 20%, 20%);
+    --input: hsl(20, 20%, 20%);
+    --ring: hsl(25, 95%, 58%);
 
-    --sidebar-background: 20 25% 10%;
-    --sidebar-foreground: 35 30% 95%;
-    --sidebar-primary: 25 95% 58%;
-    --sidebar-primary-foreground: 20 25% 10%;
-    --sidebar-accent: 20 20% 18%;
-    --sidebar-accent-foreground: 35 30% 95%;
-    --sidebar-border: 20 20% 20%;
-    --sidebar-ring: 25 95% 58%;
+    --sidebar-background: hsl(20, 25%, 10%);
+    --sidebar-foreground: hsl(35, 30%, 95%);
+    --sidebar-primary: hsl(25, 95%, 58%);
+    --sidebar-primary-foreground: hsl(20, 25%, 10%);
+    --sidebar-accent: hsl(20, 20%, 18%);
+    --sidebar-accent-foreground: hsl(35, 30%, 95%);
+    --sidebar-border: hsl(20, 20%, 20%);
+    --sidebar-ring: hsl(25, 95%, 58%);
   }
 }
 
@@ -140,15 +140,18 @@
 
   .btn-saffron:hover {
     @apply scale-105;
-    box-shadow: 0 8px 30px -4px hsl(25 95% 53% / 0.4);
+    box-shadow: 0 8px 30px -4px hsl(25, 95%, 53%, 0.4);
   }
 
+  /* FIXED: Replaced arbitrary @apply value with standard CSS property */
   .btn-whatsapp {
-    @apply bg-[hsl(142,70%,45%)] text-white px-6 py-3 rounded-full font-medium transition-all duration-300 flex items-center gap-2;
+    @apply text-white px-6 py-3 rounded-full font-medium transition-all duration-300 flex items-center gap-2;
+    background-color: hsl(142, 70%, 45%);
   }
 
   .btn-whatsapp:hover {
-    @apply bg-[hsl(142,70%,40%)] scale-105;
+    @apply scale-105;
+    background-color: hsl(142, 70%, 40%);
   }
 
   .btn-call {
@@ -157,7 +160,7 @@
 
   .btn-call:hover {
     @apply scale-105;
-    background: hsl(var(--maroon-dark));
+    background: var(--maroon-dark);
   }
 
   .card-location {
@@ -206,29 +209,33 @@
 
   @keyframes glow {
     from {
-      box-shadow: 0 0 20px hsl(25 95% 53% / 0.3);
+      box-shadow: 0 0 20px hsl(25, 95%, 53%, 0.3);
     }
     to {
-      box-shadow: 0 0 40px hsl(25 95% 53% / 0.5);
+      box-shadow: 0 0 40px hsl(25, 95%, 53%, 0.5);
     }
   }
 
+  /* Added manual text-balance class for compatibility */
   .text-balance {
     text-wrap: balance;
   }
-}
-/* AUTH BUTTONS - TOP RIGHT (Works perfectly with your design) */
-.font-poppins { font-family: 'Poppins', sans-serif; }
 
-@media (max-width: 768px) {
-  .fixed.top-4.right-4 {
-    top: 12px !important;
-    right: 12px !important;
-    gap: 8px !important;
+  /* AUTH BUTTONS - Moved inside utilities layer for proper scoping */
+  .font-poppins { 
+    font-family: 'Poppins', sans-serif; 
   }
-  .fixed.top-4.right-4 a,
-  .fixed.top-4.right-4 button {
-    padding: 10px 16px !important;
-    font-size: 13px !important;
+
+  @media (max-width: 768px) {
+    .fixed.top-4.right-4 {
+      top: 12px !important;
+      right: 12px !important;
+      gap: 8px !important;
+    }
+    .fixed.top-4.right-4 a,
+    .fixed.top-4.right-4 button {
+      padding: 10px 16px !important;
+      font-size: 13px !important;
+    }
   }
 }
