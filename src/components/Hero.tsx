@@ -3,7 +3,15 @@ import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/hero-varanasi.jpg";
 import { Phone, MessageCircle, MapPin, Clock, Shield } from "lucide-react";
 
-const Hero = () => {
+// NEW: Accept props
+interface HeroProps {
+  title?: string;
+  subtitle?: string;
+  description?: string;
+  price?: string;
+}
+
+const Hero = ({ title, subtitle, description, price }: HeroProps) => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
       {/* Background Image */}
@@ -23,24 +31,26 @@ const Hero = () => {
             <span className="text-primary-foreground text-sm font-medium">Only in Varanasi, Kashi</span>
           </div>
 
-          {/* Main Title */}
+          {/* DYNAMIC TITLE */}
           <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-primary-foreground mb-4 animate-fade-in" style={{ animationDelay: '0.1s' }}>
-            Baba Banarasi
+            {title || "Baba Banarasi"}
           </h1>
+          {/* DYNAMIC SUBTITLE */}
           <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-gold mb-6 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-            Solo Scooter Darshan
+            {subtitle || "Solo Scooter Darshan"}
           </h2>
 
-          {/* Description */}
+          {/* DYNAMIC DESCRIPTION */}
           <p className="text-lg sm:text-xl md:text-2xl text-primary-foreground/90 max-w-3xl mx-auto mb-4 leading-relaxed animate-fade-in" style={{ animationDelay: '0.3s' }}>
-            Tired of walking long distances? Auto-rickshaw expensive? Now explore Banaras 
-            the smart, budget-friendly & truly local way on a scooter with your personal travel assistant.
+            {description || "Tired of walking long distances? Auto-rickshaw expensive? Now explore Banaras the smart, budget-friendly & truly local way on a scooter with your personal travel assistant."}
           </p>
+          
+          {/* DYNAMIC PRICE */}
           <p className="text-xl sm:text-2xl md:text-3xl text-gold font-bold mb-8 animate-fade-in" style={{ animationDelay: '0.35s' }}>
-            Starting from just ₹1,999 only!
+            Starting from just ₹{price || "1,999"} only!
           </p>
 
-          {/* CTA Buttons */}
+          {/* CTA Buttons (Kept same) */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 animate-fade-in" style={{ animationDelay: '0.4s' }}>
             <Link to="/book">
               <Button variant="hero" size="xl" className="w-full sm:w-auto">
@@ -48,7 +58,7 @@ const Hero = () => {
               </Button>
             </Link>
             <div className="flex gap-3">
-              <a href="https://wa.me/917991301043?text=Hi%20Baba%20Banarasi%2C%20I%20want%20to%20book%20Solo%20Scooter%20Darshan" target="_blank" rel="noopener noreferrer">
+              <a href="https://wa.me/917991301043?text=Hi%20Baba%20Banarasi" target="_blank" rel="noopener noreferrer">
                 <Button variant="whatsapp" size="lg">
                   <MessageCircle className="w-5 h-5" />
                   WhatsApp
@@ -81,7 +91,6 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Scroll Indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
         <div className="w-6 h-10 border-2 border-primary-foreground/50 rounded-full flex justify-center pt-2">
           <div className="w-1 h-3 bg-primary-foreground/50 rounded-full" />
