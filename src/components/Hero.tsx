@@ -3,70 +3,66 @@ import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/hero-varanasi.jpg";
 import { Phone, MessageCircle, MapPin, Clock, Shield } from "lucide-react";
 
-// NEW: Accept props
+// ✅ 1. ADDED durationText HERE
 interface HeroProps {
   title?: string;
   subtitle?: string;
   description?: string;
   price?: string;
+  durationText?: string;
 }
 
-const Hero = ({ title, subtitle, description, price }: HeroProps) => {
+// ✅ 2. ADDED durationText TO PROPS
+const Hero = ({ title, subtitle, description, price, durationText }: HeroProps) => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-      {/* Background Image */}
+      
       <div
-        // ADDED "parallax-bg" HERE 👇
         className="absolute inset-0 bg-cover bg-center bg-no-repeat parallax-bg"
         style={{ backgroundImage: `url(${heroImage})` }}
-        >
+      >
         <div className="absolute inset-0 bg-gradient-to-b from-foreground/60 via-foreground/40 to-foreground/70" />
       </div>
 
-      {/* Content */}
       <div className="relative z-10 container mx-auto px-4 text-center">
         <div className="max-w-4xl mx-auto">
-          {/* Badge */}
+          
           <div className="inline-flex items-center gap-2 bg-primary/20 backdrop-blur-sm border border-primary/30 rounded-full px-4 py-2 mb-6 animate-fade-in">
             <MapPin className="w-4 h-4 text-primary" />
             <span className="text-primary-foreground text-sm font-medium">Only in Varanasi, Kashi</span>
           </div>
 
-          {/* DYNAMIC TITLE */}
           <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-primary-foreground mb-4 animate-fade-in" style={{ animationDelay: '0.1s' }}>
             {title || "Baba Banarasi"}
           </h1>
-          {/* DYNAMIC SUBTITLE */}
+          
           <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-gold mb-6 animate-fade-in" style={{ animationDelay: '0.2s' }}>
             {subtitle || "Solo Scooter Darshan"}
           </h2>
 
-          {/* DYNAMIC DESCRIPTION */}
           <p className="text-lg sm:text-xl md:text-2xl text-primary-foreground/90 max-w-3xl mx-auto mb-4 leading-relaxed animate-fade-in" style={{ animationDelay: '0.3s' }}>
             {description || "Tired of walking long distances? Auto-rickshaw expensive? Now explore Banaras the smart, budget-friendly & truly local way on a scooter with your personal travel assistant."}
           </p>
           
-          {/* DYNAMIC PRICE */}
           <p className="text-xl sm:text-2xl md:text-3xl text-gold font-bold mb-8 animate-fade-in" style={{ animationDelay: '0.35s' }}>
             Starting from just ₹{price || "1,999"} only!
           </p>
 
-          {/* CTA Buttons (Kept same) */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 animate-fade-in" style={{ animationDelay: '0.4s' }}>
             <Link to="/book">
-              <Button variant="hero" size="xl" className="w-full sm:w-auto">
+              <Button variant="hero" size="xl" className="w-full sm:w-auto hover:scale-105 transition-transform">
                 🛵 Book Solo Darshan Now
               </Button>
             </Link>
             <div className="flex gap-3">
               <a href="https://wa.me/917991301043?text=Hi%20Baba%20Banarasi" target="_blank" rel="noopener noreferrer">
-                <Button variant="whatsapp" size="lg">
+                <Button variant="whatsapp" size="lg" className="hover:scale-105 transition-transform">
                   <MessageCircle className="w-5 h-5" />
                   WhatsApp
                 </Button>
               </a>
               <a href="tel:+917991301043">
-                <Button variant="call" size="lg">
+                <Button variant="call" size="lg" className="hover:scale-105 transition-transform">
                   <Phone className="w-5 h-5" />
                   7991301043
                 </Button>
@@ -74,11 +70,11 @@ const Hero = ({ title, subtitle, description, price }: HeroProps) => {
             </div>
           </div>
 
-          {/* Features Strip */}
           <div className="flex flex-wrap justify-center gap-6 md:gap-10 text-primary-foreground/80 animate-fade-in" style={{ animationDelay: '0.5s' }}>
             <div className="flex items-center gap-2">
               <Clock className="w-5 h-5 text-gold" />
-              <span className="text-sm font-medium">6-10 Hour Tours</span>
+              {/* ✅ 3. HERE IS THE DYNAMIC TEXT */}
+              <span className="text-sm font-medium">{durationText || "2-8 Hour Tours"}</span>
             </div>
             <div className="flex items-center gap-2">
               <MapPin className="w-5 h-5 text-gold" />
