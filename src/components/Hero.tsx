@@ -15,10 +15,11 @@ const Hero = ({ title, subtitle, description, price }: HeroProps) => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
       {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+      <div
+        // ADDED "parallax-bg" HERE 👇
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat parallax-bg"
         style={{ backgroundImage: `url(${heroImage})` }}
-      >
+        >
         <div className="absolute inset-0 bg-gradient-to-b from-foreground/60 via-foreground/40 to-foreground/70" />
       </div>
 
