@@ -200,7 +200,7 @@ const Locations = () => {
             <span className="gradient-text">Holy Varanasi</span>
           </h2>
           <p className="text-lg text-muted-foreground">
-            Visit all 13 sacred sites in Kashi with our guided solo scooter tours. 
+            Visit all 14 sacred sites in Kashi with our guided solo scooter tours. 
             Each location is rich with spiritual significance and ancient history.
           </p>
         </div>
@@ -254,7 +254,7 @@ const Locations = () => {
         <div className="text-center">
           <Link to="/book">
             <Button variant="saffron" size="xl">
-              Book Your 13-Point Darshan Tour
+              Book Your 14-Point Darshan Tour
             </Button>
           </Link>
         </div>
