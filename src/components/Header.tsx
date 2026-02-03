@@ -23,13 +23,16 @@ const Header = () => {
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation (ALL LINKS RESTORED) */}
           <nav className="hidden md:flex items-center gap-6">
             <Link to="/" className="text-foreground hover:text-primary transition-colors font-medium">
               Home
             </Link>
             <Link to="/locations" className="text-foreground hover:text-primary transition-colors font-medium">
               Locations
+            </Link>
+            <Link to="/book" className="text-foreground hover:text-primary transition-colors font-medium">
+              Book Now
             </Link>
             <a href="#contact" className="text-foreground hover:text-primary transition-colors font-medium">
               Contact
@@ -38,21 +41,14 @@ const Header = () => {
             {/* Divider */}
             <div className="h-4 w-px bg-border mx-2"></div>
 
-            {/* --- SIGN IN BUTTON (Links to your login.html) --- */}
+            {/* --- SIGN IN BUTTON (Fixed Link: /dashboard/login.html) --- */}
             <a 
-              href="/login.html" 
-              className="flex items-center gap-2 text-foreground hover:text-primary font-medium border border-primary/50 px-4 py-1.5 rounded-full hover:bg-primary/5 transition-all text-sm"
+              href="/dashboard/login.html" 
+              className="flex items-center gap-2 text-foreground hover:text-primary font-bold border-2 border-primary/20 px-5 py-2 rounded-full hover:bg-primary hover:text-white transition-all text-sm"
             >
               <User className="w-4 h-4" />
               Sign In
             </a>
-
-            {/* --- SIGN UP / BOOK BUTTON --- */}
-            <Link to="/book">
-              <Button className="bg-gradient-saffron text-white rounded-full font-bold shadow-md hover:shadow-lg hover:scale-105 transition-all">
-                Sign Up / Book
-              </Button>
-            </Link>
           </nav>
 
           {/* Desktop Contact Icons (Right side) */}
@@ -79,25 +75,19 @@ const Header = () => {
             <nav className="flex flex-col gap-4 px-2">
               <Link to="/" className="p-2 hover:bg-accent/10 rounded-lg" onClick={() => setIsMenuOpen(false)}>Home</Link>
               <Link to="/locations" className="p-2 hover:bg-accent/10 rounded-lg" onClick={() => setIsMenuOpen(false)}>Locations</Link>
+              <Link to="/book" className="p-2 hover:bg-accent/10 rounded-lg" onClick={() => setIsMenuOpen(false)}>Book Now</Link>
               <a href="#contact" className="p-2 hover:bg-accent/10 rounded-lg" onClick={() => setIsMenuOpen(false)}>Contact</a>
               
               <div className="h-px bg-border my-1"></div>
 
-              {/* Mobile Sign In */}
+              {/* Mobile Sign In (Fixed Link) */}
               <a 
-                href="/login.html" 
+                href="/dashboard/login.html" 
                 className="flex items-center justify-center gap-2 w-full py-3 rounded-lg border-2 border-primary text-primary font-bold"
               >
                 <User className="w-5 h-5" />
                 Sign In / Admin
               </a>
-
-              {/* Mobile Sign Up */}
-              <Link to="/book" className="w-full" onClick={() => setIsMenuOpen(false)}>
-                <Button className="w-full bg-gradient-saffron font-bold text-white">
-                  Sign Up & Book Now
-                </Button>
-              </Link>
             </nav>
           </div>
         )}
