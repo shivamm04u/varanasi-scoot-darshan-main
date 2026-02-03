@@ -17,9 +17,9 @@ const afternoonStops = [
   "Bada Ganesh Darshan",
   "Kal Bhairav Temple Darshan",
   "Vishwanath Darshan",
-  "Ganga Aarti"
-  "Sarnath Temple"
-  ];
+  "Ganga Aarti",
+  "Sarnath Temple" // <--- Correctly added with comma
+];
 
 const RouteItinerary = () => {
   return (
@@ -102,7 +102,7 @@ const RouteItinerary = () => {
               </div>
               <div className="mt-4 p-4 bg-primary/10 rounded-xl border border-primary/20">
                 <p className="text-sm text-foreground">
-                  <strong>✨ Highlight:</strong> End your day with the divine Sarnath Temple!
+                  <strong>✨ Highlight:</strong> Includes Ganga Aarti & Sarnath!
                 </p>
               </div>
             </div>
