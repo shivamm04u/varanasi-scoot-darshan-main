@@ -8,13 +8,18 @@ interface ContactDrawerProps {
 }
 
 const ContactDrawer = ({ isOpen, onClose }: ContactDrawerProps) => {
-  const [formData, setFormData] = useState({ name: "", phone: "", message: "" });
+  const [formData, setFormData] = useState({ 
+    name: "", 
+    phone: "", 
+    email: "", // Added email state
+    message: "" 
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // WhatsApp Logic
-    const msg = `Hi Baba Banarasi, my name is ${formData.name}. ${formData.message}`;
-    window.open(`https://wa.me/917991301043?text=${encodeURIComponent(msg)}`, '_blank');
+    // WhatsApp Logic: Includes Email now
+    const msg = `Hi Baba Banarasi, my name is ${formData.name}.%0AEmail: ${formData.email}%0A${formData.message}`;
+    window.open(`https://wa.me/917991301043?text=${msg}`, '_blank');
   };
 
   if (!isOpen) return null;
@@ -73,6 +78,19 @@ const ContactDrawer = ({ isOpen, onClose }: ContactDrawerProps) => {
               </div>
             </div>
 
+            {/* NEW: Email Card */}
+            <div className="flex items-center gap-4 p-4 rounded-xl bg-purple-50/50 border border-purple-100 hover:border-purple-300 transition-all group">
+              <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm text-purple-600 group-hover:scale-110 transition-transform">
+                <Mail className="w-5 h-5" />
+              </div>
+              <div>
+                <p className="text-xs text-gray-500 font-bold uppercase tracking-wider">Email Us</p>
+                <a href="mailto:anshumanjha3333@gmail.com" className="text-sm font-bold text-gray-900 hover:text-purple-600 transition-colors break-all">
+                  anshumanjha3333@gmail.com
+                </a>
+              </div>
+            </div>
+
             <div className="flex items-center gap-4 p-4 rounded-xl bg-blue-50/50 border border-blue-100 hover:border-blue-300 transition-all group">
               <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm text-blue-600 group-hover:scale-110 transition-transform">
                 <MapPin className="w-5 h-5" />
@@ -89,7 +107,12 @@ const ContactDrawer = ({ isOpen, onClose }: ContactDrawerProps) => {
           {/* Social Media */}
           <div className="flex justify-center gap-6 py-4 border-t border-b border-gray-100">
             <a href="#" className="p-3 bg-blue-50 rounded-full text-blue-600 hover:bg-blue-100 transition-colors"><Facebook className="w-5 h-5" /></a>
-            <a href="#" className="p-3 bg-pink-50 rounded-full text-pink-600 hover:bg-pink-100 transition-colors"><Instagram className="w-5 h-5" /></a>
+            
+            {/* Instagram Link Added */}
+            <a href="https://www.instagram.com/baba_banarasi10" target="_blank" className="p-3 bg-pink-50 rounded-full text-pink-600 hover:bg-pink-100 transition-colors">
+              <Instagram className="w-5 h-5" />
+            </a>
+            
             <a href="#" className="p-3 bg-red-50 rounded-full text-red-600 hover:bg-red-100 transition-colors"><Youtube className="w-5 h-5" /></a>
           </div>
 
@@ -118,6 +141,18 @@ const ContactDrawer = ({ isOpen, onClose }: ContactDrawerProps) => {
                   className="w-full p-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all bg-gray-50 focus:bg-white"
                   placeholder="+91..."
                   onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                />
+              </div>
+
+              {/* Added Email Input */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">Email Address</label>
+                <input 
+                  type="email" 
+                  required
+                  className="w-full p-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all bg-gray-50 focus:bg-white"
+                  placeholder="you@example.com"
+                  onChange={(e) => setFormData({...formData, email: e.target.value})}
                 />
               </div>
 
