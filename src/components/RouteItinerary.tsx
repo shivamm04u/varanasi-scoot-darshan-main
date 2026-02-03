@@ -19,8 +19,7 @@ const afternoonStops = [
   "Vishwanath Darshan",
   "Ganga Aarti"
   "Sarnath Temple"
-  
-];
+  ];
 
 const RouteItinerary = () => {
   return (
@@ -103,7 +102,7 @@ const RouteItinerary = () => {
               </div>
               <div className="mt-4 p-4 bg-primary/10 rounded-xl border border-primary/20">
                 <p className="text-sm text-foreground">
-                  <strong>✨ Highlight:</strong> End your day with the divine Ganga Aarti!
+                  <strong>✨ Highlight:</strong> End your day with the divine Sarnath Temple!
                 </p>
               </div>
             </div>
