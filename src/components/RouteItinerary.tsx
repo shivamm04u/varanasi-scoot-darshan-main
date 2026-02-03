@@ -18,14 +18,13 @@ const afternoonStops = [
   "Kal Bhairav Temple Darshan",
   "Vishwanath Darshan",
   "Ganga Aarti",
-  "Sarnath Temple" // <--- Correctly added with comma
+  "Sarnath Temple" // <--- ADDED SARNATH
 ];
 
 const RouteItinerary = () => {
   return (
     <section className="py-20 bg-cream">
       <div className="container mx-auto px-4">
-        {/* Header */}
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 mb-6">
             <MapPin className="w-4 h-4 text-primary" />
@@ -34,13 +33,13 @@ const RouteItinerary = () => {
           <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
             Darshan & Sightseeing <span className="text-primary">in Varanasi</span>
           </h2>
+          {/* UPDATED TEXT: 13+ -> 14+ */}
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Complete full-day itinerary covering 14+ sacred sites with morning and afternoon sessions
           </p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12 items-start">
-          {/* Route Image */}
           <div className="rounded-3xl overflow-hidden shadow-2xl">
             <img 
               src={routeImage} 
@@ -49,9 +48,8 @@ const RouteItinerary = () => {
             />
           </div>
 
-          {/* Sessions */}
           <div className="space-y-8">
-            {/* Morning Session */}
+            {/* Morning */}
             <div className="bg-background p-8 rounded-3xl shadow-lg border border-border">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 rounded-full bg-gradient-saffron flex items-center justify-center">
@@ -72,14 +70,9 @@ const RouteItinerary = () => {
                   </div>
                 ))}
               </div>
-              <div className="mt-4 p-4 bg-gold/10 rounded-xl border border-gold/20">
-                <p className="text-sm text-foreground">
-                  <strong>Note:</strong> 2-3 hours rest at hotel between sessions
-                </p>
-              </div>
             </div>
 
-            {/* Afternoon Session */}
+            {/* Afternoon */}
             <div className="bg-background p-8 rounded-3xl shadow-lg border border-border">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 rounded-full bg-gradient-sunset flex items-center justify-center">
