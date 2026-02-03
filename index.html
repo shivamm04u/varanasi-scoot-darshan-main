@@ -1,42 +1,80 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <!-- Website Title (Shows in browser tab & Google search) -->
-    <title>Baba Banarasi - Scoot Darshan</title>
-    
-    <!-- SEO & Social Media Tags -->
-    <meta name="description" content="Experience the divine ghats of Varanasi on a solo scooter with Baba Banarasi. Authentic spiritual scooter darshan tours at sunrise & sunset." />
-    <meta name="author" content="Baba Banarasi" />
-    <meta name="keywords" content="Varanasi scooter tour, Baba Banarasi, Scoot Darshan, Ganga aarti scooter, spiritual tour Varanasi, Kashi darshan" />
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Baba Banarasi - Scoot Darshan</title>
+  <meta name="description" content="Experience the divine ghats of Varanasi on a solo scooter with Baba Banarasi. Authentic spiritual scooter darshan tours at sunrise & sunset." />
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:title" content="Baba Banarasi - Scoot Darshan" />
-    <meta property="og:description" content="Experience the divine ghats of Varanasi on a solo scooter with Baba Banarasi. Authentic spiritual scooter darshan tours at sunrise & sunset." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://varanasi-scoot-darshan-main.vercel.app" />
-    <meta property="og:image" content="https://varanasi-scoot-darshan-main.vercel.app/og-image.jpg" />
-    <meta property="og:site_name" content="Baba Banarasi - Scoot Darshan" />
+  <!-- Open Graph -->
+  <meta property="og:title" content="Baba Banarasi - Scoot Darshan" />
+  <meta property="og:description" content="Spiritual scooter tours in Holy Varanasi with Baba Banarasi" />
+  <meta property="og:image" content="https://varanasi-scoot-darshan-main.vercel.app/og-image.jpg" />
+  <meta property="og:url" content="https://varanasi-scoot-darshan-main.vercel.app" />
+  <meta property="og:type" content="website" />
 
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Baba Banarasi - Scoot Darshan" />
-    <meta name="twitter:description" content="Spiritual scooter tours in Varanasi with Baba Banarasi" />
-    <meta name="twitter:image" content="https://varanasi-scoot-darshan-main.vercel.app/og-image.jpg" />
-    <meta name="twitter:site" content="@bababanarasi" />
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Baba Banarasi - Scoot Darshan" />
+  <meta name="twitter:description" content="Spiritual scooter tours in Varanasi" />
+  <meta name="twitter:image" content="https://varanasi-scoot-darshan-main.vercel.app/og-image.jpg" />
 
-    <!-- Favicon (Add your own later) -->
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+  <!-- Favicon -->
+  <link rel="icon" href="/favicon.ico" />
 
-    <!-- Preload critical resources -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  </head>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+  <!-- Tailwind CSS (via CDN - Works instantly) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "hsl(25, 95%, 53%)",
+            secondary: "hsl(40, 45%, 92%)",
+            accent: "hsl(0, 65%, 35%)",
+            background: "hsl(35, 40%, 97%)",
+            foreground: "hsl(20, 25%, 15%)",
+            muted: "hsl(35, 20%, 90%)",
+          },
+          fontFamily: {
+            sans: ['Poppins', 'sans-serif'],
+            serif: ['"Playfair Display"', 'serif'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <!-- Your Fixed CSS (the one I gave you yesterday - 100% working) -->
+  <link rel="stylesheet" href="/index.css" />
+</head>
+<body>
+  <div id="root">
+    <!-- YOUR FULL WEBSITE HTML GOES HERE -->
+    <!-- Paste everything from your previous working index.html body here -->
+    <!-- Example: -->
+    <header class="bg-gradient-to-br from-primary to-orange-600 text-white py-20">
+      <div class="container mx-auto text-center">
+        <h1 class="text-5xl md:text-7xl font-serif font-bold mb-4">Baba Banarasi</h1>
+        <p class="text-2xl md:text-4xl font-light">Scoot Darshan - Varanasi</p>
+        <button class="btn-saffron mt-8 text-xl px-12 py-5">Book Your Spiritual Ride</button>
+      </div>
+    </header>
+
+    <!-- Rest of your sections -->
+    <section class="section-padding bg-cream">
+      <div class="container mx-auto text-center">
+        <h2 class="text-4xl md:text-6xl font-serif gradient-text mb-10">Experience Kashi Like Never Before</h2>
+        <p class="text-xl text-gray-700 max-w-4xl mx-auto">Ride solo on a scooter with Baba Banarasi and witness the divine ghats, aarti, and hidden temples at sunrise & sunset.</p>
+      </div>
+    </section>
+
+    <!-- Add all your other sections here -->
+  </div>
+</body>
 </html>
