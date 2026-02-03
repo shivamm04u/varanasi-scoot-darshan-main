@@ -3,84 +3,61 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel - Varanasi Scoot Darshan</title>
+  <title>Admin Panel - Baba Banarasi</title>
+  
+  <!-- ✅ FIXED FAVICON -->
+  <link rel="icon" type="image/png" href="/logo.png">
+  
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
-      --primary: #ff6b35;
-      --secondary: #1a1a2e;
-      --success: #22c55e;
-      --warning: #f59e0b;
-      --danger: #ef4444;
-      --gray: #64748b;
-      --light: #f8f9fa;
+      --primary: #ff6b35; --secondary: #1a1a2e; --success: #22c55e;
+      --warning: #f59e0b; --danger: #ef4444; --gray: #64748b; --light: #f8f9fa;
     }
     body { font-family: 'Poppins', sans-serif; background: var(--light); min-height: 100vh; }
     
     /* Loader */
-    .loader-overlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: var(--secondary);
-      display: flex; flex-direction: column; justify-content: center; align-items: center;
-      z-index: 9999;
-    }
+    .loader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--secondary); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; }
     .loader { width: 50px; height: 50px; border: 4px solid rgba(255,107,53,0.3); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
     .loader-text { color: white; margin-top: 1rem; }
     .hidden { display: none !important; }
     
-    /* Layout */
-    .sidebar {
-      position: fixed; left: 0; top: 0; width: 250px; height: 100vh;
-      background: var(--secondary); color: white; padding: 1.5rem; z-index: 100;
-      overflow-y: auto;
-    }
-    .sidebar-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
-    .sidebar-logo span { font-size: 2rem; }
-    .sidebar-logo h2 { font-size: 1rem; color: var(--primary); }
+    /* Sidebar */
+    .sidebar { position: fixed; left: 0; top: 0; width: 260px; height: 100vh; background: var(--secondary); color: white; padding: 1.5rem; z-index: 100; overflow-y: auto; }
     
-    .nav-item {
-      display: flex; align-items: center; gap: 10px;
-      padding: 0.8rem 1rem; color: rgba(255,255,255,0.7);
-      text-decoration: none; border-radius: 8px; margin-bottom: 0.3rem;
-      cursor: pointer; transition: all 0.3s;
-    }
+    /* ✅ FIXED SIDEBAR LOGO */
+    .sidebar-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .sidebar-logo img { width: 45px; height: 45px; background: white; border-radius: 50%; padding: 2px; object-fit: contain; }
+    .sidebar-logo h2 { font-size: 1.1rem; color: var(--primary); margin: 0; line-height: 1.2; }
+    .sidebar-logo span { font-size: 0.75rem; color: rgba(255,255,255,0.6); }
+
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 0.8rem 1rem; color: rgba(255,255,255,0.7); text-decoration: none; border-radius: 8px; margin-bottom: 0.3rem; cursor: pointer; transition: all 0.3s; }
     .nav-item:hover, .nav-item.active { background: var(--primary); color: white; }
     .nav-item .badge { margin-left: auto; background: var(--danger); padding: 0.2rem 0.5rem; border-radius: 10px; font-size: 0.7rem; }
     
-    .main-content { margin-left: 250px; padding: 2rem; }
+    .main-content { margin-left: 260px; padding: 2rem; }
     
     /* Header */
-    .page-header {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;
-    }
-    .page-header h1 { color: var(--secondary); font-size: 1.5rem; }
+    .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+    .page-header h1 { color: var(--secondary); font-size: 1.5rem; font-weight: 700; }
     
-    .header-actions { display: flex; gap: 0.5rem; }
-    .btn {
-      padding: 0.6rem 1.2rem; border: none; border-radius: 8px;
-      cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; gap: 6px;
-      transition: all 0.3s;
-    }
+    .btn { padding: 0.6rem 1.2rem; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; gap: 6px; transition: all 0.3s; }
     .btn-primary { background: var(--primary); color: white; }
     .btn-secondary { background: white; color: var(--gray); border: 1px solid #ddd; }
     .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
     
     /* Stats */
     .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
-    .stat-card {
-      background: white; border-radius: 12px; padding: 1.5rem;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-left: 4px solid var(--primary);
-    }
+    .stat-card { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-left: 4px solid var(--primary); }
     .stat-card h3 { color: var(--gray); font-size: 0.85rem; margin-bottom: 0.5rem; }
     .stat-card .value { font-size: 2rem; font-weight: 700; color: var(--secondary); }
     
     /* Cards */
     .card { background: white; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 1.5rem; overflow: hidden; }
-    .card-header { padding: 1rem 1.5rem; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-    .card-header h2 { font-size: 1.1rem; color: var(--secondary); }
+    .card-header { padding: 1rem 1.5rem; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+    .card-header h2 { font-size: 1.1rem; color: var(--secondary); font-weight: 600; }
     .card-body { padding: 1.5rem; }
     
     /* Table */
@@ -89,306 +66,179 @@
     th, td { padding: 0.8rem 1rem; text-align: left; border-bottom: 1px solid #eee; }
     th { background: #f8f9fa; color: var(--gray); font-size: 0.8rem; text-transform: uppercase; }
     tbody tr:hover { background: #f8f9fa; }
-    
     .badge { padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 500; }
     .badge-pending { background: #fef3c7; color: #92400e; }
     .badge-confirmed { background: #d1fae5; color: #065f46; }
     .badge-completed { background: #dbeafe; color: #1e40af; }
     .badge-cancelled { background: #fee2e2; color: #991b1b; }
-    
     .action-btn { padding: 0.3rem 0.6rem; border: none; border-radius: 5px; cursor: pointer; margin-right: 0.3rem; }
-    .action-btn:hover { opacity: 0.8; }
     
-    /* Search */
-    .search-box input {
-      padding: 0.6rem 1rem; border: 1px solid #ddd; border-radius: 8px; width: 250px;
-    }
-    .search-box input:focus { outline: none; border-color: var(--primary); }
-    
-    /* Filter Buttons */
-    .filter-group { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    /* Search & Filter */
+    .search-box input { padding: 0.6rem 1rem; border: 1px solid #ddd; border-radius: 8px; width: 250px; }
+    .filter-group { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
     .filter-btn { padding: 0.5rem 1rem; border: 1px solid #ddd; border-radius: 6px; background: white; cursor: pointer; }
     .filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
     
     /* Forms */
     .form-group { margin-bottom: 1rem; }
-    .form-group label { display: block; margin-bottom: 0.4rem; color: var(--secondary); font-weight: 500; }
-    .form-group input, .form-group select, .form-group textarea {
-      width: 100%; padding: 0.7rem; border: 1px solid #ddd; border-radius: 8px; font-family: inherit;
-    }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--primary); }
+    .form-group label { display: block; margin-bottom: 0.4rem; color: var(--secondary); font-weight: 500; font-size: 0.9rem; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.7rem; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; }
     .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
     
-    /* Switch */
-    .switch-row { display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: #f8f9fa; border-radius: 8px; margin-bottom: 0.5rem; }
-    .switch { position: relative; width: 50px; height: 26px; }
-    .switch input { opacity: 0; width: 0; height: 0; }
-    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: #ccc; border-radius: 26px; transition: 0.3s; }
-    .slider:before { content: ""; position: absolute; height: 20px; width: 20px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.3s; }
-    input:checked + .slider { background: var(--success); }
-    input:checked + .slider:before { transform: translateX(24px); }
-    
-    /* Modal */
+    /* Modals & Toasts */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: 0.3s; }
     .modal-overlay.active { opacity: 1; visibility: visible; }
     .modal { background: white; border-radius: 12px; width: 90%; max-width: 500px; max-height: 90vh; overflow-y: auto; }
     .modal-header { padding: 1rem 1.5rem; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
-    .modal-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--gray); }
+    .modal-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; }
     .modal-body { padding: 1.5rem; }
     .modal-footer { padding: 1rem 1.5rem; border-top: 1px solid #eee; display: flex; justify-content: flex-end; gap: 0.5rem; }
-    
-    /* Toast */
     .toast-container { position: fixed; top: 20px; right: 20px; z-index: 2000; }
     .toast { background: white; padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 5px 20px rgba(0,0,0,0.15); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 10px; transform: translateX(120%); transition: 0.3s; border-left: 4px solid var(--primary); }
     .toast.show { transform: translateX(0); }
-    .toast.success { border-color: var(--success); }
-    .toast.error { border-color: var(--danger); }
     
-    /* Tabs */
     .tab-content { display: none; }
-    .tab-content.active { display: block; }
+    .tab-content.active { display: block; animation: fadeIn 0.3s; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     
-    /* Activity Log */
-    .activity-item { display: flex; gap: 10px; padding: 0.8rem; border-radius: 8px; margin-bottom: 0.5rem; background: #f8f9fa; }
-    .activity-item .icon { width: 35px; height: 35px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: var(--primary); color: white; }
-    .activity-item .info h4 { font-size: 0.85rem; color: var(--secondary); }
-    .activity-item .info p { font-size: 0.75rem; color: var(--gray); }
-    
-    /* No Data */
-    .no-data { text-align: center; padding: 3rem; color: var(--gray); }
-    .no-data .icon { font-size: 3rem; margin-bottom: 1rem; }
-    
-    /* Error State */
-    .error-box { background: #fee2e2; border: 1px solid #fecaca; color: #991b1b; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; }
-    
-    /* Responsive */
     @media (max-width: 768px) {
-      .sidebar { width: 60px; padding: 1rem 0.5rem; }
-      .sidebar-logo h2, .nav-item span:not(.icon) { display: none; }
-      .main-content { margin-left: 60px; padding: 1rem; }
-      .search-box input { width: 100%; }
+      .sidebar { width: 70px; padding: 1rem 0.5rem; }
+      .sidebar-logo h2, .sidebar-logo span, .nav-item span:not(.icon) { display: none; }
+      .main-content { margin-left: 70px; padding: 1rem; }
     }
   </style>
 </head>
 <body>
-  <!-- Loader -->
   <div class="loader-overlay" id="loader">
     <div class="loader"></div>
-    <p class="loader-text">Loading Admin Panel...</p>
+    <p class="loader-text">Verifying Access...</p>
   </div>
 
-  <!-- Toast -->
   <div class="toast-container" id="toastContainer"></div>
 
-  <!-- Admin Panel -->
   <div class="hidden" id="adminPanel">
-    <!-- Sidebar -->
     <nav class="sidebar">
       <div class="sidebar-logo">
-        <span>🛵</span>
-        <h2>Admin Panel</h2>
+        <img src="/logo.png" alt="Logo">
+        <div>
+          <h2>Baba Banarasi</h2>
+          <span>Admin Panel</span>
+        </div>
       </div>
       <a class="nav-item active" data-tab="dashboard">📊 <span>Dashboard</span></a>
       <a class="nav-item" data-tab="bookings">📋 <span>Bookings</span> <span class="badge" id="pendingCount">0</span></a>
-      <a class="nav-item" data-tab="users">👥 <span>Users</span></a>
+      <a class="nav-item" data-tab="content">📝 <span>Website Content</span></a>
       <a class="nav-item" data-tab="packages">📦 <span>Packages</span></a>
-      <a class="nav-item" data-tab="content">📝 <span>Content</span></a>
-      <a class="nav-item" data-tab="settings">⚙️ <span>Settings</span></a>
-      <a class="nav-item" data-tab="activity">📋 <span>Activity</span></a>
+      <a class="nav-item" data-tab="users">👥 <span>Users</span></a>
       <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
-        <a href="https://varanasi-scoot-darshan-main.vercel.app/" target="_blank" class="nav-item">🌐 <span>View Site</span></a>
+        <a href="/" target="_blank" class="nav-item">🌐 <span>View Website</span></a>
         <a class="nav-item" onclick="logout()" style="color: #ff6b6b;">🚪 <span>Logout</span></a>
       </div>
     </nav>
 
-    <!-- Main Content -->
     <main class="main-content">
-      <!-- Dashboard -->
+      <!-- DASHBOARD TAB -->
       <div class="tab-content active" id="dashboardTab">
         <div class="page-header">
-          <h1>📊 Dashboard</h1>
-          <div class="header-actions">
-            <button class="btn btn-secondary" onclick="refreshAll()">🔄 Refresh</button>
-            <span id="syncStatus" style="color: var(--success); font-size: 0.85rem;">● Synced</span>
-          </div>
+          <h1>Dashboard Overview</h1>
+          <button class="btn btn-secondary" onclick="refreshAll()">🔄 Refresh Data</button>
         </div>
-        
         <div class="stats-grid">
-          <div class="stat-card"><h3>Total Bookings</h3><div class="value" id="statBookings">-</div></div>
-          <div class="stat-card"><h3>Today's Bookings</h3><div class="value" id="statToday">-</div></div>
-          <div class="stat-card"><h3>Pending</h3><div class="value" id="statPending">-</div></div>
-          <div class="stat-card"><h3>Total Users</h3><div class="value" id="statUsers">-</div></div>
+          <div class="stat-card"><h3>Total Bookings</h3><div class="value" id="statBookings">0</div></div>
+          <div class="stat-card"><h3>Pending Action</h3><div class="value" id="statPending" style="color:var(--warning)">0</div></div>
+          <div class="stat-card"><h3>Confirmed</h3><div class="value" id="statConfirmed" style="color:var(--success)">0</div></div>
+          <div class="stat-card"><h3>Users</h3><div class="value" id="statUsers">0</div></div>
         </div>
-
         <div class="card">
-          <div class="card-header">
-            <h2>Recent Bookings</h2>
-            <button class="btn btn-secondary" onclick="switchTab('bookings')">View All →</button>
-          </div>
+          <div class="card-header"><h2>Recent Activity</h2></div>
           <div class="table-wrapper">
             <table>
-              <thead><tr><th>Customer</th><th>Package</th><th>Date</th><th>Status</th></tr></thead>
-              <tbody id="recentBookings"><tr><td colspan="4" class="no-data">Loading...</td></tr></tbody>
+              <thead><tr><th>Booking ID</th><th>Name</th><th>Date</th><th>Status</th></tr></thead>
+              <tbody id="recentBookings"><tr><td colspan="4">Loading...</td></tr></tbody>
             </table>
           </div>
         </div>
       </div>
 
-      <!-- Bookings -->
+      <!-- BOOKINGS TAB -->
       <div class="tab-content" id="bookingsTab">
         <div class="page-header">
-          <h1>📋 Bookings</h1>
-          <div class="header-actions">
-            <div class="search-box"><input type="text" id="bookingSearch" placeholder="Search..." onkeyup="filterBookings()"></div>
-          </div>
+          <h1>Manage Bookings</h1>
+          <div class="search-box"><input type="text" id="bookingSearch" placeholder="Search name or phone..." onkeyup="filterBookings()"></div>
         </div>
-        
-        <div class="filter-group" style="margin-bottom: 1rem;">
+        <div class="filter-group">
           <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
           <button class="filter-btn" onclick="setFilter('pending', this)">Pending</button>
           <button class="filter-btn" onclick="setFilter('confirmed', this)">Confirmed</button>
-          <button class="filter-btn" onclick="setFilter('completed', this)">Completed</button>
         </div>
-
         <div class="card">
           <div class="table-wrapper">
             <table>
-              <thead><tr><th>ID</th><th>Customer</th><th>Phone</th><th>Package</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
-              <tbody id="bookingsTable"><tr><td colspan="7" class="no-data">Loading...</td></tr></tbody>
+              <thead><tr><th>ID</th><th>Customer</th><th>Phone</th><th>Package</th><th>Date</th><th>Status</th><th>Action</th></tr></thead>
+              <tbody id="bookingsTable"></tbody>
             </table>
           </div>
         </div>
       </div>
 
-      <!-- Users -->
-      <div class="tab-content" id="usersTab">
-        <div class="page-header">
-          <h1>👥 Users</h1>
-          <button class="btn btn-primary" onclick="openModal('addUserModal')">➕ Add Manager</button>
-        </div>
-        
-        <div class="card">
-          <div class="table-wrapper">
-            <table>
-              <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead>
-              <tbody id="usersTable"><tr><td colspan="5" class="no-data">Loading...</td></tr></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- Packages -->
-      <div class="tab-content" id="packagesTab">
-        <div class="page-header">
-          <h1>📦 Tour Packages</h1>
-          <button class="btn btn-primary" onclick="openPackageModal()">➕ Add Package</button>
-        </div>
-        
-        <div class="card">
-          <div class="table-wrapper">
-            <table>
-              <thead><tr><th>Name</th><th>Price</th><th>Duration</th><th>Status</th><th>Actions</th></tr></thead>
-              <tbody id="packagesTable"><tr><td colspan="5" class="no-data">Loading...</td></tr></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- Content -->
+      <!-- CONTENT TAB (Syncs with Website) -->
       <div class="tab-content" id="contentTab">
         <div class="page-header">
-          <h1>📝 Website Content</h1>
-          <button class="btn btn-primary" onclick="saveContent()">💾 Save All</button>
+          <h1>Website Content Editor</h1>
+          <button class="btn btn-primary" onclick="saveContent()">💾 Save to Website</button>
         </div>
-        
         <div class="card">
-          <div class="card-header"><h2>🏠 Hero Section</h2></div>
+          <div class="card-header"><h2>🏠 Home Page Text</h2></div>
           <div class="card-body">
             <div class="form-grid">
               <div class="form-group"><label>Hero Title</label><input type="text" id="heroTitle"></div>
               <div class="form-group"><label>Subtitle</label><input type="text" id="heroSubtitle"></div>
             </div>
-            <div class="form-group"><label>Description</label><textarea id="heroDesc" rows="3"></textarea></div>
+            <div class="form-group"><label>Hero Description</label><textarea id="heroDesc" rows="3"></textarea></div>
+            <div class="form-group"><label>Starting Price Display</label><input type="text" id="heroPrice"></div>
           </div>
         </div>
-
+        <div class="card">
+          <div class="card-header"><h2>🏷️ Package Prices (Displayed on Home)</h2></div>
+          <div class="card-body">
+            <div class="form-grid">
+              <div class="form-group"><label>Sunrise Tour Price</label><input type="text" id="pkg1Price"></div>
+              <div class="form-group"><label>Sunset Tour Price</label><input type="text" id="pkg2Price"></div>
+              <div class="form-group"><label>Full Day Price</label><input type="text" id="pkg3Price"></div>
+            </div>
+          </div>
+        </div>
         <div class="card">
           <div class="card-header"><h2>📞 Contact Info</h2></div>
           <div class="card-body">
             <div class="form-grid">
               <div class="form-group"><label>Phone</label><input type="text" id="contactPhone"></div>
-              <div class="form-group"><label>WhatsApp</label><input type="text" id="contactWhatsApp"></div>
-              <div class="form-group"><label>Email</label><input type="email" id="contactEmail"></div>
-            </div>
-            <div class="form-group"><label>Address</label><textarea id="contactAddress" rows="2"></textarea></div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header"><h2>📱 Social Media</h2></div>
-          <div class="card-body">
-            <div class="form-grid">
-              <div class="form-group"><label>Facebook</label><input type="url" id="socialFb"></div>
-              <div class="form-group"><label>Instagram</label><input type="url" id="socialIg"></div>
-              <div class="form-group"><label>YouTube</label><input type="url" id="socialYt"></div>
+              <div class="form-group"><label>Email</label><input type="text" id="contactEmail"></div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Settings -->
-      <div class="tab-content" id="settingsTab">
+      <!-- PACKAGES TAB -->
+      <div class="tab-content" id="packagesTab">
         <div class="page-header">
-          <h1>⚙️ Settings</h1>
-          <button class="btn btn-primary" onclick="saveSettings()">💾 Save Settings</button>
+          <h1>Tour Packages</h1>
+          <button class="btn btn-primary" onclick="openPackageModal()">➕ Add Package</button>
         </div>
-        
-        <div class="card">
-          <div class="card-header"><h2>General Settings</h2></div>
-          <div class="card-body">
-            <div class="switch-row">
-              <div><strong>Enable Bookings</strong><p style="font-size:0.8rem;color:var(--gray);">Allow new bookings on website</p></div>
-              <label class="switch"><input type="checkbox" id="settingBookings" checked><span class="slider"></span></label>
-            </div>
-            <div class="switch-row">
-              <div><strong>Show Prices</strong><p style="font-size:0.8rem;color:var(--gray);">Display prices on website</p></div>
-              <label class="switch"><input type="checkbox" id="settingPrices" checked><span class="slider"></span></label>
-            </div>
-            <div class="switch-row">
-              <div><strong>Maintenance Mode</strong><p style="font-size:0.8rem;color:var(--gray);">Show maintenance page</p></div>
-              <label class="switch"><input type="checkbox" id="settingMaintenance"><span class="slider"></span></label>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header"><h2>🎨 Theme Colors</h2></div>
-          <div class="card-body">
-            <div class="form-grid">
-              <div class="form-group"><label>Primary Color</label><input type="color" id="themePrimary" value="#ff6b35" style="height:45px;"></div>
-              <div class="form-group"><label>Secondary Color</label><input type="color" id="themeSecondary" value="#1a1a2e" style="height:45px;"></div>
-            </div>
-          </div>
-        </div>
+        <div class="card"><div class="card-body"><p>Manage database packages here.</p><div id="packagesList"></div></div></div>
       </div>
 
-      <!-- Activity Log -->
-      <div class="tab-content" id="activityTab">
-        <div class="page-header">
-          <h1>📋 Activity Log</h1>
-          <button class="btn btn-secondary" onclick="loadActivity()">🔄 Refresh</button>
-        </div>
-        
-        <div class="card">
-          <div class="card-body" id="activityList">
-            <div class="no-data">Loading activity...</div>
-          </div>
-        </div>
+      <!-- USERS TAB -->
+      <div class="tab-content" id="usersTab">
+        <div class="page-header"><h1>User Management</h1></div>
+        <div class="card"><div class="table-wrapper">
+          <table><thead><tr><th>Name</th><th>Email</th><th>Role</th></tr></thead><tbody id="usersTable"></tbody></table>
+        </div></div>
       </div>
     </main>
   </div>
 
-  <!-- Modals -->
+  <!-- BOOKING MODAL -->
   <div class="modal-overlay" id="bookingModal">
     <div class="modal">
       <div class="modal-header"><h3>Booking Details</h3><button class="modal-close" onclick="closeModal('bookingModal')">×</button></div>
@@ -397,70 +247,11 @@
     </div>
   </div>
 
-  <div class="modal-overlay" id="addUserModal">
-    <div class="modal">
-      <div class="modal-header"><h3>Add Manager</h3><button class="modal-close" onclick="closeModal('addUserModal')">×</button></div>
-      <div class="modal-body">
-        <div class="form-group"><label>Name</label><input type="text" id="newUserName"></div>
-        <div class="form-group"><label>Email</label><input type="email" id="newUserEmail"></div>
-        <div class="form-group"><label>Password</label><input type="password" id="newUserPass"></div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" onclick="closeModal('addUserModal')">Cancel</button>
-        <button class="btn btn-primary" onclick="createManager()">Create</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal-overlay" id="packageModal">
-    <div class="modal">
-      <div class="modal-header"><h3 id="packageModalTitle">Add Package</h3><button class="modal-close" onclick="closeModal('packageModal')">×</button></div>
-      <div class="modal-body">
-        <div class="form-group"><label>Package Name</label><input type="text" id="pkgName"></div>
-        <div class="form-grid">
-          <div class="form-group"><label>Price (₹)</label><input type="number" id="pkgPrice"></div>
-          <div class="form-group"><label>Duration</label><input type="text" id="pkgDuration" placeholder="e.g. 3 Hours"></div>
-        </div>
-        <div class="form-group"><label>Description</label><textarea id="pkgDesc" rows="3"></textarea></div>
-        <div class="form-group"><label>Inclusions (one per line)</label><textarea id="pkgInclusions" rows="3"></textarea></div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" onclick="closeModal('packageModal')">Cancel</button>
-        <button class="btn btn-primary" onclick="savePackage()">Save</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal-overlay" id="userModal">
-    <div class="modal">
-      <div class="modal-header"><h3>Edit User</h3><button class="modal-close" onclick="closeModal('userModal')">×</button></div>
-      <div class="modal-body">
-        <div class="form-group"><label>Name</label><input type="text" id="editUserName"></div>
-        <div class="form-group"><label>Role</label>
-          <select id="editUserRole">
-            <option value="user">User</option>
-            <option value="manager">Manager</option>
-            <option value="admin">Admin</option>
-          </select>
-        </div>
-        <div class="form-group"><label>Status</label>
-          <select id="editUserStatus">
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-          </select>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" onclick="closeModal('userModal')">Cancel</button>
-        <button class="btn btn-primary" onclick="updateUser()">Save</button>
-      </div>
-    </div>
-  </div>
-
+  <!-- FIREBASE SCRIPT -->
   <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-    import { getAuth, onAuthStateChanged, signOut, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-    import { getFirestore, collection, getDocs, doc, updateDoc, getDoc, setDoc, deleteDoc, addDoc, query, orderBy, where, limit } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+    import { getFirestore, collection, getDocs, doc, updateDoc, getDoc, setDoc, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
 
     const firebaseConfig = {
       apiKey: "AIzaSyCtyR68dG9TEI_C89PvsdrGmpkE6vCtV0s",
@@ -475,331 +266,125 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // State
-    let bookings = [], users = [], packages = [], activities = [];
+    let bookings = [];
     let currentFilter = 'all';
-    let editingPackageId = null;
-    let editingUserId = null;
 
-    // Toast
-    window.toast = (msg, type = 'info') => {
+    // UI Helpers
+    window.toast = (msg, type = 'success') => {
       const t = document.createElement('div');
-      t.className = `toast ${type}`;
-      t.innerHTML = `<span>${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span> ${msg}`;
-      document.getElementById('toastContainer').appendChild(t);
+      t.className = 'toast'; t.innerHTML = msg; document.getElementById('toastContainer').appendChild(t);
       setTimeout(() => t.classList.add('show'), 10);
-      setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 300); }, 3000);
+      setTimeout(() => t.remove(), 3000);
     };
-
-    // Modal
     window.openModal = id => document.getElementById(id).classList.add('active');
     window.closeModal = id => document.getElementById(id).classList.remove('active');
-
-    // Tab switching
-    window.switchTab = name => {
-      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-      document.getElementById(name + 'Tab').classList.add('active');
-      document.querySelector(`[data-tab="${name}"]`)?.classList.add('active');
-    };
-
+    
+    // Tab Switch
     document.querySelectorAll('.nav-item[data-tab]').forEach(el => {
-      el.addEventListener('click', () => switchTab(el.dataset.tab));
+      el.addEventListener('click', () => {
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        el.classList.add('active');
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.getElementById(el.dataset.tab + 'Tab').classList.add('active');
+      });
     });
 
-    // Logout
-    window.logout = async () => {
-      await signOut(auth);
-      window.location.href = 'login.html';
+    // LOAD DATA
+    async function loadData() {
+      // Bookings
+      const q = query(collection(db, 'bookings'), orderBy('createdAt', 'desc'));
+      const snap = await getDocs(q);
+      bookings = [];
+      snap.forEach(d => bookings.push({ id: d.id, ...d.data() }));
+      renderBookings();
+      updateStats();
+
+      // Users
+      const uSnap = await getDocs(collection(db, 'users'));
+      const uTbody = document.getElementById('usersTable');
+      let uHtml = '';
+      let userCount = 0;
+      uSnap.forEach(d => {
+        userCount++;
+        const u = d.data();
+        uHtml += `<tr><td>${u.displayName || 'User'}</td><td>${u.email}</td><td><span class="badge badge-completed">${u.role || 'user'}</span></td></tr>`;
+      });
+      uTbody.innerHTML = uHtml;
+      document.getElementById('statUsers').innerText = userCount;
+
+      // Website Content
+      loadContent();
+    }
+
+    // Render Bookings
+    function renderBookings() {
+      const tbody = document.getElementById('bookingsTable');
+      const search = document.getElementById('bookingSearch').value.toLowerCase();
+      
+      const filtered = bookings.filter(b => {
+        const matchesFilter = currentFilter === 'all' || b.status === currentFilter;
+        const matchesSearch = (b.name || '').toLowerCase().includes(search) || (b.phone || '').includes(search);
+        return matchesFilter && matchesSearch;
+      });
+
+      tbody.innerHTML = filtered.map(b => `
+        <tr>
+          <td>#${b.id.slice(0,6)}</td>
+          <td>${b.name}</td>
+          <td>${b.phone}</td>
+          <td>${b.tourPackage}</td>
+          <td>${b.date}</td>
+          <td><span class="badge badge-${b.status}">${b.status}</span></td>
+          <td>
+            <button class="action-btn" onclick="updateStatus('${b.id}', 'confirmed')" style="color:green;">✓</button>
+            <button class="action-btn" onclick="updateStatus('${b.id}', 'cancelled')" style="color:red;">✗</button>
+          </td>
+        </tr>
+      `).join('') || '<tr><td colspan="7">No bookings found</td></tr>';
+
+      // Recent (Dashboard)
+      document.getElementById('recentBookings').innerHTML = bookings.slice(0,5).map(b => `
+        <tr><td>#${b.id.slice(0,6)}</td><td>${b.name}</td><td>${b.date}</td><td><span class="badge badge-${b.status}">${b.status}</span></td></tr>
+      `).join('');
+    }
+
+    window.updateStatus = async (id, status) => {
+      if(!confirm(`Mark as ${status}?`)) return;
+      await updateDoc(doc(db, 'bookings', id), { status });
+      const b = bookings.find(x => x.id === id); if(b) b.status = status;
+      renderBookings(); updateStats();
+      toast(`Booking marked as ${status}`);
     };
 
-    // Refresh
-    window.refreshAll = async () => {
-      toast('Refreshing...');
-      await Promise.all([loadBookings(), loadUsers(), loadPackages(), loadContent(), loadSettings()]);
-      toast('Refreshed!', 'success');
-    };
-
-    // Filter bookings
     window.setFilter = (f, btn) => {
       currentFilter = f;
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       renderBookings();
     };
+    window.filterBookings = renderBookings;
 
-    window.filterBookings = () => renderBookings();
-
-    // Load Bookings
-    async function loadBookings() {
-      try {
-        const snap = await getDocs(query(collection(db, 'bookings'), orderBy('createdAt', 'desc')));
-        bookings = [];
-        snap.forEach(d => bookings.push({ id: d.id, ...d.data() }));
-        renderBookings();
-        updateStats();
-      } catch (e) {
-        console.error('Error loading bookings:', e);
-        document.getElementById('bookingsTable').innerHTML = `<tr><td colspan="7" class="error-box">Error: ${e.message}</td></tr>`;
-      }
+    function updateStats() {
+      document.getElementById('statBookings').innerText = bookings.length;
+      document.getElementById('statPending').innerText = bookings.filter(b => b.status === 'pending').length;
+      document.getElementById('statConfirmed').innerText = bookings.filter(b => b.status === 'confirmed').length;
+      document.getElementById('pendingCount').innerText = bookings.filter(b => b.status === 'pending').length;
     }
 
-    function renderBookings() {
-      const search = document.getElementById('bookingSearch')?.value?.toLowerCase() || '';
-      let filtered = currentFilter === 'all' ? bookings : bookings.filter(b => b.status === currentFilter);
-      if (search) filtered = filtered.filter(b => b.name?.toLowerCase().includes(search) || b.phone?.includes(search));
-
-      const tbody = document.getElementById('bookingsTable');
-      if (!filtered.length) {
-        tbody.innerHTML = '<tr><td colspan="7" class="no-data">No bookings found</td></tr>';
-        return;
-      }
-
-      tbody.innerHTML = filtered.map(b => `
-        <tr>
-          <td style="font-size:0.75rem;">${b.id.slice(0,8)}...</td>
-          <td>${b.name || '-'}</td>
-          <td>${b.phone || '-'}</td>
-          <td>${b.tourPackage || '-'}</td>
-          <td>${b.date || '-'}</td>
-          <td><span class="badge badge-${b.status}">${b.status}</span></td>
-          <td>
-            <button class="action-btn" style="background:#dbeafe;color:#1e40af;" onclick="viewBooking('${b.id}')">👁️</button>
-            ${b.status === 'pending' ? `<button class="action-btn" style="background:#d1fae5;color:#065f46;" onclick="updateBookingStatus('${b.id}','confirmed')">✓</button>` : ''}
-            ${b.status === 'confirmed' ? `<button class="action-btn" style="background:#dbeafe;color:#1e40af;" onclick="updateBookingStatus('${b.id}','completed')">✓✓</button>` : ''}
-            ${!['completed','cancelled'].includes(b.status) ? `<button class="action-btn" style="background:#fee2e2;color:#991b1b;" onclick="updateBookingStatus('${b.id}','cancelled')">✗</button>` : ''}
-          </td>
-        </tr>
-      `).join('');
-
-      // Recent bookings
-      document.getElementById('recentBookings').innerHTML = bookings.slice(0,5).map(b => `
-        <tr>
-          <td>${b.name || '-'}</td>
-          <td>${b.tourPackage || '-'}</td>
-          <td>${b.date || '-'}</td>
-          <td><span class="badge badge-${b.status}">${b.status}</span></td>
-        </tr>
-      `).join('') || '<tr><td colspan="4">No bookings</td></tr>';
-    }
-
-    window.viewBooking = id => {
-      const b = bookings.find(x => x.id === id);
-      if (!b) return;
-      document.getElementById('bookingDetails').innerHTML = `
-        <p><strong>ID:</strong> ${b.id}</p>
-        <p><strong>Name:</strong> ${b.name}</p>
-        <p><strong>Phone:</strong> ${b.phone}</p>
-        <p><strong>Email:</strong> ${b.email || '-'}</p>
-        <p><strong>Package:</strong> ${b.tourPackage}</p>
-        <p><strong>Date:</strong> ${b.date}</p>
-        <p><strong>Status:</strong> <span class="badge badge-${b.status}">${b.status}</span></p>
-      `;
-      openModal('bookingModal');
-    };
-
-    window.updateBookingStatus = async (id, status) => {
-      try {
-        await updateDoc(doc(db, 'bookings', id), { status, updatedAt: new Date().toISOString() });
-        bookings.find(b => b.id === id).status = status;
-        renderBookings();
-        updateStats();
-        logActivity(`Booking ${id.slice(0,6)} marked as ${status}`);
-        toast(`Booking ${status}!`, 'success');
-      } catch (e) {
-        toast('Error: ' + e.message, 'error');
-      }
-    };
-
-    // Load Users
-    async function loadUsers() {
-      try {
-        const snap = await getDocs(collection(db, 'users'));
-        users = [];
-        snap.forEach(d => users.push({ id: d.id, ...d.data() }));
-        renderUsers();
-        updateStats();
-      } catch (e) {
-        console.error('Error loading users:', e);
-      }
-    }
-
-    function renderUsers() {
-      document.getElementById('usersTable').innerHTML = users.map(u => `
-        <tr>
-          <td>${u.name || '-'}</td>
-          <td>${u.email}</td>
-          <td><span class="badge" style="background:#f3e8ff;color:#7c3aed;">${u.role || 'user'}</span></td>
-          <td><span class="badge badge-${u.status === 'inactive' ? 'cancelled' : 'confirmed'}">${u.status || 'active'}</span></td>
-          <td>
-            <button class="action-btn" style="background:#fef3c7;color:#92400e;" onclick="editUser('${u.id}')">✏️</button>
-          </td>
-        </tr>
-      `).join('') || '<tr><td colspan="5">No users</td></tr>';
-    }
-
-    window.editUser = id => {
-      editingUserId = id;
-      const u = users.find(x => x.id === id);
-      if (!u) return;
-      document.getElementById('editUserName').value = u.name || '';
-      document.getElementById('editUserRole').value = u.role || 'user';
-      document.getElementById('editUserStatus').value = u.status || 'active';
-      openModal('userModal');
-    };
-
-    window.updateUser = async () => {
-      if (!editingUserId) return;
-      const data = {
-        name: document.getElementById('editUserName').value,
-        role: document.getElementById('editUserRole').value,
-        status: document.getElementById('editUserStatus').value,
-        updatedAt: new Date().toISOString()
-      };
-      try {
-        await updateDoc(doc(db, 'users', editingUserId), data);
-        Object.assign(users.find(u => u.id === editingUserId), data);
-        renderUsers();
-        closeModal('userModal');
-        logActivity(`User ${data.name} updated`);
-        toast('User updated!', 'success');
-      } catch (e) {
-        toast('Error: ' + e.message, 'error');
-      }
-    };
-
-    window.createManager = async () => {
-      const name = document.getElementById('newUserName').value;
-      const email = document.getElementById('newUserEmail').value;
-      const pass = document.getElementById('newUserPass').value;
-      if (!email || !pass) return toast('Fill all fields', 'error');
-      
-      try {
-        const cred = await createUserWithEmailAndPassword(auth, email, pass);
-        await setDoc(doc(db, 'users', cred.user.uid), {
-          name, email, role: 'manager', status: 'active', createdAt: new Date().toISOString()
-        });
-        closeModal('addUserModal');
-        loadUsers();
-        logActivity(`Manager ${name} created`);
-        toast('Manager created!', 'success');
-      } catch (e) {
-        toast('Error: ' + e.message, 'error');
-      }
-    };
-
-    // Load Packages
-    async function loadPackages() {
-      try {
-        const snap = await getDocs(collection(db, 'packages'));
-        packages = [];
-        snap.forEach(d => packages.push({ id: d.id, ...d.data() }));
-        renderPackages();
-      } catch (e) {
-        console.error('Error loading packages:', e);
-      }
-    }
-
-    function renderPackages() {
-      document.getElementById('packagesTable').innerHTML = packages.map(p => `
-        <tr>
-          <td>${p.name}</td>
-          <td>₹${p.price}</td>
-          <td>${p.duration || '-'}</td>
-          <td><span class="badge badge-confirmed">${p.active !== false ? 'Active' : 'Inactive'}</span></td>
-          <td>
-            <button class="action-btn" style="background:#fef3c7;color:#92400e;" onclick="editPackage('${p.id}')">✏️</button>
-            <button class="action-btn" style="background:#fee2e2;color:#991b1b;" onclick="deletePackage('${p.id}')">🗑️</button>
-          </td>
-        </tr>
-      `).join('') || '<tr><td colspan="5">No packages</td></tr>';
-    }
-
-    window.openPackageModal = (id = null) => {
-      editingPackageId = id;
-      if (id) {
-        const p = packages.find(x => x.id === id);
-        if (p) {
-          document.getElementById('packageModalTitle').textContent = 'Edit Package';
-          document.getElementById('pkgName').value = p.name || '';
-          document.getElementById('pkgPrice').value = p.price || '';
-          document.getElementById('pkgDuration').value = p.duration || '';
-          document.getElementById('pkgDesc').value = p.description || '';
-          document.getElementById('pkgInclusions').value = (p.inclusions || []).join('\n');
-        }
-      } else {
-        document.getElementById('packageModalTitle').textContent = 'Add Package';
-        document.getElementById('pkgName').value = '';
-        document.getElementById('pkgPrice').value = '';
-        document.getElementById('pkgDuration').value = '';
-        document.getElementById('pkgDesc').value = '';
-        document.getElementById('pkgInclusions').value = '';
-      }
-      openModal('packageModal');
-    };
-
-    window.editPackage = id => openPackageModal(id);
-
-    window.savePackage = async () => {
-      const data = {
-        name: document.getElementById('pkgName').value,
-        price: parseInt(document.getElementById('pkgPrice').value) || 0,
-        duration: document.getElementById('pkgDuration').value,
-        description: document.getElementById('pkgDesc').value,
-        inclusions: document.getElementById('pkgInclusions').value.split('\n').filter(x => x.trim()),
-        updatedAt: new Date().toISOString()
-      };
-      
-      try {
-        if (editingPackageId) {
-          await updateDoc(doc(db, 'packages', editingPackageId), data);
-          logActivity(`Package ${data.name} updated`);
-        } else {
-          data.createdAt = new Date().toISOString();
-          data.active = true;
-          await addDoc(collection(db, 'packages'), data);
-          logActivity(`Package ${data.name} created`);
-        }
-        closeModal('packageModal');
-        loadPackages();
-        toast('Package saved!', 'success');
-      } catch (e) {
-        toast('Error: ' + e.message, 'error');
-      }
-    };
-
-    window.deletePackage = async id => {
-      if (!confirm('Delete this package?')) return;
-      try {
-        await deleteDoc(doc(db, 'packages', id));
-        packages = packages.filter(p => p.id !== id);
-        renderPackages();
-        logActivity(`Package deleted`);
-        toast('Package deleted!', 'success');
-      } catch (e) {
-        toast('Error: ' + e.message, 'error');
-      }
-    };
-
-    // Content
+    // CONTENT EDITOR (Synced with Index.tsx)
     async function loadContent() {
-      try {
-        const snap = await getDoc(doc(db, 'site_content', 'home'));
-        if (snap.exists()) {
-          const d = snap.data();
-          document.getElementById('heroTitle').value = d.heroTitle || '';
-          document.getElementById('heroSubtitle').value = d.heroSubtitle || '';
-          document.getElementById('heroDesc').value = d.heroDescription || '';
-          document.getElementById('contactPhone').value = d.contactPhone || '';
-          document.getElementById('contactWhatsApp').value = d.contactWhatsApp || '';
-          document.getElementById('contactEmail').value = d.contactEmail || '';
-          document.getElementById('contactAddress').value = d.contactAddress || '';
-          document.getElementById('socialFb').value = d.socialFacebook || '';
-          document.getElementById('socialIg').value = d.socialInstagram || '';
-          document.getElementById('socialYt').value = d.socialYoutube || '';
-        }
-      } catch (e) {
-        console.error('Error loading content:', e);
+      const docSnap = await getDoc(doc(db, 'settings', 'website'));
+      if (docSnap.exists()) {
+        const d = docSnap.data();
+        document.getElementById('heroTitle').value = d.heroTitle || '';
+        document.getElementById('heroSubtitle').value = d.heroSubtitle || '';
+        document.getElementById('heroDesc').value = d.heroText || '';
+        document.getElementById('heroPrice').value = d.heroPrice || '';
+        document.getElementById('pkg1Price').value = d.pkg1Price || '';
+        document.getElementById('pkg2Price').value = d.pkg2Price || '';
+        document.getElementById('pkg3Price').value = d.pkg3Price || '';
+        document.getElementById('contactPhone').value = d.contact?.phone || '';
+        document.getElementById('contactEmail').value = d.contact?.email || '';
       }
     }
 
@@ -807,150 +392,35 @@
       const data = {
         heroTitle: document.getElementById('heroTitle').value,
         heroSubtitle: document.getElementById('heroSubtitle').value,
-        heroDescription: document.getElementById('heroDesc').value,
-        contactPhone: document.getElementById('contactPhone').value,
-        contactWhatsApp: document.getElementById('contactWhatsApp').value,
-        contactEmail: document.getElementById('contactEmail').value,
-        contactAddress: document.getElementById('contactAddress').value,
-        socialFacebook: document.getElementById('socialFb').value,
-        socialInstagram: document.getElementById('socialIg').value,
-        socialYoutube: document.getElementById('socialYt').value,
-        updatedAt: new Date().toISOString()
-      };
-      
-      try {
-        await setDoc(doc(db, 'site_content', 'home'), data, { merge: true });
-        logActivity('Website content updated');
-        toast('Content saved! Website will update automatically.', 'success');
-      } catch (e) {
-        toast('Error: ' + e.message, 'error');
-      }
-    };
-
-    // Settings
-    async function loadSettings() {
-      try {
-        const snap = await getDoc(doc(db, 'settings', 'general'));
-        if (snap.exists()) {
-          const d = snap.data();
-          document.getElementById('settingBookings').checked = d.bookingEnabled !== false;
-          document.getElementById('settingPrices').checked = d.showPrices !== false;
-          document.getElementById('settingMaintenance').checked = d.maintenanceMode === true;
-          document.getElementById('themePrimary').value = d.primaryColor || '#ff6b35';
-          document.getElementById('themeSecondary').value = d.secondaryColor || '#1a1a2e';
+        heroText: document.getElementById('heroDesc').value,
+        heroPrice: document.getElementById('heroPrice').value,
+        pkg1Price: document.getElementById('pkg1Price').value,
+        pkg2Price: document.getElementById('pkg2Price').value,
+        pkg3Price: document.getElementById('pkg3Price').value,
+        contact: {
+          phone: document.getElementById('contactPhone').value,
+          email: document.getElementById('contactEmail').value
         }
-      } catch (e) {
-        console.error('Error loading settings:', e);
-      }
-    }
-
-    window.saveSettings = async () => {
-      const data = {
-        bookingEnabled: document.getElementById('settingBookings').checked,
-        showPrices: document.getElementById('settingPrices').checked,
-        maintenanceMode: document.getElementById('settingMaintenance').checked,
-        primaryColor: document.getElementById('themePrimary').value,
-        secondaryColor: document.getElementById('themeSecondary').value,
-        updatedAt: new Date().toISOString()
       };
-      
-      try {
-        await setDoc(doc(db, 'settings', 'general'), data, { merge: true });
-        logActivity('Settings updated');
-        toast('Settings saved!', 'success');
-      } catch (e) {
-        toast('Error: ' + e.message, 'error');
-      }
+      await setDoc(doc(db, 'settings', 'website'), data, { merge: true });
+      toast('Website content updated!');
     };
 
-    // Activity
-    async function logActivity(text) {
-      try {
-        await addDoc(collection(db, 'activity_logs'), {
-          text,
-          userId: auth.currentUser?.uid,
-          timestamp: new Date().toISOString()
-        });
-        loadActivity();
-      } catch (e) {
-        console.error('Error logging activity:', e);
-      }
-    }
+    window.refreshAll = loadData;
+    window.logout = () => signOut(auth);
 
-    window.loadActivity = async () => {
-      try {
-        const snap = await getDocs(query(collection(db, 'activity_logs'), orderBy('timestamp', 'desc'), limit(50)));
-        activities = [];
-        snap.forEach(d => activities.push({ id: d.id, ...d.data() }));
-        
-        document.getElementById('activityList').innerHTML = activities.map(a => {
-          const time = a.timestamp ? new Date(a.timestamp).toLocaleString() : '-';
-          return `
-            <div class="activity-item">
-              <div class="icon">📝</div>
-              <div class="info">
-                <h4>${a.text}</h4>
-                <p>${time}</p>
-              </div>
-            </div>
-          `;
-        }).join('') || '<div class="no-data">No activity yet</div>';
-      } catch (e) {
-        console.error('Error loading activity:', e);
-      }
-    };
-
-    // Stats
-    function updateStats() {
-      const today = new Date().toISOString().split('T')[0];
-      const todayBookings = bookings.filter(b => b.date === today || b.createdAt?.startsWith(today));
-      const pending = bookings.filter(b => b.status === 'pending');
-      
-      document.getElementById('statBookings').textContent = bookings.length;
-      document.getElementById('statToday').textContent = todayBookings.length;
-      document.getElementById('statPending').textContent = pending.length;
-      document.getElementById('statUsers').textContent = users.length;
-      document.getElementById('pendingCount').textContent = pending.length;
-    }
-
-    // Auth Check
+    // AUTH CHECK
     onAuthStateChanged(auth, async user => {
-      const loader = document.getElementById('loader');
-      const panel = document.getElementById('adminPanel');
-
-      if (!user) {
-        loader.innerHTML = '<p class="loader-text" style="color:#ff6b6b;">Not logged in. Redirecting...</p>';
-        setTimeout(() => window.location.href = 'login.html', 1500);
-        return;
-      }
-
-      try {
-        const userDoc = await getDoc(doc(db, 'users', user.uid));
-        const role = userDoc.exists() ? userDoc.data().role : null;
-
-        if (!['admin', 'super_admin'].includes(role)) {
-          loader.innerHTML = '<p class="loader-text" style="color:#ff6b6b;">Access denied. Admin only.</p>';
-          setTimeout(() => window.location.href = 'login.html', 2000);
-          return;
-        }
-
-        // Load all data
-        await Promise.all([
-          loadBookings(),
-          loadUsers(),
-          loadPackages(),
-          loadContent(),
-          loadSettings(),
-          loadActivity()
-        ]);
-
-        // Show panel
-        loader.classList.add('hidden');
-        panel.classList.remove('hidden');
-        toast('Welcome, Admin!', 'success');
-      } catch (e) {
-        loader.innerHTML = `<p class="loader-text" style="color:#ff6b6b;">Error: ${e.message}</p>`;
-        console.error('Auth error:', e);
+      if (!user) { window.location.href = '/login.html'; return; }
+      const snap = await getDoc(doc(db, 'users', user.uid));
+      const role = snap.data()?.role;
+      if (role === 'admin' || role === 'super_admin') {
+        document.getElementById('loader').classList.add('hidden');
+        document.getElementById('adminPanel').classList.remove('hidden');
+        loadData();
+      } else {
+        alert('Access Denied');
+        window.location.href = '/login.html';
       }
     });
   </script>
