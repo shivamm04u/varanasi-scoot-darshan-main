@@ -15,7 +15,7 @@ import badaGanesh from "@/assets/locations/bada-ganesh.jpg";
 import kalBhairav from "@/assets/locations/kal-bhairav.jpg";
 import kashiVishwanath from "@/assets/locations/kashi-vishwanath.jpg";
 import gangaAarti from "@/assets/locations/ganga-aarti.jpg";
-import sarnathImg from "@/assets/Sarnath.jpg";
+import sarnathImg from "@/assets/locations/sarnath.jpg";
 
 const morningLocations = [
   {
