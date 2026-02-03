@@ -41,34 +41,31 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Pass content to components if needed */}
       <Header />
       
-      {/* Dynamic Hero: Pass title/subtitle if available */}
+      {/* FIXED: Props now match Hero.tsx (title, subtitle, etc.) */}
       <Hero 
-        customTitle={content?.heroTitle} 
-        customSubtitle={content?.heroSubtitle} 
+        title={content?.heroTitle} 
+        subtitle={content?.heroSubtitle}
+        description={content?.heroText}
+        price={content?.heroPrice}
       />
       
       <About />
       <WhyChoose />
       
-      {/* Dynamic Services: Pass updated prices */}
+      {/* FIXED: Props now match Services.tsx (scooterPrice, boatPrice) */}
       <Services 
-        pkg1Price={content?.pkg1Price} 
-        pkg2Price={content?.pkg2Price} 
-        pkg3Price={content?.pkg3Price}
+        scooterPrice={content?.pkg1Price} 
+        boatPrice={content?.pkg2Price} 
       />
       
       <RouteItinerary />
       <Locations />
       <Testimonials />
       
-      {/* Dynamic Footer Contact Info */}
-      <Footer 
-        phone={content?.contact?.phone} 
-        email={content?.contact?.email} 
-      />
+      {/* Footer can accept dynamic contact info */}
+      <Footer />
       
       <FloatingCTA />
     </div>
