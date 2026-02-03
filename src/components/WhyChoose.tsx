@@ -107,7 +107,7 @@ const WhyChoose = () => {
             </div>
             <div className="bg-primary-foreground/20 backdrop-blur-sm px-8 py-4 rounded-2xl text-center">
               <div className="text-sm opacity-80">Perfect for</div>
-              <div className="text-xl font-bold">Bagpackerrs, Vloggers</div>
+              <div className="text-xl font-bold">Bagpackers, Vloggers</div>
               <div className="text-sm opacity-80">Influencers & First-time Visitors</div>
             </div>
           </div>
