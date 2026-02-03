@@ -10,7 +10,7 @@ interface ServicesProps {
 const Services = ({ scooterPrice, boatPrice }: ServicesProps) => {
   // Itinerary Arrays (kept static for now)
   const morningItinerary = [ "Assi Ghat", "Tulsi Ghat", "Durga Mata Mandir", "Tulsi Manas Mandir", "Tridev Mandir", "Mani Mandir", "Sankat Mochan", "BHU Vishwanath" ];
-  const afternoonItinerary = [ "Kabir Math", "Bada Ganesh", "Kal Bhairav", "Kashi Vishwanath", "Ganga Aarti" ];
+  const afternoonItinerary = [ "Kabir Math", "Bada Ganesh", "Kal Bhairav", "Kashi Vishwanath", "Ganga Aarti" ,"Sarnath Temple" ];
 
   const services = [
     {
