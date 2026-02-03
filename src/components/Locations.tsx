@@ -7,6 +7,7 @@ import kashiImg from "@/assets/locations/kashi-vishwanath.jpg";
 import gangaImg from "@/assets/locations/dashashwamedh.jpg";
 import bhuImg from "@/assets/locations/bhu.jpg";
 import assiImg from "@/assets/locations/assi-ghat.jpg";
+import sarnathImg from "@/assets/locations/sarnath.jpg";
 // Fallback if local image missing
 const sarnathImg = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Dhamekh_Stupa_Sarnath.jpg/800px-Dhamekh_Stupa_Sarnath.jpg";
 
