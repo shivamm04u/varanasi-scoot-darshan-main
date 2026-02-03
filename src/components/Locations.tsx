@@ -15,6 +15,7 @@ import badaGanesh from "@/assets/locations/bada-ganesh.jpg";
 import kalBhairav from "@/assets/locations/kal-bhairav.jpg";
 import kashiVishwanath from "@/assets/locations/kashi-vishwanath.jpg";
 import gangaAarti from "@/assets/locations/ganga-aarti.jpg";
+import sarnathImg from "@/assets/Sarnath.jpg";
 
 const morningLocations = [
   {
@@ -124,6 +125,13 @@ const afternoonLocations = [
     description: "Experience the spectacular evening Ganga Aarti at Dashashwamedh Ghat. A mesmerizing spiritual ceremony you'll never forget.",
     duration: "1 hour",
     rating: 5.0,
+  },
+  {
+    id: 14,
+    name: "Sarnath Temple",
+    description: "The holy site where Lord Buddha gave his first sermon. Witness the Dhamek Stupa and peaceful gardens.",
+    image: sarnathImg,
+    tag: "Buddhist Heritage"
   },
 ];
 
