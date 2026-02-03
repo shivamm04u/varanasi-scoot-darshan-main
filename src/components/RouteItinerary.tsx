@@ -18,6 +18,8 @@ const afternoonStops = [
   "Kal Bhairav Temple Darshan",
   "Vishwanath Darshan",
   "Ganga Aarti"
+  "Sarnath Temple"
+  
 ];
 
 const RouteItinerary = () => {
@@ -34,7 +36,7 @@ const RouteItinerary = () => {
             Darshan & Sightseeing <span className="text-primary">in Varanasi</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Complete full-day itinerary covering 13+ sacred sites with morning and afternoon sessions
+            Complete full-day itinerary covering 14+ sacred sites with morning and afternoon sessions
           </p>
         </div>
 
