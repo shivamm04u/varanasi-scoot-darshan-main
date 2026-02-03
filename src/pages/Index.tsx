@@ -7,6 +7,7 @@ import Services from "@/components/Services";
 import RouteItinerary from "@/components/RouteItinerary";
 import Locations from "@/components/Locations";
 import Testimonials from "@/components/Testimonials";
+import ContactSection from "@/components/ContactSection"; // ✅ Added Contact Section
 import Footer from "@/components/Footer";
 import FloatingCTA from "@/components/FloatingCTA";
 
@@ -40,21 +41,32 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
+      
+      {/* ✅ PREMIUM NOISE TEXTURE (Adds expensive feel) */}
+      <div 
+        className="fixed inset-0 pointer-events-none opacity-[0.03] z-[9999] mix-blend-overlay"
+        style={{ 
+          backgroundImage: `url("https://grainy-gradients.vercel.app/noise.svg")`,
+          backgroundRepeat: 'repeat'
+        }}
+      ></div>
+
       <Header />
       
-      {/* FIXED: Props now match Hero.tsx (title, subtitle, etc.) */}
+      {/* Dynamic Hero */}
       <Hero 
         title={content?.heroTitle} 
         subtitle={content?.heroSubtitle}
         description={content?.heroText}
         price={content?.heroPrice}
+        durationText={content?.heroDuration}
       />
       
       <About />
       <WhyChoose />
       
-      {/* FIXED: Props now match Services.tsx (scooterPrice, boatPrice) */}
+      {/* Dynamic Services */}
       <Services 
         scooterPrice={content?.pkg1Price} 
         boatPrice={content?.pkg2Price} 
@@ -64,7 +76,9 @@ const Index = () => {
       <Locations />
       <Testimonials />
       
-      {/* Footer can accept dynamic contact info */}
+      {/* ✅ ADDED CONTACT SECTION */}
+      <ContactSection />
+      
       <Footer />
       
       <FloatingCTA />
