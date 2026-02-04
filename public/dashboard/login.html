@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <title>Login | Baba Banarasi - Varanasi Scooter Darshan</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Login to your Baba Banarasi account" />
   <meta name="theme-color" content="#EA580C" />
   <link rel="icon" type="image/png" href="/logo.png" />
   
@@ -17,27 +16,48 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    /* --- EXACT SAME DESIGN AS BEFORE --- */
+    /* BASE STYLES */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root { --primary: #EA580C; --primary-dark: #C2410C; --radius: 12px; --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
     body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #FFF7ED 0%, #FFEDD5 50%, #FED7AA 100%); min-height: 100vh; display: flex; color: #1F2937; }
+    
+    /* LAYOUT */
     .brand-panel { display: none; width: 50%; background: linear-gradient(135deg, #EA580C 0%, #C2410C 100%); padding: 60px; color: white; justify-content: center; flex-direction: column; }
     @media (min-width: 1024px) { .brand-panel { display: flex; } }
     .form-panel { flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; }
     .login-container { width: 100%; max-width: 450px; }
     .card { background: white; border-radius: var(--radius); box-shadow: var(--shadow-xl); overflow: hidden; padding: 40px; position: relative; }
+    
+    /* TYPOGRAPHY */
     h1 { font-family: 'Noto Sans Devanagari', sans-serif; font-size: 2.5rem; margin-bottom: 10px; }
     h2 { font-size: 1.75rem; color: #111827; margin-bottom: 8px; text-align: center; }
     .subtitle { color: #6B7280; text-align: center; margin-bottom: 30px; font-size: 0.95rem; }
+    
+    /* FORM ELEMENTS */
     .form-group { margin-bottom: 20px; }
     label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 0.9rem; }
+    
+    /* INPUT WRAPPER FOR EYE ICON */
+    .input-wrapper { position: relative; width: 100%; }
     input { width: 100%; padding: 12px 16px; border: 1.5px solid #E5E7EB; border-radius: var(--radius); font-size: 1rem; transition: all 0.2s; }
     input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(234, 88, 12, 0.1); }
+    
+    /* EYE ICON */
+    .eye-icon { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #9CA3AF; background: none; border: none; padding: 0; }
+    .eye-icon:hover { color: var(--primary); }
+
+    /* FORGOT PASSWORD */
+    .forgot-link { display: block; text-align: right; margin-top: 8px; font-size: 0.85rem; color: var(--primary); text-decoration: none; font-weight: 500; cursor: pointer; }
+    .forgot-link:hover { text-decoration: underline; }
+
+    /* BUTTONS */
     .submit-btn { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: var(--radius); font-weight: 600; cursor: pointer; font-size: 1rem; transition: transform 0.2s; }
     .submit-btn:hover { transform: translateY(-2px); background: var(--primary-dark); }
     .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; }
     .google-btn { width: 100%; padding: 12px; background: white; border: 1.5px solid #E5E7EB; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; font-weight: 500; margin-bottom: 24px; transition: background 0.2s; }
     .google-btn:hover { background: #F9FAFB; }
+    
+    /* UTILS */
     .divider { text-align: center; border-bottom: 1px solid #E5E7EB; line-height: 0.1em; margin: 30px 0; color: #9CA3AF; }
     .divider span { background:#fff; padding:0 10px; }
     .toggle { text-align: center; margin-top: 24px; font-size: 0.9rem; }
@@ -45,11 +65,12 @@
     .alert { padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 0.9rem; display: none; }
     .alert.error { background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; display: block; }
     .alert.success { background: #F0FDF4; color: #16A34A; border: 1px solid #BBF7D0; display: block; }
+    
+    /* MOBILE HEADER */
     .mobile-header { text-align: center; margin-bottom: 30px; display: block; }
     @media (min-width: 1024px) { .mobile-header { display: none; } }
     .logo-text { font-size: 2rem; font-weight: bold; color: var(--primary); font-family: 'Noto Sans Devanagari', sans-serif; }
     
-    /* Loading Spinner */
     .btn-spinner { width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 1s linear infinite; display: inline-block; }
     @keyframes spin { to { transform: rotate(360deg); } }
   </style>
@@ -57,7 +78,6 @@
 <body>
 
   <div class="brand-panel">
-    <!-- SECURE IMAGE LOADING -->
     <img src="/logo.png" alt="Logo" style="width: 120px; height: 120px; object-fit: contain; background: white; border-radius: 50%; padding: 10px; margin-bottom: 20px;">
     <h1>बाबा बनारसी</h1>
     <p style="font-size: 1.2rem; opacity: 0.9;">Experience the Soul of Varanasi on Two Wheels</p>
@@ -80,7 +100,6 @@
         <h2 id="formTitle">Welcome Back</h2>
         <p class="subtitle" id="formSubtitle">Sign in to continue</p>
 
-        <!-- SECURE MESSAGE BOX (Text Content Only) -->
         <div id="messageBox" class="alert"></div>
 
         <button class="google-btn" id="googleBtn" type="button">
@@ -103,182 +122,12 @@
 
           <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password">
-          </div>
-
-          <button type="submit" class="submit-btn" id="submitBtn">Sign In</button>
-        </form>
-
-        <div class="toggle">
-          <span id="toggleText">Don't have an account?</span>
-          <a id="toggleLink">Create one</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-<!-- SECURE JAVASCRIPT -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { 
-  getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, 
-  signInWithPopup, GoogleAuthProvider, updateProfile 
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCtyR68dG9TEI_C89PvsdrGmpkE6vCtV0s",
-  authDomain: "varanasi-scoot-darshan.firebaseapp.com",
-  projectId: "varanasi-scoot-darshan",
-  storageBucket: "varanasi-scoot-darshan.firebasestorage.app",
-  messagingSenderId: "437910870938",
-  appId: "1:437910870938:web:cb7b3043bcc39216143823"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const googleProvider = new GoogleAuthProvider();
-
-// --- 🔒 STAFF EMAILS (SECURE CHECK HAPPENS IN DB TOO) ---
-const STAFF = {
-  super_admin: ['shivampandit2006@gmail.com'],
-  admin: ['aruneshsinghrajawat@gmail.com'],
-  manager: ['anshumanjha3333@gmail.com']
-};
-
-let isLoginMode = true;
-
-// UI Helpers
-const $ = id => document.getElementById(id);
-
-function showMessage(msg, type) {
-  const box = $('messageBox');
-  // 🔒 SECURITY: Use textContent to prevent XSS attacks
-  box.textContent = msg; 
-  box.className = `alert ${type}`;
-}
-
-// 🔒 INPUT SANITIZATION
-function sanitize(input) {
-  if (!input) return '';
-  return input.replace(/[<>]/g, ''); // Removes potential script tags
-}
-
-// 🔒 ROBUST REDIRECT SYSTEM
-async function handleRedirect(user) {
-  try {
-    let role = 'user';
-    
-    // Check local list first (Fast)
-    if(STAFF.super_admin.includes(user.email)) role = 'super_admin';
-    else if(STAFF.admin.includes(user.email)) role = 'admin';
-    else if(STAFF.manager.includes(user.email)) role = 'manager';
-
-    // 🔒 Double check DB for role persistence
-    const userRef = doc(db, 'users', user.uid);
-    const userDoc = await getDoc(userRef);
-    
-    if (userDoc.exists() && userDoc.data().role) {
-      // Trust Database Role over Email list if it exists (More secure)
-      role = userDoc.data().role;
-    } else {
-      // First time login - Save to DB
-      await setDoc(userRef, {
-        uid: user.uid,
-        email: user.email,
-        displayName: user.displayName || user.email.split('@')[0],
-        role: role,
-        lastLogin: new Date().toISOString()
-      }, { merge: true });
-    }
-
-    showMessage(`Welcome, ${user.displayName || 'Traveler'}!`, 'success');
-
-    // 🔒 PREVENT REDIRECT LOOPS
-    setTimeout(() => {
-      if (role === 'user') {
-        window.location.href = '/'; 
-      } else {
-        const target = `/dashboard/${role === 'super_admin' ? 'admin' : role}.html`;
-        window.location.href = target;
-      }
-    }, 1000);
-
-  } catch (error) {
-    console.error("Redirect logic error:", error);
-    showMessage("Login successful, but redirect failed. Refreshing...", "error");
-    setTimeout(() => window.location.href = '/', 2000);
-  }
-}
-
-// --- EVENTS ---
-$('toggleLink').addEventListener('click', (e) => {
-  e.preventDefault();
-  isLoginMode = !isLoginMode;
-  $('formTitle').textContent = isLoginMode ? 'Welcome Back' : 'Create Account';
-  $('submitBtn').textContent = isLoginMode ? 'Sign In' : 'Create Account';
-  $('toggleText').textContent = isLoginMode ? "Don't have an account?" : "Already have an account?";
-  $('toggleLink').textContent = isLoginMode ? "Create one" : "Sign In";
-  $('nameGroup').style.display = isLoginMode ? 'none' : 'block';
-  $('messageBox').style.display = 'none';
-});
-
-$('authForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const btn = $('submitBtn');
-  
-  // 🔒 PREVENT DOUBLE SUBMISSION
-  if (btn.disabled) return;
-  
-  btn.disabled = true; 
-  btn.innerHTML = '<div class="btn-spinner"></div>';
-  
-  const email = sanitize($('email').value.trim());
-  const password = $('password').value;
-  const name = sanitize($('name').value.trim());
-
-  // 🔒 VALIDATION
-  if (!email || !password) {
-    showMessage("Please fill all fields", 'error');
-    btn.disabled = false;
-    btn.textContent = isLoginMode ? 'Sign In' : 'Create Account';
-    return;
-  }
-
-  try {
-    let result;
-    if (isLoginMode) {
-      result = await signInWithEmailAndPassword(auth, email, password);
-    } else {
-      if (!name) throw new Error("Please enter your name");
-      if (password.length < 6) throw new Error("Password must be at least 6 characters");
-      
-      result = await createUserWithEmailAndPassword(auth, email, password);
-      await updateProfile(result.user, { displayName: name });
-    }
-    await handleRedirect(result.user);
-  } catch (error) {
-    // 🔒 CLEAN ERROR MESSAGES
-    let msg = error.message.replace('Firebase:', '').replace(/\(auth\/.*\)/, '').trim();
-    if (msg.includes('invalid-credential')) msg = "Incorrect email or password.";
-    if (msg.includes('email-already-in-use')) msg = "Email already registered. Try logging in.";
-    
-    showMessage(msg, 'error');
-    btn.disabled = false;
-    btn.textContent = isLoginMode ? 'Sign In' : 'Create Account';
-  }
-});
-
-$('googleBtn').addEventListener('click', async () => {
-  try {
-    const result = await signInWithPopup(auth, googleProvider);
-    await handleRedirect(result.user);
-  } catch (error) {
-    if (error.code === 'auth/popup-closed-by-user') return; // Ignore if user closed popup
-    showMessage("Google Sign-In failed. Try again.", 'error');
-  }
-});
-</script>
-</body>
-</html>
+            <div class="input-wrapper">
+              <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password">
+              <!-- EYE ICON -->
+              <button type="button" class="eye-icon" id="togglePass" tabindex="-1">
+                <svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                <svg id="eyeClosed" style="display:none" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/></svg>
+              </button>
+            </div>
+            <!-- 
