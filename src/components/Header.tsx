@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from "react-router-dom";
-import { useAuth } from '@/contexts/AuthContext'; // Using the Context you created
+import { useAuth } from '@/AuthContext'; // Updated path
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -17,24 +17,19 @@ import { User, LogOut, LogIn, UserPlus, Menu, X, Phone, MessageCircle } from 'lu
 import ContactDrawer from "./ContactDrawer";
 
 export default function Header() {
-  // Use Global Auth State
   const { user, login, signup, logout } = useAuth();
   const { toast } = useToast();
   
-  // Menu States
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
   
-  // Auth Modal States
   const [loginOpen, setLoginOpen] = useState(false);
   const [signupOpen, setSignupOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Forms
   const [loginForm, setLoginForm] = useState({ email: '', password: '' });
   const [signupForm, setSignupForm] = useState({ name: '', email: '', password: '', confirmPassword: '', phone: '' });
 
-  // --- HANDLERS ---
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -89,37 +84,33 @@ export default function Header() {
               <Link to="/" className="text-gray-700 hover:text-orange-600 font-medium transition-colors">Home</Link>
               <Link to="/locations" className="text-gray-700 hover:text-orange-600 font-medium transition-colors">Locations</Link>
               
-              {/* Contact Button (Opens Drawer) */}
+              {/* Contact Button */}
               <button onClick={() => setIsContactOpen(true)} className="text-gray-700 hover:text-orange-600 font-medium transition-colors">
                 Contact
               </button>
               
               <div className="h-6 w-px bg-gray-200 mx-2"></div>
 
-              {/* --- AUTH SECTION --- */}
+              {/* AUTH BUTTONS */}
               {user ? (
-                // LOGGED IN VIEW
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-2 bg-orange-50 px-3 py-1.5 rounded-full border border-orange-200">
                     <User className="w-4 h-4 text-orange-600" />
-                    <span className="text-sm font-bold text-orange-700">
-                      {user.displayName ? user.displayName.split(' ')[0] : 'User'}
-                    </span>
+                    <span className="text-sm font-bold text-orange-700">{user.displayName?.split(' ')[0]}</span>
                   </div>
-                  <Button variant="ghost" size="sm" onClick={() => logout()} className="text-gray-500 hover:text-red-500" title="Logout">
+                  <Button variant="ghost" size="sm" onClick={() => logout()} className="text-gray-500 hover:text-red-500">
                     <LogOut className="w-4 h-4" />
                   </Button>
                 </div>
               ) : (
-                // LOGGED OUT VIEW (Popups)
-                <div className="flex gap-2">
+                <div className="flex gap-3 items-center">
                   
-                  {/* LOGIN DIALOG */}
+                  {/* LOGIN POPUP */}
                   <Dialog open={loginOpen} onOpenChange={setLoginOpen}>
                     <DialogTrigger asChild>
-                      <Button variant="outline" className="border-orange-200 text-orange-600 hover:bg-orange-50 hover:text-orange-700 rounded-full">
-                        <LogIn className="w-4 h-4 mr-2" /> Sign In
-                      </Button>
+                      <button className="text-gray-700 hover:text-orange-600 font-bold text-sm flex items-center gap-2 border border-gray-200 px-4 py-2 rounded-full hover:bg-orange-50 transition-all">
+                        <LogIn className="w-4 h-4" /> Sign In
+                      </button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-md bg-white">
                       <DialogHeader>
@@ -127,64 +118,44 @@ export default function Header() {
                         <DialogDescription>Login to manage your bookings</DialogDescription>
                       </DialogHeader>
                       <form onSubmit={handleLogin} className="space-y-4 mt-4">
-                        <div className="space-y-2">
-                          <Label>Email</Label>
-                          <Input type="email" required onChange={e => setLoginForm({...loginForm, email: e.target.value})} />
-                        </div>
-                        <div className="space-y-2">
-                          <Label>Password</Label>
-                          <Input type="password" required onChange={e => setLoginForm({...loginForm, password: e.target.value})} />
-                        </div>
-                        <Button type="submit" disabled={isSubmitting} className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold">
-                          {isSubmitting ? 'Logging in...' : 'Login'}
-                        </Button>
+                        <div className="space-y-2"><Label>Email</Label><Input type="email" required onChange={e => setLoginForm({...loginForm, email: e.target.value})} /></div>
+                        <div className="space-y-2"><Label>Password</Label><Input type="password" required onChange={e => setLoginForm({...loginForm, password: e.target.value})} /></div>
+                        <Button type="submit" disabled={isSubmitting} className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold">{isSubmitting ? 'Logging in...' : 'Login'}</Button>
                       </form>
                     </DialogContent>
                   </Dialog>
 
-                  {/* SIGNUP DIALOG */}
+                  {/* SIGNUP POPUP (Hidden on small screens if needed, but kept here) */}
                   <Dialog open={signupOpen} onOpenChange={setSignupOpen}>
                     <DialogTrigger asChild>
-                      <Button className="bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-full shadow-lg hover:shadow-orange-200 hover:scale-105 transition-all">
-                        <UserPlus className="w-4 h-4 mr-2" /> Sign Up
-                      </Button>
+                      <button className="text-gray-500 hover:text-orange-600 text-sm font-medium hidden lg:block">
+                        Sign Up
+                      </button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-md bg-white">
-                      <DialogHeader>
-                        <DialogTitle className="text-2xl font-serif text-orange-600">Create Account</DialogTitle>
-                        <DialogDescription>Join us for a spiritual journey</DialogDescription>
-                      </DialogHeader>
+                      {/* Signup Form Code... */}
+                      <DialogHeader><DialogTitle>Create Account</DialogTitle></DialogHeader>
                       <form onSubmit={handleSignup} className="space-y-4 mt-4">
-                        <div className="space-y-2">
-                          <Label>Full Name</Label>
-                          <Input type="text" required onChange={e => setSignupForm({...signupForm, name: e.target.value})} />
-                        </div>
-                        <div className="space-y-2">
-                          <Label>Email</Label>
-                          <Input type="email" required onChange={e => setSignupForm({...signupForm, email: e.target.value})} />
-                        </div>
-                        <div className="space-y-2">
-                          <Label>Phone</Label>
-                          <Input type="tel" onChange={e => setSignupForm({...signupForm, phone: e.target.value})} />
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="space-y-2">
-                            <Label>Password</Label>
-                            <Input type="password" required minLength={6} onChange={e => setSignupForm({...signupForm, password: e.target.value})} />
-                          </div>
-                          <div className="space-y-2">
-                            <Label>Confirm</Label>
-                            <Input type="password" required onChange={e => setSignupForm({...signupForm, confirmPassword: e.target.value})} />
-                          </div>
-                        </div>
-                        <Button type="submit" disabled={isSubmitting} className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold">
-                          {isSubmitting ? 'Creating...' : 'Sign Up'}
-                        </Button>
+                        <Input placeholder="Full Name" required onChange={e => setSignupForm({...signupForm, name: e.target.value})} />
+                        <Input placeholder="Email" type="email" required onChange={e => setSignupForm({...signupForm, email: e.target.value})} />
+                        <Input placeholder="Phone" type="tel" onChange={e => setSignupForm({...signupForm, phone: e.target.value})} />
+                        <Input placeholder="Password" type="password" required onChange={e => setSignupForm({...signupForm, password: e.target.value})} />
+                        <Input placeholder="Confirm Password" type="password" required onChange={e => setSignupForm({...signupForm, confirmPassword: e.target.value})} />
+                        <Button type="submit" disabled={isSubmitting} className="w-full bg-orange-600 text-white">Sign Up</Button>
                       </form>
                     </DialogContent>
                   </Dialog>
+
                 </div>
               )}
+
+              {/* ✅ THE BOOK NOW BUTTON IS BACK HERE */}
+              <Link to="/book">
+                <Button className="bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-full font-bold shadow-lg hover:shadow-orange-200 hover:scale-105 transition-all">
+                  Book Now
+                </Button>
+              </Link>
+
             </nav>
 
             {/* Mobile Menu Toggle */}
@@ -198,7 +169,6 @@ export default function Header() {
             <div className="md:hidden py-4 border-t border-orange-100 animate-fade-in bg-white absolute left-0 right-0 shadow-xl px-4">
               <nav className="flex flex-col gap-3">
                 <Link to="/" className="p-3 bg-orange-50 rounded-lg text-gray-800 font-medium">Home</Link>
-                <Link to="/locations" className="p-3 bg-orange-50 rounded-lg text-gray-800 font-medium">Locations</Link>
                 <Link to="/book" className="p-3 bg-orange-50 rounded-lg text-gray-800 font-medium">Book Now</Link>
                 <button onClick={() => { setIsContactOpen(true); setIsMenuOpen(false); }} className="p-3 bg-orange-50 rounded-lg text-left text-gray-800 font-medium">Contact Us</button>
                 
@@ -218,7 +188,7 @@ export default function Header() {
         </div>
       </header>
 
-      {/* CONTACT DRAWER COMPONENT */}
+      {/* CONTACT DRAWER */}
       <ContactDrawer isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
     </>
   );
