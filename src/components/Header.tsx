@@ -1,177 +1,225 @@
+import { useState } from 'react';
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Phone, MessageCircle, Menu, X, User, LogOut } from "lucide-react";
-import { useState, useEffect } from "react";
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import { initializeApp } from "firebase/app";
-import ContactDrawer from "./ContactDrawer"; // Make sure ContactDrawer.tsx exists!
+import { useAuth } from '@/contexts/AuthContext'; // Using the Context you created
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogDescription
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useToast } from '@/hooks/use-toast';
+import { User, LogOut, LogIn, UserPlus, Menu, X, Phone, MessageCircle } from 'lucide-react';
+import ContactDrawer from "./ContactDrawer";
 
-// --- FIREBASE CONFIG ---
-const firebaseConfig = {
-  apiKey: "AIzaSyCtyR68dG9TEI_C89PvsdrGmpkE6vCtV0s",
-  authDomain: "varanasi-scoot-darshan.firebaseapp.com",
-  projectId: "varanasi-scoot-darshan",
-  storageBucket: "varanasi-scoot-darshan.firebasestorage.app",
-  messagingSenderId: "437910870938",
-  appId: "1:437910870938:web:cb7b3043bcc39216143823"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-const Header = () => {
+export default function Header() {
+  // Use Global Auth State
+  const { user, login, signup, logout } = useAuth();
+  const { toast } = useToast();
+  
+  // Menu States
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isContactOpen, setIsContactOpen] = useState(false); // Contact Drawer State
-  const [user, setUser] = useState<any>(null); // Auth State
+  const [isContactOpen, setIsContactOpen] = useState(false);
+  
+  // Auth Modal States
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [signupOpen, setSignupOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Check login status
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-    return () => unsubscribe();
-  }, []);
+  // Forms
+  const [loginForm, setLoginForm] = useState({ email: '', password: '' });
+  const [signupForm, setSignupForm] = useState({ name: '', email: '', password: '', confirmPassword: '', phone: '' });
 
-  // Handle Logout
-  const handleLogout = async () => {
-    await signOut(auth);
-    window.location.reload();
+  // --- HANDLERS ---
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    try {
+      await login(loginForm.email, loginForm.password);
+      toast({ title: 'Login Successful!', description: 'Welcome back to Kashi!' });
+      setLoginOpen(false);
+    } catch (error: any) {
+      toast({ title: 'Login Failed', description: "Invalid email or password", variant: 'destructive' });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (signupForm.password !== signupForm.confirmPassword) {
+      toast({ title: 'Error', description: 'Passwords do not match', variant: 'destructive' });
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      await signup(signupForm.name, signupForm.email, signupForm.password, signupForm.phone);
+      toast({ title: 'Account Created!', description: 'Welcome to Baba Banarasi!' });
+      setSignupOpen(false);
+    } catch (error: any) {
+      toast({ title: 'Signup Failed', description: error.message, variant: 'destructive' });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-orange-100">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16 md:h-20">
             
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3">
-              <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-saffron flex items-center justify-center">
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 flex items-center justify-center shadow-md">
                 <span className="text-xl md:text-2xl">🛵</span>
               </div>
               <div className="hidden sm:block">
-                <h1 className="font-serif text-lg md:text-xl font-bold text-foreground leading-tight">
-                  Baba Banarasi
-                </h1>
-                <p className="text-xs text-muted-foreground">Solo Scooter Darshan</p>
+                <h1 className="font-serif text-lg md:text-xl font-bold text-gray-900 leading-tight">Baba Banarasi</h1>
+                <p className="text-xs text-orange-600 font-medium">Solo Scooter Darshan</p>
               </div>
             </Link>
 
             {/* Desktop Nav */}
             <nav className="hidden md:flex items-center gap-6">
-              <Link to="/" className="text-foreground hover:text-primary transition-colors font-medium">Home</Link>
-              <Link to="/locations" className="text-foreground hover:text-primary transition-colors font-medium">Locations</Link>
+              <Link to="/" className="text-gray-700 hover:text-orange-600 font-medium transition-colors">Home</Link>
+              <Link to="/locations" className="text-gray-700 hover:text-orange-600 font-medium transition-colors">Locations</Link>
               
-              {/* CONTACT DRAWER TRIGGER */}
-              <button 
-                onClick={() => setIsContactOpen(true)}
-                className="text-foreground hover:text-primary transition-colors font-medium cursor-pointer"
-              >
+              {/* Contact Button (Opens Drawer) */}
+              <button onClick={() => setIsContactOpen(true)} className="text-gray-700 hover:text-orange-600 font-medium transition-colors">
                 Contact
               </button>
               
-              <div className="h-4 w-px bg-border mx-2"></div>
+              <div className="h-6 w-px bg-gray-200 mx-2"></div>
 
-              {/* AUTH LOGIC */}
+              {/* --- AUTH SECTION --- */}
               {user ? (
-                // LOGGED IN: Show Name + Logout
+                // LOGGED IN VIEW
                 <div className="flex items-center gap-3">
-                  <span className="text-sm font-bold text-orange-600 bg-orange-50 px-3 py-1 rounded-full border border-orange-200 cursor-default">
-                    Hi, {user.displayName ? user.displayName.split(' ')[0] : 'User'} 👋
-                  </span>
-                  <button 
-                    onClick={handleLogout}
-                    className="text-gray-500 hover:text-red-500 transition-colors p-1 rounded-full hover:bg-gray-100"
-                    title="Logout"
-                  >
-                    <LogOut className="w-5 h-5" />
-                  </button>
+                  <div className="flex items-center gap-2 bg-orange-50 px-3 py-1.5 rounded-full border border-orange-200">
+                    <User className="w-4 h-4 text-orange-600" />
+                    <span className="text-sm font-bold text-orange-700">
+                      {user.displayName ? user.displayName.split(' ')[0] : 'User'}
+                    </span>
+                  </div>
+                  <Button variant="ghost" size="sm" onClick={() => logout()} className="text-gray-500 hover:text-red-500" title="Logout">
+                    <LogOut className="w-4 h-4" />
+                  </Button>
                 </div>
               ) : (
-                // NOT LOGGED IN: Show Sign In
-                <a 
-                  href="/dashboard/login.html" 
-                  className="flex items-center gap-2 text-foreground hover:text-primary font-bold border-2 border-primary/20 px-5 py-2 rounded-full hover:bg-primary hover:text-white transition-all text-sm"
-                >
-                  <User className="w-4 h-4" />
-                  Sign In
-                </a>
-              )}
+                // LOGGED OUT VIEW (Popups)
+                <div className="flex gap-2">
+                  
+                  {/* LOGIN DIALOG */}
+                  <Dialog open={loginOpen} onOpenChange={setLoginOpen}>
+                    <DialogTrigger asChild>
+                      <Button variant="outline" className="border-orange-200 text-orange-600 hover:bg-orange-50 hover:text-orange-700 rounded-full">
+                        <LogIn className="w-4 h-4 mr-2" /> Sign In
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-md bg-white">
+                      <DialogHeader>
+                        <DialogTitle className="text-2xl font-serif text-orange-600">Welcome Back</DialogTitle>
+                        <DialogDescription>Login to manage your bookings</DialogDescription>
+                      </DialogHeader>
+                      <form onSubmit={handleLogin} className="space-y-4 mt-4">
+                        <div className="space-y-2">
+                          <Label>Email</Label>
+                          <Input type="email" required onChange={e => setLoginForm({...loginForm, email: e.target.value})} />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Password</Label>
+                          <Input type="password" required onChange={e => setLoginForm({...loginForm, password: e.target.value})} />
+                        </div>
+                        <Button type="submit" disabled={isSubmitting} className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold">
+                          {isSubmitting ? 'Logging in...' : 'Login'}
+                        </Button>
+                      </form>
+                    </DialogContent>
+                  </Dialog>
 
-              {/* Book Button */}
-              <Link to="/book">
-                <Button className="bg-gradient-saffron text-white rounded-full font-bold shadow-md hover:shadow-lg hover:scale-105 transition-all">
-                  Book Now
-                </Button>
-              </Link>
+                  {/* SIGNUP DIALOG */}
+                  <Dialog open={signupOpen} onOpenChange={setSignupOpen}>
+                    <DialogTrigger asChild>
+                      <Button className="bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-full shadow-lg hover:shadow-orange-200 hover:scale-105 transition-all">
+                        <UserPlus className="w-4 h-4 mr-2" /> Sign Up
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-md bg-white">
+                      <DialogHeader>
+                        <DialogTitle className="text-2xl font-serif text-orange-600">Create Account</DialogTitle>
+                        <DialogDescription>Join us for a spiritual journey</DialogDescription>
+                      </DialogHeader>
+                      <form onSubmit={handleSignup} className="space-y-4 mt-4">
+                        <div className="space-y-2">
+                          <Label>Full Name</Label>
+                          <Input type="text" required onChange={e => setSignupForm({...signupForm, name: e.target.value})} />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Email</Label>
+                          <Input type="email" required onChange={e => setSignupForm({...signupForm, email: e.target.value})} />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Phone</Label>
+                          <Input type="tel" onChange={e => setSignupForm({...signupForm, phone: e.target.value})} />
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label>Password</Label>
+                            <Input type="password" required minLength={6} onChange={e => setSignupForm({...signupForm, password: e.target.value})} />
+                          </div>
+                          <div className="space-y-2">
+                            <Label>Confirm</Label>
+                            <Input type="password" required onChange={e => setSignupForm({...signupForm, confirmPassword: e.target.value})} />
+                          </div>
+                        </div>
+                        <Button type="submit" disabled={isSubmitting} className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold">
+                          {isSubmitting ? 'Creating...' : 'Sign Up'}
+                        </Button>
+                      </form>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+              )}
             </nav>
 
-            {/* Desktop Icons */}
-            <div className="hidden lg:flex items-center gap-3 ml-4">
-              <a href="https://wa.me/917991301043" target="_blank" rel="noopener noreferrer">
-                <Button variant="whatsapp" size="icon" className="rounded-full w-9 h-9">
-                  <MessageCircle className="w-5 h-5" />
-                </Button>
-              </a>
-            </div>
-
-            {/* Mobile Menu Button */}
-            <button
-              className="md:hidden p-2"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
+            {/* Mobile Menu Toggle */}
+            <button className="md:hidden p-2 text-gray-700" onClick={() => setIsMenuOpen(!isMenuOpen)}>
               {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
 
           {/* Mobile Menu */}
           {isMenuOpen && (
-            <div className="md:hidden py-4 border-t border-border animate-fade-in bg-background">
-              <nav className="flex flex-col gap-4 px-2">
-                <Link to="/" className="p-2 hover:bg-accent/10 rounded-lg">Home</Link>
-                <Link to="/locations" className="p-2 hover:bg-accent/10 rounded-lg">Locations</Link>
+            <div className="md:hidden py-4 border-t border-orange-100 animate-fade-in bg-white absolute left-0 right-0 shadow-xl px-4">
+              <nav className="flex flex-col gap-3">
+                <Link to="/" className="p-3 bg-orange-50 rounded-lg text-gray-800 font-medium">Home</Link>
+                <Link to="/locations" className="p-3 bg-orange-50 rounded-lg text-gray-800 font-medium">Locations</Link>
+                <Link to="/book" className="p-3 bg-orange-50 rounded-lg text-gray-800 font-medium">Book Now</Link>
+                <button onClick={() => { setIsContactOpen(true); setIsMenuOpen(false); }} className="p-3 bg-orange-50 rounded-lg text-left text-gray-800 font-medium">Contact Us</button>
                 
-                {/* Mobile Contact Drawer Trigger */}
-                <button 
-                  onClick={() => { setIsContactOpen(true); setIsMenuOpen(false); }}
-                  className="p-2 hover:bg-accent/10 rounded-lg text-left w-full font-medium"
-                >
-                  Contact Us
-                </button>
+                <div className="h-px bg-gray-100 my-2"></div>
                 
-                <div className="h-px bg-border my-1"></div>
-
-                {/* Mobile Auth Logic */}
                 {user ? (
-                  <div className="bg-orange-50 p-4 rounded-xl text-center border border-orange-100">
-                    <p className="font-bold text-orange-800 mb-2">Logged in as {user.email}</p>
-                    <button onClick={handleLogout} className="text-red-600 font-bold text-sm underline">Sign Out</button>
-                  </div>
+                  <Button variant="destructive" onClick={() => logout()} className="w-full">Sign Out ({user.displayName})</Button>
                 ) : (
-                  <a 
-                    href="/dashboard/login.html" 
-                    className="flex items-center justify-center gap-2 w-full py-3 rounded-lg border-2 border-primary text-primary font-bold"
-                  >
-                    <User className="w-5 h-5" />
-                    Sign In
-                  </a>
+                  <div className="grid grid-cols-2 gap-3">
+                    <Button variant="outline" onClick={() => setLoginOpen(true)} className="border-orange-200 text-orange-600">Login</Button>
+                    <Button onClick={() => setSignupOpen(true)} className="bg-orange-600 text-white">Sign Up</Button>
+                  </div>
                 )}
-
-                <Link to="/book" className="w-full" onClick={() => setIsMenuOpen(false)}>
-                  <Button className="w-full bg-gradient-saffron font-bold text-white">
-                    Book Now
-                  </Button>
-                </Link>
               </nav>
             </div>
           )}
         </div>
       </header>
 
-      {/* CONTACT DRAWER */}
+      {/* CONTACT DRAWER COMPONENT */}
       <ContactDrawer isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
     </>
   );
-};
-
-export default Header;
+}
