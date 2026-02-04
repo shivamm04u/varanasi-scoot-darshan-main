@@ -82,5 +82,19 @@ const Index = () => {
     </div>
   );
 };
+// ... imports
+import FloatingCTA from "@/components/FloatingCTA"; // Ensure imported
+
+const Index = () => {
+  // ... code
+  return (
+    <div className="...">
+      {/* ... other components ... */}
+      
+      <Footer />
+      <FloatingCTA /> {/* <--- MAKE SURE THIS IS HERE! */}
+    </div>
+  );
+};
 
 export default Index;
