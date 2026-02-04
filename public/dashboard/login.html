@@ -188,20 +188,40 @@ $('togglePass').addEventListener('click', () => {
   }
 });
 
-// --- FORGOT PASSWORD LOGIC ---
+// --- FORGOT PASSWORD LOGIC (UPDATED) ---
 $('forgotPass').addEventListener('click', async () => {
   const email = $('email').value.trim();
+  const link = $('forgotPass');
+  
   if (!email) {
     showMessage("Please enter your email first.", 'error');
     $('email').focus();
     return;
   }
   
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showMessage("Invalid email format.", 'error');
+    return;
+  }
+
+  link.textContent = "Sending...";
+  link.style.pointerEvents = "none";
+
   try {
+    console.log("Sending reset email to:", email);
     await sendPasswordResetEmail(auth, email);
-    showMessage(`Password reset email sent to ${email}`, 'success');
+    console.log("Success");
+    showMessage(`✅ Check your inbox! Reset link sent to ${email}`, 'success');
   } catch (error) {
-    showMessage(error.message.replace('Firebase:', ''), 'error');
+    console.error("Reset Error:", error);
+    if (error.code === 'auth/user-not-found') {
+      showMessage("No account found with this email.", 'error');
+    } else {
+      showMessage(error.message.replace('Firebase:', ''), 'error');
+    }
+  } finally {
+    link.textContent = "Forgot Password?";
+    link.style.pointerEvents = "auto";
   }
 });
 
